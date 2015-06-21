@@ -1,0 +1,12 @@
+Kubernetes\Client\Model\ContainerStatus:
+    properties:
+        name:
+            type: string
+        restartCount:
+            type: integer
+            serialized_name: restartCount
+        containerId:
+            type: string
+            serialized_name: containerID
+        state:
+            type: Kubernetes\Client\Model\ContainerStatusState

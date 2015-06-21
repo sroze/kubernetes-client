@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\EnvironmentVariable:
+    properties:
+        name:
+            type: string
+        value:
+            type: string

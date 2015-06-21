@@ -1,0 +1,12 @@
+Kubernetes\Client\Model\PodSpecification:
+    properties:
+        containers:
+            type: array<Kubernetes\Client\Model\Container>
+        restartPolicy:
+            type: string
+            serialized_name: restartPolicy
+        dnsPolicy:
+            type: string
+            serialized_name: dnsPolicy
+        volumes:
+            type: array<Kubernetes\Client\Model\Volume>

@@ -1,0 +1,16 @@
+Kubernetes\Client\Model\PodStatus:
+    properties:
+        phase:
+            type: string
+        conditions:
+            type: array<Kubernetes\Client\Model\PodStatusCondition>
+            serialized_name: Condition
+        hostIp:
+            type: string
+            serialized_name: hostIP
+        podIp:
+            type: string
+            serialized_name: podIP
+        containerStatuses:
+            type: array<Kubernetes\Client\Model\ContainerStatus>
+            serialized_name: containerStatuses

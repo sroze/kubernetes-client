@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\NamespaceStatus:
+    properties:
+        phase:
+            type: string

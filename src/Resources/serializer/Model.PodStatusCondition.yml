@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\PodStatusCondition:
+    properties:
+        type:
+            type: string
+        status:
+            type: boolean

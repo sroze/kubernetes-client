@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\ReplicationControllerList:
+    properties:
+        items:
+            type: array<Kubernetes\Client\Model\ReplicationController>

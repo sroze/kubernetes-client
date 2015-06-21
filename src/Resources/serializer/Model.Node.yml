@@ -1,0 +1,9 @@
+Kubernetes\Client\Model\Node:
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        specification:
+            type: Kubernetes\Client\Model\NodeSpecification
+            serialized_name: spec
+        status:
+            type: Kubernetes\Client\Model\NodeStatus

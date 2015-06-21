@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\ContainerStatusStateWaiting:
+    properties:
+        reason:
+            type: string

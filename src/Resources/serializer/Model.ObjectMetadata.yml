@@ -1,0 +1,21 @@
+Kubernetes\Client\Model\ObjectMetadata:
+    properties:
+        name:
+            type: string
+        uid:
+            type: string
+            groups: [ read ]
+        labelList:
+            type: array<string, string>
+            serialized_name: labels
+            access_type: public_method
+            accessor:
+                getter: getLabelsAsAssociativeArray
+                setter: setLabelsFromAssociativeArray
+        annotationList:
+            type: array<string, string>
+            serialized_name: annotations
+            access_type: public_method
+            accessor:
+                getter: getAnnotationsAsAssociativeArray
+                setter: setAnnotationsFromAssociativeArray

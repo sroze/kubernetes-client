@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\Pod:
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        specification:
+            type: Kubernetes\Client\Model\PodSpecification
+            serialized_name: spec
+        status:
+            type: Kubernetes\Client\Model\PodStatus
+            groups: [view]

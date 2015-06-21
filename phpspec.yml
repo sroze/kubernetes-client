@@ -1,0 +1,4 @@
+suites:
+    kubernetes_client:
+        namespace: Kubernetes\Client
+        psr4_prefix: Kubernetes\Client

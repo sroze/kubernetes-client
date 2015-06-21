@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\NodeSpecification:
+    properties:
+        externalId:
+            type: string
+            serialized_name: externalID
+        podCidr:
+            type: string
+            serialized_name: podCIDR
+        unschedulable:
+            type: boolean

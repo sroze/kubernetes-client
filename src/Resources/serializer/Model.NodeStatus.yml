@@ -1,0 +1,13 @@
+Kubernetes\Client\Model\NodeStatus:
+    properties:
+        addresses:
+            type: array<Kubernetes\Client\Model\NodeAddress>
+        capacity:
+            type: array
+        phase:
+            type: string
+        conditions:
+            type: array<Kubernetes\Client\Model\NodeCondition>
+        nodeInfo:
+            type: Kubernetes\Client\Model\NodeSystemInfo
+            serialized_name: nodeInfo

@@ -1,0 +1,7 @@
+Kubernetes\Client\Model\Service:
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        specification:
+            type: Kubernetes\Client\Model\ServiceSpecification
+            serialized_name: spec

@@ -1,0 +1,9 @@
+Kubernetes\Client\Model\Volume\NfsVolumeSource:
+    properties:
+        server:
+            type: string
+        path:
+            type: string
+        readOnly:
+            type: boolean
+            serialized_name: readOnly

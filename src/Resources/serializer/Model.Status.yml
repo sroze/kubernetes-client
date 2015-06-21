@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\Status:
+    properties:
+        status:
+            type: string
+        message:
+            type: string
+        reason:
+            type: string
+        code:
+            type: integer

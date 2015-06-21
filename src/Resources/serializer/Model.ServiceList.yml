@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\ServiceList:
+    properties:
+        items:
+            type: array<Kubernetes\Client\Model\Service>

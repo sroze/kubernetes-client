@@ -1,0 +1,17 @@
+Kubernetes\Client\Model\Container:
+    properties:
+        name:
+            type: string
+        image:
+            type: string
+        pullPolicy:
+            type: string
+            serialized_name: imagePullPolicy
+        environmentVariables:
+            type: array<Kubernetes\Client\Model\EnvironmentVariable>
+            serialized_name: env
+        ports:
+            type: array<Kubernetes\Client\Model\ContainerPort>
+        volumeMounts:
+            type: array<Kubernetes\Client\Model\VolumeMount>
+            serialized_name: volumeMounts

@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\NodeAddress:
+    properties:
+        address:
+            type: string
+        type:
+            type: string

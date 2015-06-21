@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\KubernetesNamespace:
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        status:
+            type: Kubernetes\Client\Model\NamespaceStatus

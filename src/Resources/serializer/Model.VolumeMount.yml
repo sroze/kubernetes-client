@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\VolumeMount:
+    properties:
+        name:
+            type: string
+        mountPath:
+            type: string
+            serialized_name: mountPath
+        readOnly:
+            type: boolean
+            serialized_name: readOnly

@@ -1,0 +1,16 @@
+Kubernetes\Client\Model\NodeCondition:
+    properties:
+        lastHeartbeatTime:
+            type: DateTime
+            serialized_name: lastHeartbeatTime
+        lastTransitionTime:
+            type: DateTime
+            serialized_name: lastTransitionTime
+        message:
+            type: string
+        reason:
+            type: string
+        status:
+            type: string
+        type:
+            type: string

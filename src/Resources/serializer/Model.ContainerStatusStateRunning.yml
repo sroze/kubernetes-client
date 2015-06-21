@@ -1,0 +1,5 @@
+Kubernetes\Client\Model\ContainerStatusStateRunning:
+    properties:
+        startedAt:
+            type: DateTime
+            serialized_name: startedAt

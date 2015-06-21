@@ -1,0 +1,11 @@
+Kubernetes\Client\Model\ServicePort:
+    properties:
+        name:
+            type: string
+        port:
+            type: integer
+        targetPort:
+            type: integer
+            serialized_name: targetPort
+        protocol:
+            type: string

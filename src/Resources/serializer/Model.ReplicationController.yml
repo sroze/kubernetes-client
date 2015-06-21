@@ -1,0 +1,12 @@
+Kubernetes\Client\Model\ReplicationController:
+    apiVersion:
+        getApiVersion:
+            serialized_name: apiVersion
+            type: string
+
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        specification:
+            type: Kubernetes\Client\Model\ReplicationControllerSpecification
+            serialized_name: spec

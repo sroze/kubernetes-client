@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\PodMetadata:
+    properties:
+        name:
+            type: string
+        labels:
+            type: array<string, string>
+            access_type: public_method
+            accessor:
+                getter: getLabelsAsAssociativeArray
+                setter: setLabelsFromAssociativeArray

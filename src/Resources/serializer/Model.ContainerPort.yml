@@ -1,0 +1,9 @@
+Kubernetes\Client\Model\ContainerPort:
+    properties:
+        name:
+            type: string
+        containerPort:
+            type: integer
+            serialized_name: containerPort
+        protocol:
+            type: string

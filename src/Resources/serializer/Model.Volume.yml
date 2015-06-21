@@ -1,0 +1,9 @@
+Kubernetes\Client\Model\Volume:
+    properties:
+        name:
+            type: string
+        emptyDir:
+            type: Kubernetes\Client\Model\Volume\EmptyDirVolumeSource
+            serialized_name: emptyDir
+        nfs:
+            type: Kubernetes\Client\Model\Volume\NfsVolumeSource

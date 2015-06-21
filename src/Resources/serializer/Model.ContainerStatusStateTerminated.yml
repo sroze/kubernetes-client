@@ -1,0 +1,15 @@
+Kubernetes\Client\Model\ContainerStatusStateTerminated:
+    properties:
+        exitCode:
+            type: integer
+            serialized_name: exitCode
+        message:
+            type: string
+        reason:
+            type: string
+        startedAt:
+            type: DateTime
+            serialized_name: startedAt
+        finishedAt:
+            type: DateTime
+            serialized_name: finishedAt

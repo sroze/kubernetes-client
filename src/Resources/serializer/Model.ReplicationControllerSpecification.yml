@@ -1,0 +1,9 @@
+Kubernetes\Client\Model\ReplicationControllerSpecification:
+    properties:
+        replicas:
+            type: integer
+        selector:
+            type: array
+        podTemplateSpecification:
+            type: Kubernetes\Client\Model\PodTemplateSpecification
+            serialized_name: template

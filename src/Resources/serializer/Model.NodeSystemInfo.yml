@@ -1,0 +1,26 @@
+Kubernetes\Client\Model\NodeSystemInfo:
+    properties:
+        bootId:
+            type: string
+            serialized_name: bootID
+        containerRuntimeVersion:
+            type: string
+            serialized_name: containerRuntimeVersion
+        kernelVersion:
+            type: string
+            serialized_name: kernelVersion
+        kubeProxyVersion:
+            type: string
+            serialized_name: kubeProxyVersion
+        kubeletVersion:
+            type: string
+            serialized_name: kubeletVersion
+        machineId:
+            type: string
+            serialized_name: machineID
+        osImage:
+            type: string
+            serialized_name: osImage
+        systemUUID:
+            type: string
+            serialized_name: systemUUID
