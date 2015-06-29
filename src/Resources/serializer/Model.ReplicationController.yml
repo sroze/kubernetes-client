@@ -1,9 +1,8 @@
 Kubernetes\Client\Model\ReplicationController:
-    apiVersion:
-        getApiVersion:
-            serialized_name: apiVersion
+    virtual_properties:
+        getKind:
+            serialized_name: Kind
             type: string
-
     properties:
         metadata:
             type: Kubernetes\Client\Model\ObjectMetadata

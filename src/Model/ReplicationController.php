@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Model;
 
-class ReplicationController
+class ReplicationController implements KubernetesObject
 {
     /**
      * @var ObjectMetadata
@@ -24,11 +24,6 @@ class ReplicationController
         $this->specification = $specification;
     }
 
-    public function getApiVersion()
-    {
-        return 'v1beta3';
-    }
-
     /**
      * @return ObjectMetadata
      */
@@ -43,5 +38,13 @@ class ReplicationController
     public function getSpecification()
     {
         return $this->specification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getKind()
+    {
+        return 'ReplicationController';
     }
 }

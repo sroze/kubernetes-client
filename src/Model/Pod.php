@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Model;
 
-class Pod
+class Pod implements KubernetesObject
 {
     /**
      * @var ObjectMetadata
@@ -61,5 +61,13 @@ class Pod
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getKind()
+    {
+        return 'Pod';
     }
 }

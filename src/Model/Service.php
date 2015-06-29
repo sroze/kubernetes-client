@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Model;
 
-class Service
+class Service implements KubernetesObject
 {
     /**
      * @var ObjectMetadata
@@ -48,5 +48,13 @@ class Service
     public function getSpecification()
     {
         return $this->specification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getKind()
+    {
+        return 'Service';
     }
 }

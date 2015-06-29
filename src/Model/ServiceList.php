@@ -10,6 +10,19 @@ class ServiceList implements \IteratorAggregate
     private $items = [];
 
     /**
+     * @param Service[] $services
+     *
+     * @return ServiceList
+     */
+    public static function fromServices(array $services)
+    {
+        $list = new self();
+        $list->items = $services;
+
+        return $list;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()

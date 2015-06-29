@@ -10,6 +10,19 @@ class PodList implements \IteratorAggregate
     private $items = [];
 
     /**
+     * @param Pod[] $pods
+     *
+     * @return PodList
+     */
+    public static function fromPods(array $pods)
+    {
+        $list = new self();
+        $list->items = $pods;
+
+        return $list;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()

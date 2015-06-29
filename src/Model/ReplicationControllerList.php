@@ -10,6 +10,19 @@ class ReplicationControllerList implements \IteratorAggregate
     private $items = [];
 
     /**
+     * @param ReplicationController[] $replicationControllers
+     *
+     * @return ReplicationControllerList
+     */
+    public static function fromReplicationControllers(array $replicationControllers)
+    {
+        $list = new self();
+        $list->items = $replicationControllers;
+
+        return $list;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()
@@ -25,6 +38,9 @@ class ReplicationControllerList implements \IteratorAggregate
         return $this->items;
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return count($this->items);
