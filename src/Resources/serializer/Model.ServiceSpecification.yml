@@ -2,17 +2,13 @@ Kubernetes\Client\Model\ServiceSpecification:
     properties:
         selector:
             type: array
-        publicIPs:
-            type: array<string>
-            serialized_name: publicIPs
-        portalIP:
+        clusterIp:
             type: string
-            serialized_name: portalIP
+            serialized_name: clusterIP
         ports:
             type: array<Kubernetes\Client\Model\ServicePort>
-        createExternalLoadBalancer:
-            type: boolean
-            serialized_name: createExternalLoadBalancer
+        type:
+            type: string
         sessionAffinity:
             type: string
             serialized_name: sessionAffinity

@@ -9,3 +9,5 @@ Kubernetes\Client\Model\Service:
         specification:
             type: Kubernetes\Client\Model\ServiceSpecification
             serialized_name: spec
+        status:
+            type: Kubernetes\Client\Model\ServiceStatus

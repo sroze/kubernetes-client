@@ -7,20 +7,14 @@ class ServiceSpecification
     const SESSION_AFFINITY_CLIENT_IP = 'ClientIP';
     const SESSION_AFFINITY_NONE = 'None';
 
+    const TYPE_CLUSTER_IP = 'ClusterIP';
+    const TYPE_NODE_PORT = 'NodePort';
+    const TYPE_LOAD_BALANCER = 'LoadBalancer';
+
     /**
      * @var array
      */
     private $selector;
-
-    /**
-     * @var string[]
-     */
-    private $publicIPs;
-
-    /**
-     * @var string
-     */
-    private $portalIP;
 
     /**
      * @var ServicePort[]
@@ -28,22 +22,26 @@ class ServiceSpecification
     private $ports;
 
     /**
-     * @var bool
+     * @var string
      */
-    private $createExternalLoadBalancer;
+    private $clusterIp;
+
+    /**
+     * @var string
+     */
+    private $type;
 
     /**
      * @var string
      */
     private $sessionAffinity;
 
-    public function __construct(array $selector, array $ports = [], array $publicIPs = [], $portalIP = null, $createExternalLoadBalancer = false, $sessionAffinity = self::SESSION_AFFINITY_NONE)
+    public function __construct(array $selector, array $ports = [], $type = self::TYPE_CLUSTER_IP, $sessionAffinity = self::SESSION_AFFINITY_NONE, $clusterIp = null)
     {
         $this->selector = $selector;
         $this->ports = $ports;
-        $this->publicIPs = $publicIPs;
-        $this->portalIP = $portalIP;
-        $this->createExternalLoadBalancer = $createExternalLoadBalancer;
+        $this->type = $type;
         $this->sessionAffinity = $sessionAffinity;
+        $this->clusterIp = $clusterIp;
     }
 }

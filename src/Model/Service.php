@@ -15,6 +15,11 @@ class Service implements KubernetesObject
     private $specification;
 
     /**
+     * @var ServiceStatus
+     */
+    private $status;
+
+    /**
      * @param ObjectMetadata       $metadata
      * @param ServiceSpecification $specification
      */

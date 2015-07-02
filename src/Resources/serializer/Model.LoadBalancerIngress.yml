@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\LoadBalancerIngress:
+    properties:
+        ip:
+            type: string
+        hostname:
+            type: string

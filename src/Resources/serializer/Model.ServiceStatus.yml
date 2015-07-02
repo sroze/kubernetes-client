@@ -1,0 +1,5 @@
+Kubernetes\Client\Model\ServiceStatus:
+    properties:
+        loadBalancer:
+            type: Kubernetes\Client\Model\LoadBalancerStatus
+            serialized_name: loadBalancer
