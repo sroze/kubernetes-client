@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Repository;
 
+use Kubernetes\Client\Exception\NamespaceNotFound;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\NamespaceList;
 
@@ -15,7 +16,9 @@ interface NamespaceRepository
     /**
      * @param string $name
      *
-     * @return KubernetesNamespace|null
+     * @throws NamespaceNotFound
+     *
+     * @return KubernetesNamespace
      */
     public function findOneByName($name);
 

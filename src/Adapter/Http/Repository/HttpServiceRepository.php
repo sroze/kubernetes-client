@@ -52,7 +52,10 @@ class HttpServiceRepository implements ServiceRepository
             ]);
         } catch (ClientError $e) {
             if ($e->getStatus()->getCode() === 404) {
-                return;
+                return new ServiceNotFound(sprintf(
+                    'Service named "%s" is not found',
+                    $name
+                ));
             }
 
             throw $e;

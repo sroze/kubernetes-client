@@ -3,6 +3,7 @@
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
 use Kubernetes\Client\Adapter\Http\Connector;
+use Kubernetes\Client\Exception\NamespaceNotFound;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\NamespaceList;
 use Kubernetes\Client\Repository\NamespaceRepository;
@@ -58,6 +59,9 @@ class HttpNamespaceRepository implements NamespaceRepository
             }
         }
 
-        return;
+        throw new NamespaceNotFound(sprintf(
+            'Namespace with name "%s" is not found',
+            $name
+        ));
     }
 }

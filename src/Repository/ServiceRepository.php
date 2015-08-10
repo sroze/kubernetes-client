@@ -16,7 +16,9 @@ interface ServiceRepository
     /**
      * @param string $name
      *
-     * @return Service|null
+     * @throws ServiceNotFound
+     *
+     * @return Service
      */
     public function findOneByName($name);
 
