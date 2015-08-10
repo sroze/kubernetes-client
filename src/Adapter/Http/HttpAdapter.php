@@ -12,14 +12,14 @@ use Kubernetes\Client\Repository\NodeRepository;
 class HttpAdapter implements AdapterInterface
 {
     /**
-     * @var Connector
+     * @var HttpConnector
      */
     private $connector;
 
     /**
-     * @param Connector $connector
+     * @param HttpConnector $connector
      */
-    public function __construct(Connector $connector)
+    public function __construct(HttpConnector $connector)
     {
         $this->connector = $connector;
     }

@@ -15,7 +15,7 @@ use Kubernetes\Client\Repository\PodRepository;
 class HttpPodRepository implements PodRepository
 {
     /**
-     * @var Connector
+     * @var HttpConnector
      */
     private $connector;
     /**
@@ -24,10 +24,10 @@ class HttpPodRepository implements PodRepository
     private $namespaceClient;
 
     /**
-     * @param Connector           $connector
+     * @param HttpConnector       $connector
      * @param HttpNamespaceClient $namespaceClient
      */
-    public function __construct(Connector $connector, HttpNamespaceClient $namespaceClient)
+    public function __construct(HttpConnector $connector, HttpNamespaceClient $namespaceClient)
     {
         $this->connector = $connector;
         $this->namespaceClient = $namespaceClient;

@@ -13,19 +13,20 @@ use Kubernetes\Client\Repository\ServiceRepository;
 class HttpServiceRepository implements ServiceRepository
 {
     /**
-     * @var Connector
+     * @var HttpConnector
      */
     private $connector;
+
     /**
      * @var HttpNamespaceClient
      */
     private $namespaceClient;
 
     /**
-     * @param Connector           $connector
+     * @param HttpConnector       $connector
      * @param HttpNamespaceClient $namespaceClient
      */
-    public function __construct(Connector $connector, HttpNamespaceClient $namespaceClient)
+    public function __construct(HttpConnector $connector, HttpNamespaceClient $namespaceClient)
     {
         $this->connector = $connector;
         $this->namespaceClient = $namespaceClient;

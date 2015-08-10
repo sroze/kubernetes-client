@@ -18,15 +18,15 @@ class HttpNamespaceClient implements NamespaceClient
      */
     private $namespace;
     /**
-     * @var Connector
+     * @var HttpConnector
      */
     private $connector;
 
     /**
-     * @param Connector           $connector
+     * @param HttpConnector       $connector
      * @param KubernetesNamespace $namespace
      */
-    public function __construct(Connector $connector, KubernetesNamespace $namespace)
+    public function __construct(HttpConnector $connector, KubernetesNamespace $namespace)
     {
         $this->namespace = $namespace;
         $this->connector = $connector;

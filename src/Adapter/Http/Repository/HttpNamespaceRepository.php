@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
-use Kubernetes\Client\Adapter\Http\Connector;
+use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Exception\NamespaceNotFound;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\NamespaceList;
@@ -11,14 +11,14 @@ use Kubernetes\Client\Repository\NamespaceRepository;
 class HttpNamespaceRepository implements NamespaceRepository
 {
     /**
-     * @var Connector
+     * @var HttpConnector
      */
     private $connector;
 
     /**
-     * @param Connector $connector
+     * @param HttpConnector $connector
      */
-    public function __construct(Connector $connector)
+    public function __construct(HttpConnector $connector)
     {
         $this->connector = $connector;
     }
