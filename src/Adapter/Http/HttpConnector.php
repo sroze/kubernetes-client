@@ -2,9 +2,9 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServerError;
 use Kubernetes\Client\Model\Status;
@@ -39,10 +39,7 @@ class HttpConnector
      */
     public function get($path, array $options = [])
     {
-        return $this->getResponse(
-            $this->httpClient->request('GET', $path),
-            $options
-        );
+        return $this->request('get', $path, null, $options);
     }
 
     /**
@@ -122,13 +119,13 @@ class HttpConnector
         $body = $this->serializeBody($body, $options);
 
         try {
-            $responseContents = $this->httpClient->request($method, $path, $body);
+            $responseContents = $this->httpClient->request($method, $path, $body, $options);
             $response = $this->getResponse($responseContents, $options);
         } catch (ConnectException $e) {
             throw new ServerError(new Status(Status::FAILURE, $e->getMessage()));
-        } catch (BadResponseException $e) {
+        } catch (RequestException $e) {
             if ($response = $e->getResponse()) {
-                throw $this->createBadResponseException($e);
+                throw $this->createRequestException($e);
             }
 
             throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
@@ -138,18 +135,18 @@ class HttpConnector
     }
 
     /**
-     * @param BadResponseException $e
+     * @param RequestException $e
      *
      * @return ClientError|ServerError
      */
-    private function createBadResponseException(BadResponseException $e)
+    private function createRequestException(RequestException $e)
     {
         $response = $e->getResponse();
         $responseBody = $response->getBody()->getContents();
 
         try {
             $status = $this->serializer->deserialize($responseBody, Status::class, 'json');
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException $serializerException) {
             $status = new Status(Status::FAILURE, $responseBody);
         }
 

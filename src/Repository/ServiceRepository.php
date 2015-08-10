@@ -35,4 +35,11 @@ interface ServiceRepository
      * @throws ServiceNotFound
      */
     public function delete(Service $service);
+
+    /**
+     * @param Service $service
+     *
+     * @return Service
+     */
+    public function update(Service $service);
 }

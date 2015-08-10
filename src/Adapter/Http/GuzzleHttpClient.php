@@ -44,9 +44,7 @@ class GuzzleHttpClient implements HttpClient
     public function request($method, $path, $body = null, array $options = [])
     {
         $url = $this->getUrlForPath($path);
-        $response = $this->guzzleClient->$method($url, array_merge_recursive([
-            'body' => $body,
-        ], $options));
+        $response = $this->guzzleClient->$method($url, $this->prepareOptions($body, $options));
 
         $body = $response->getBody();
         if ($body->isSeekable()) {
@@ -65,4 +63,31 @@ class GuzzleHttpClient implements HttpClient
     {
         return sprintf('%s/api/%s%s', $this->baseUrl, $this->version, $path);
     }
+
+    /**
+     * Prepare Guzzle options.
+     *
+     * @param string $body
+     * @param array $options
+     * @return array
+     */
+    private function prepareOptions($body, $options)
+    {
+        $defaults = [
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ]
+        ];
+
+        if ($body !== null) {
+            $defaults['body'] = $body;
+        }
+
+        $options = array_intersect_key($options, [
+            'headers' => null, 'body' => null
+        ]);
+
+        return array_replace_recursive($defaults, $options);
+    }
+
 }

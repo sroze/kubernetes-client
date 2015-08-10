@@ -14,7 +14,7 @@ class HttpNodeRepository implements NodeRepository
     private $connector;
 
     /**
-     * @param Connector $connector
+     * @param HttpConnector $connector
      */
     public function __construct(HttpConnector $connector)
     {

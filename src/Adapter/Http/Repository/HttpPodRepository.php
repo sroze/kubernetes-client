@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
-use Kubernetes\Client\Adapter\Http\Connector;
+use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\PodNotFound;

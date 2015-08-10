@@ -41,7 +41,7 @@ class AuthenticationMiddleware implements HttpClient
             'headers' => [
                 'Authorization' => 'Basic '.$basicAuthorizationString,
             ],
-        ]);
+        ], $options);
 
         return $this->httpClient->request($method, $path, $body, $options);
     }

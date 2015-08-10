@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
-use Kubernetes\Client\Adapter\Http\Connector;
+use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServiceNotFound;
@@ -53,7 +53,7 @@ class HttpServiceRepository implements ServiceRepository
             ]);
         } catch (ClientError $e) {
             if ($e->getStatus()->getCode() === 404) {
-                return new ServiceNotFound(sprintf(
+                throw new ServiceNotFound(sprintf(
                     'Service named "%s" is not found',
                     $name
                 ));
@@ -76,12 +76,24 @@ class HttpServiceRepository implements ServiceRepository
     /**
      * {@inheritdoc}
      */
+    public function update(Service $service)
+    {
+        $path = sprintf('/services/%s', $service->getMetadata()->getName());
+
+        return $this->connector->patch($this->namespaceClient->prefixPath($path), $service, [
+            'class' => Service::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete(Service $service)
     {
         try {
             $path = $this->namespaceClient->prefixPath(sprintf('/services/%s', $service->getMetadata()->getName()));
 
-            return $this->connector->delete($path, [
+            return $this->connector->delete($path, null, [
                 'class' => Service::class,
             ]);
         } catch (ClientError $e) {
