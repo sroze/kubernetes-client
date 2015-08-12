@@ -1,13 +1,13 @@
 {
     "name": "sroze/kubernetes-client",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "autoload": {
         "psr-4": {
             "Kubernetes\\Client\\": "src/"
         }
     },
     "require": {
-        "guzzlehttp/guzzle": "~5.0",
+        "guzzlehttp/guzzle": "~4.1",
         "symfony/serializer": "~2.7",
         "jms/serializer": "^1.0.0"
     },
