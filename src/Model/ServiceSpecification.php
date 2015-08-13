@@ -44,4 +44,44 @@ class ServiceSpecification
         $this->sessionAffinity = $sessionAffinity;
         $this->clusterIp = $clusterIp;
     }
+
+    /**
+     * @return array
+     */
+    public function getSelector()
+    {
+        return $this->selector;
+    }
+
+    /**
+     * @return ServicePort[]
+     */
+    public function getPorts()
+    {
+        return $this->ports;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClusterIp()
+    {
+        return $this->clusterIp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSessionAffinity()
+    {
+        return $this->sessionAffinity;
+    }
 }

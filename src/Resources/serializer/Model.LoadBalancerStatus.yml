@@ -1,4 +1,5 @@
 Kubernetes\Client\Model\LoadBalancerStatus:
     properties:
-        ingress:
-            type: Kubernetes\Client\Model\LoadBalancerIngress
+        ingresses:
+            serialized_name: ingress
+            type: array<Kubernetes\Client\Model\LoadBalancerIngress>

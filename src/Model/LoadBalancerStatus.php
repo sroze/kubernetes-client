@@ -5,7 +5,15 @@ namespace Kubernetes\Client\Model;
 class LoadBalancerStatus
 {
     /**
-     * @var LoadBalancerIngress
+     * @var LoadBalancerIngress[]
      */
-    private $ingress;
+    private $ingresses;
+
+    /**
+     * @return LoadBalancerIngress[]
+     */
+    public function getIngresses()
+    {
+        return $this->ingresses;
+    }
 }

@@ -56,6 +56,14 @@ class Service implements KubernetesObject
     }
 
     /**
+     * @return ServiceStatus
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getKind()
