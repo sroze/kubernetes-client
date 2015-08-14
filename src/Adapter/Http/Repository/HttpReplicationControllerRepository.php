@@ -87,7 +87,7 @@ class HttpReplicationControllerRepository implements ReplicationControllerReposi
                 $replicationController->getMetadata()->getName()
             ));
 
-            return $this->connector->delete($path, [
+            return $this->connector->delete($path, null, [
                 'class' => ReplicationController::class,
             ]);
         } catch (ClientError $e) {
