@@ -78,8 +78,14 @@ class HttpServiceRepository implements ServiceRepository
      */
     public function update(Service $service)
     {
-        $path = sprintf('/services/%s', $service->getMetadata()->getName());
+        $serviceName = $service->getMetadata()->getName();
+        $currentService = $this->findOneByName($serviceName);
 
+        if ($service->getSpecification() == $currentService->getSpecification()) {
+            return $currentService;
+        }
+
+        $path = sprintf('/services/%s', $serviceName);
         return $this->connector->patch($this->namespaceClient->prefixPath($path), $service, [
             'class' => Service::class,
         ]);
