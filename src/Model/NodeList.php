@@ -10,6 +10,14 @@ class NodeList implements \IteratorAggregate
     private $items = [];
 
     /**
+     * @param Node[] $items
+     */
+    public function __construct(array $items)
+    {
+        $this->items = $items;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()

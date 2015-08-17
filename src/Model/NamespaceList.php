@@ -10,6 +10,14 @@ class NamespaceList implements \IteratorAggregate
     private $items = [];
 
     /**
+     * @param KubernetesNamespace[] $items
+     */
+    public function __construct(array $items)
+    {
+        $this->items = $items;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getIterator()
