@@ -86,6 +86,7 @@ class HttpServiceRepository implements ServiceRepository
         }
 
         $path = sprintf('/services/%s', $serviceName);
+
         return $this->connector->patch($this->namespaceClient->prefixPath($path), $service, [
             'class' => Service::class,
         ]);

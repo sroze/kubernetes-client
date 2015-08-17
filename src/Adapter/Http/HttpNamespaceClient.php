@@ -4,12 +4,11 @@ namespace Kubernetes\Client\Adapter\Http;
 
 use Kubernetes\Client\Adapter\Http\Repository\HttpPodRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpReplicationControllerRepository;
+use Kubernetes\Client\Adapter\Http\Repository\HttpSecretRepository;
+use Kubernetes\Client\Adapter\Http\Repository\HttpServiceAccountRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpServiceRepository;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\NamespaceClient;
-use Kubernetes\Client\Repository\PodRepository;
-use Kubernetes\Client\Repository\ReplicationControllerRepository;
-use Kubernetes\Client\Repository\ServiceRepository;
 
 class HttpNamespaceClient implements NamespaceClient
 {
@@ -33,7 +32,7 @@ class HttpNamespaceClient implements NamespaceClient
     }
 
     /**
-     * @return PodRepository
+     * {@inheritdoc}
      */
     public function getPodRepository()
     {
@@ -41,7 +40,7 @@ class HttpNamespaceClient implements NamespaceClient
     }
 
     /**
-     * @return ServiceRepository
+     * {@inheritdoc}
      */
     public function getServiceRepository()
     {
@@ -49,11 +48,27 @@ class HttpNamespaceClient implements NamespaceClient
     }
 
     /**
-     * @return ReplicationControllerRepository
+     * {@inheritdoc}
      */
     public function getReplicationControllerRepository()
     {
         return new HttpReplicationControllerRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSecretRepository()
+    {
+        return new HttpSecretRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getServiceAccountRepository()
+    {
+        return new HttpServiceAccountRepository($this->connector, $this);
     }
 
     /**

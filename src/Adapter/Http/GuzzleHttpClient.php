@@ -68,15 +68,16 @@ class GuzzleHttpClient implements HttpClient
      * Prepare Guzzle options.
      *
      * @param string $body
-     * @param array $options
+     * @param array  $options
+     *
      * @return array
      */
     private function prepareOptions($body, $options)
     {
         $defaults = [
             'headers' => [
-                'Content-Type' => 'application/json'
-            ]
+                'Content-Type' => 'application/json',
+            ],
         ];
 
         if ($body !== null) {
@@ -84,10 +85,9 @@ class GuzzleHttpClient implements HttpClient
         }
 
         $options = array_intersect_key($options, [
-            'headers' => null, 'body' => null
+            'headers' => null, 'body' => null,
         ]);
 
         return array_replace_recursive($defaults, $options);
     }
-
 }
