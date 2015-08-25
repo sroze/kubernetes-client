@@ -50,4 +50,52 @@ class Container
         $this->volumeMounts = $volumeMounts;
         $this->pullPolicy = $pullPolicy;
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPullPolicy()
+    {
+        return $this->pullPolicy;
+    }
+
+    /**
+     * @return EnvironmentVariable[]
+     */
+    public function getEnvironmentVariables()
+    {
+        return $this->environmentVariables;
+    }
+
+    /**
+     * @return ContainerPort[]
+     */
+    public function getPorts()
+    {
+        return $this->ports;
+    }
+
+    /**
+     * @return VolumeMount[]
+     */
+    public function getVolumeMounts()
+    {
+        return $this->volumeMounts;
+    }
 }
