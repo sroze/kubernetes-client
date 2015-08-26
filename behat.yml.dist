@@ -1,0 +1,14 @@
+default:
+    suites:
+        application:
+            contexts:
+                - ClientContext:
+                    - https://baseUrl # Base server URL
+                    - v1              # API version
+                    - username        # Username
+                    - password        # Password
+                - NamespaceContext
+
+    gherkin:
+        filters:
+            tags: "~@wip"

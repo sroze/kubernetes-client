@@ -3,8 +3,8 @@
 namespace Kubernetes\Client\Adapter\Http;
 
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServerError;
 use Kubernetes\Client\Model\Status;
@@ -121,7 +121,7 @@ class HttpConnector
         try {
             $responseContents = $this->httpClient->request($method, $path, $body, $options);
             $response = $this->getResponse($responseContents, $options);
-        } catch (ConnectException $e) {
+        } catch (ServerException $e) {
             throw new ServerError(new Status(Status::FAILURE, $e->getMessage()));
         } catch (RequestException $e) {
             if ($response = $e->getResponse()) {

@@ -37,4 +37,13 @@ interface NamespaceRepository
      * @return KubernetesNamespace
      */
     public function create(KubernetesNamespace $namespace);
+
+    /**
+     * Delete a namespace.
+     *
+     * @param KubernetesNamespace $namespace
+     *
+     * @return KubernetesNamespace
+     */
+    public function delete(KubernetesNamespace $namespace);
 }

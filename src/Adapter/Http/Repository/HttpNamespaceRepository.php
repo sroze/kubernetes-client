@@ -6,6 +6,7 @@ use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Exception\NamespaceNotFound;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\NamespaceList;
+use Kubernetes\Client\Model\Status;
 use Kubernetes\Client\Repository\NamespaceRepository;
 
 class HttpNamespaceRepository implements NamespaceRepository
@@ -63,6 +64,16 @@ class HttpNamespaceRepository implements NamespaceRepository
             'Namespace with name "%s" is not found',
             $name
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete(KubernetesNamespace $namespace)
+    {
+        return $this->connector->delete(sprintf('/namespaces/%s', $namespace->getMetadata()->getName()), null, [
+            'class' => KubernetesNamespace::class
+        ]);
     }
 
     /**
