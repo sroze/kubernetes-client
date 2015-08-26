@@ -16,12 +16,17 @@ class NamespaceContext implements Context
     /**
      * @var KubernetesNamespace
      */
-    private $namespace;
+    private static $namespace;
 
     /**
      * @var NamespaceList
      */
     private $namespaceList;
+
+    /**
+     * @var bool
+     */
+    private static $isDeleted = false;
 
     /**
      * @BeforeScenario
@@ -32,13 +37,23 @@ class NamespaceContext implements Context
     }
 
     /**
+     * @AfterScenario @cleanNamespace
+     */
+    public function cleanNamespace()
+    {
+        $this->iDeleteTheNamespace();
+    }
+
+    /**
      * @When I send a request creation for a namespace
      */
     public function iSendARequestCreationForANamespace()
     {
-        $this->namespace = new KubernetesNamespace(new ObjectMetadata(uniqid()));
+        self::$namespace = new KubernetesNamespace(new ObjectMetadata(uniqid()));
+        self::$isDeleted = false;
+
         $this->getRepository()->create(
-            $this->namespace
+            self::$namespace
         );
     }
 
@@ -60,7 +75,9 @@ class NamespaceContext implements Context
      */
     public function iHaveANamespace()
     {
-        $this->iSendARequestCreationForANamespace();
+        if (null == self::$namespace || self::$isDeleted) {
+            $this->iSendARequestCreationForANamespace();
+        }
     }
 
     /**
@@ -93,7 +110,9 @@ class NamespaceContext implements Context
      */
     public function iDeleteTheNamespace()
     {
-        $this->getRepository()->delete($this->namespace);
+        $this->getRepository()->delete($this->getNamespace());
+
+        self::$isDeleted = true;
     }
 
     /**
@@ -114,7 +133,7 @@ class NamespaceContext implements Context
      */
     private function getNamespaceName()
     {
-        return $this->namespace->getMetadata()->getName();
+        return $this->getNamespace()->getMetadata()->getName();
     }
 
     /**
@@ -130,6 +149,6 @@ class NamespaceContext implements Context
      */
     public function getNamespace()
     {
-        return $this->namespace;
+        return self::$namespace;
     }
 }

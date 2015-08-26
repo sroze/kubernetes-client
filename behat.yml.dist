@@ -8,6 +8,8 @@ default:
                     - username        # Username
                     - password        # Password
                 - NamespaceContext
+                - SecretContext
+                - ServiceContext
 
     gherkin:
         filters:

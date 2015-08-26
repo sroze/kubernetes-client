@@ -5,6 +5,8 @@ Feature:
   Background:
     Given I have a namespace
 
+  @cleanNamespace
   Scenario:
     When I create a secret
     Then the secret should exists
+
