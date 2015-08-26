@@ -124,4 +124,12 @@ class NamespaceContext implements Context
     {
         return $this->clientContext->getClient()->getNamespaceRepository();
     }
+
+    /**
+     * @return KubernetesNamespace
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
 }
