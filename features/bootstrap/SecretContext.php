@@ -38,7 +38,9 @@ class SecretContext implements Context
     {
         $this->secret = new Secret(
             new ObjectMetadata(uniqid()),
-            'a-given-data'
+            [
+                'foo' => base64_encode('bar')
+            ]
         );
 
         $this->getRepository()->create($this->secret);

@@ -10,7 +10,7 @@ class Secret implements KubernetesObject
     private $metadata;
 
     /**
-     * @var string
+     * @var array
      */
     private $data;
 
@@ -21,10 +21,10 @@ class Secret implements KubernetesObject
 
     /**
      * @param ObjectMetadata $metadata
-     * @param string         $data
+     * @param array          $data
      * @param string         $type
      */
-    public function __construct(ObjectMetadata $metadata, $data, $type = null)
+    public function __construct(ObjectMetadata $metadata, array $data, $type = null)
     {
         $this->metadata = $metadata;
         $this->data = $data;
@@ -40,7 +40,7 @@ class Secret implements KubernetesObject
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getData()
     {
