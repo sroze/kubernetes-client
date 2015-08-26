@@ -1,7 +1,7 @@
 Kubernetes\Client\Model\ServiceSpecification:
     properties:
         selector:
-            type: array
+            type: array<string, string>
         clusterIp:
             type: string
             serialized_name: clusterIP

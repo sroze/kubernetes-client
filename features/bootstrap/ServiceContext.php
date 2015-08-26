@@ -34,12 +34,36 @@ class ServiceContext implements Context
     }
 
     /**
+     * @AfterScenario @deleteService
+     */
+    public function deleteService()
+    {
+        $this->getRepository()->delete($this->service);
+    }
+
+    /**
      * @When I create a service
      */
     public function iCreateAService()
     {
         $specification = new ServiceSpecification([
             'select-with' => 'a-label'
+        ], [
+            new ServicePort('web', 80, 'TCP')
+        ]);
+
+        $this->service = new Service(new ObjectMetadata('my-service'), $specification);
+        $this->getRepository()->create($this->service);
+    }
+
+    /**
+     * @When I create a service with some non-string values in selector
+     */
+    public function iCreateAServiceWithSomeNonStringValuesInSelector()
+    {
+        $specification = new ServiceSpecification([
+            'select-with' => 'a-label',
+            'boolean' => false
         ], [
             new ServicePort('web', 80, 'TCP')
         ]);

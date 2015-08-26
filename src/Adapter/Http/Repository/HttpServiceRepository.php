@@ -8,6 +8,7 @@ use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServiceNotFound;
 use Kubernetes\Client\Model\Service;
 use Kubernetes\Client\Model\ServiceList;
+use Kubernetes\Client\Model\Status;
 use Kubernetes\Client\Repository\ServiceRepository;
 
 class HttpServiceRepository implements ServiceRepository
@@ -115,7 +116,7 @@ class HttpServiceRepository implements ServiceRepository
             $path = $this->namespaceClient->prefixPath(sprintf('/services/%s', $service->getMetadata()->getName()));
 
             return $this->connector->delete($path, null, [
-                'class' => Service::class,
+                'class' => Status::class,
             ]);
         } catch (ClientError $e) {
             if ($e->getStatus()->getCode() === 404) {

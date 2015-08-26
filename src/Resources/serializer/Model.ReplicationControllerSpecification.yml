@@ -3,7 +3,7 @@ Kubernetes\Client\Model\ReplicationControllerSpecification:
         replicas:
             type: integer
         selector:
-            type: array
+            type: array<string, string>
         podTemplateSpecification:
             type: Kubernetes\Client\Model\PodTemplateSpecification
             serialized_name: template

@@ -5,7 +5,13 @@ Feature:
   Background:
     Given I have a namespace
 
-  @cleanNamespace
+  @deleteService
   Scenario:
     When I create a service
+    Then the service should exists
+
+  @deleteService
+  @cleanNamespace
+  Scenario:
+    When I create a service with some non-string values in selector
     Then the service should exists
