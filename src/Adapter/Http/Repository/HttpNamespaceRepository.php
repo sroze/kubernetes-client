@@ -64,4 +64,18 @@ class HttpNamespaceRepository implements NamespaceRepository
             $name
         ));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exists($name)
+    {
+        try {
+            $this->findOneByName($name);
+        } catch (NamespaceNotFound $e) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -23,6 +23,15 @@ interface NamespaceRepository
     public function findOneByName($name);
 
     /**
+     * Check if a service with this name exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function exists($name);
+
+    /**
      * @param KubernetesNamespace $namespace
      *
      * @return KubernetesNamespace

@@ -66,6 +66,20 @@ class HttpServiceRepository implements ServiceRepository
     /**
      * {@inheritdoc}
      */
+    public function exists($name)
+    {
+        try {
+            $this->findOneByName($name);
+        } catch (ServiceNotFound $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function create(Service $service)
     {
         return $this->connector->post($this->namespaceClient->prefixPath('/services'), $service, [

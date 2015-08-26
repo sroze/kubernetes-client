@@ -23,6 +23,15 @@ interface ServiceRepository
     public function findOneByName($name);
 
     /**
+     * Test if a service with that name exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function exists($name);
+
+    /**
      * @param Service $service
      *
      * @return Service
