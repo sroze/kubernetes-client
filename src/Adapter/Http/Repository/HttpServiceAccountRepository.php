@@ -37,7 +37,7 @@ class HttpServiceAccountRepository implements ServiceAccountRepository
     public function findByName($name)
     {
         try {
-            return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/serviceAccounts/%s', $name)), [
+            return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/serviceaccounts/%s', $name)), [
                 'class' => ServiceAccount::class,
                 'groups' => ['Default', 'show'],
             ]);
@@ -55,10 +55,20 @@ class HttpServiceAccountRepository implements ServiceAccountRepository
      */
     public function update(ServiceAccount $serviceAccount)
     {
-        $path = sprintf('/serviceAccounts/%s', $serviceAccount->getMetadata()->getName());
+        $path = sprintf('/serviceaccounts/%s', $serviceAccount->getMetadata()->getName());
 
         return $this->connector->put($this->namespaceClient->prefixPath($path), $serviceAccount, [
             'class' => ServiceAccount::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create(ServiceAccount $serviceAccount)
+    {
+        return $this->connector->post($this->namespaceClient->prefixPath('/serviceaccounts'), $serviceAccount, [
+            'class' => ServiceAccount::class
         ]);
     }
 }

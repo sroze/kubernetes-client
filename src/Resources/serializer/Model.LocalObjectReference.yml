@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\LocalObjectReference:
+    properties:
+        name:
+            type: string

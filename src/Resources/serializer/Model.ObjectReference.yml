@@ -1,0 +1,17 @@
+Kubernetes\Client\Model\ObjectReference:
+    properties:
+        kind:
+            type: string
+        namespace:
+            type: string
+        uid:
+            type: string
+        apiVersion:
+            type: string
+            serialized_name: apiVersion
+        resourceVersion:
+            type: string
+            serialized_name: resourceVersion
+        fieldPath:
+            type: string
+            serialized_name: fieldPath

@@ -52,7 +52,7 @@ class ServiceAccount implements KubernetesObject
      */
     public function getSecrets()
     {
-        return $this->secrets;
+        return $this->secrets ?: [];
     }
 
     /**
@@ -60,6 +60,6 @@ class ServiceAccount implements KubernetesObject
      */
     public function getImagePullSecrets()
     {
-        return $this->imagePullSecrets;
+        return $this->imagePullSecrets ?: [];
     }
 }
