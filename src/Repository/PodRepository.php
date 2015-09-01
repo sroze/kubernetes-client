@@ -45,6 +45,15 @@ interface PodRepository
     public function findOneByName($name);
 
     /**
+     * Check if the pod with the given name exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function exists($name);
+
+    /**
      * @param Pod $pod
      *
      * @throws PodNotFound

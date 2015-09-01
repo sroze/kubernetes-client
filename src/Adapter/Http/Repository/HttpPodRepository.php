@@ -134,4 +134,18 @@ class HttpPodRepository implements PodRepository
             'groups' => ['Default', 'show'],
         ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exists($name)
+    {
+        try {
+            $this->findOneByName($name);
+        } catch (PodNotFound $e) {
+            return false;
+        }
+
+        return true;
+    }
 }

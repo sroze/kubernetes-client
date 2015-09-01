@@ -2,6 +2,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Kubernetes\Client\Exception\NamespaceNotFound;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\NamespaceList;
 use Kubernetes\Client\Model\ObjectMetadata;
@@ -125,6 +126,26 @@ class NamespaceContext implements Context
                 'The namespace "%s" exists',
                 $this->getNamespaceName()
             ));
+        }
+    }
+
+    /**
+     * @Then the namespace should not exists or be terminating
+     */
+    public function theNamespaceShouldNotExistsOrBeTerminating()
+    {
+        try {
+            $namespace = $this->getRepository()->findOneByName($this->getNamespaceName());
+            $statusPhase = $namespace->getStatus()->getPhase();
+
+            if (strtolower($statusPhase) !== 'terminating') {
+                throw new \RuntimeException(sprintf(
+                    'Found namespace "%s" is status "%s" instead of terminating',
+                    $this->getNamespaceName(),
+                    $statusPhase
+                ));
+            }
+        } catch (NamespaceNotFound $e) {
         }
     }
 

@@ -10,6 +10,11 @@ class KubernetesNamespace
     private $metadata;
 
     /**
+     * @var NamespaceStatus
+     */
+    private $status;
+
+    /**
      * @param ObjectMetadata $metadata
      */
     public function __construct(ObjectMetadata $metadata)
@@ -23,5 +28,13 @@ class KubernetesNamespace
     public function getMetadata()
     {
         return $this->metadata;
+    }
+
+    /**
+     * @return NamespaceStatus
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

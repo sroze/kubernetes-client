@@ -14,4 +14,4 @@ Feature:
   Scenario:
     Given I have a namespace
     When I delete the namespace
-    Then the namespace should not exists
+    Then the namespace should not exists or be terminating

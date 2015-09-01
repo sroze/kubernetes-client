@@ -41,7 +41,7 @@ class Container
      * @param VolumeMount[]         $volumeMounts
      * @param string                $pullPolicy
      */
-    public function __construct($name, $image, array $environmentVariables, array $ports, array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS)
+    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS)
     {
         $this->name = $name;
         $this->image = $image;

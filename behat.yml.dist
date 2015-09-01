@@ -10,6 +10,7 @@ default:
                 - NamespaceContext
                 - SecretContext
                 - ServiceContext
+                - PodContext
 
     gherkin:
         filters:
