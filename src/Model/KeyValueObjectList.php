@@ -23,7 +23,7 @@ class KeyValueObjectList implements \IteratorAggregate
      * @param array  $array
      * @param string $className
      *
-     * @return array
+     * @return KeyValueObjectList
      */
     public static function fromAssociativeArray(array $array, $className = KeyValueObject::class)
     {
