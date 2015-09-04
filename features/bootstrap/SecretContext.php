@@ -39,7 +39,7 @@ class SecretContext implements Context
         $this->secret = new Secret(
             new ObjectMetadata(uniqid()),
             [
-                'foo' => base64_encode('bar')
+                'foo' => base64_encode('bar'),
             ]
         );
 

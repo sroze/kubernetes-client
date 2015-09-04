@@ -15,6 +15,16 @@ class LoadBalancerIngress
     private $hostname;
 
     /**
+     * @param string $ip
+     * @param string $hostname
+     */
+    public function __construct($ip, $hostname = null)
+    {
+        $this->ip = $ip;
+        $this->hostname = $hostname;
+    }
+
+    /**
      * @return string
      */
     public function getIp()

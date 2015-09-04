@@ -68,7 +68,7 @@ class HttpServiceAccountRepository implements ServiceAccountRepository
     public function create(ServiceAccount $serviceAccount)
     {
         return $this->connector->post($this->namespaceClient->prefixPath('/serviceaccounts'), $serviceAccount, [
-            'class' => ServiceAccount::class
+            'class' => ServiceAccount::class,
         ]);
     }
 }

@@ -94,7 +94,7 @@ class NamespaceContext implements Context
      */
     public function theNamespaceShouldBeInTheList()
     {
-        $matchingNamespaces = array_filter($this->namespaceList->getNamespaces(), function(KubernetesNamespace $namespace) {
+        $matchingNamespaces = array_filter($this->namespaceList->getNamespaces(), function (KubernetesNamespace $namespace) {
             return $namespace->getMetadata()->getName() == $this->getNamespaceName();
         });
 

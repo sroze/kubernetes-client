@@ -47,9 +47,9 @@ class ServiceContext implements Context
     public function iCreateAService()
     {
         $specification = new ServiceSpecification([
-            'select-with' => 'a-label'
+            'select-with' => 'a-label',
         ], [
-            new ServicePort('web', 80, 'TCP')
+            new ServicePort('web', 80, 'TCP'),
         ]);
 
         $this->service = new Service(new ObjectMetadata('my-service'), $specification);
@@ -63,9 +63,9 @@ class ServiceContext implements Context
     {
         $specification = new ServiceSpecification([
             'select-with' => 'a-label',
-            'boolean' => false
+            'boolean' => false,
         ], [
-            new ServicePort('web', 80, 'TCP')
+            new ServicePort('web', 80, 'TCP'),
         ]);
 
         $this->service = new Service(new ObjectMetadata('my-service'), $specification);

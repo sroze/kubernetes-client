@@ -8,9 +8,6 @@ use Kubernetes\Client\Model\EnvironmentVariable;
 use Kubernetes\Client\Model\ObjectMetadata;
 use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodSpecification;
-use Kubernetes\Client\Model\Service;
-use Kubernetes\Client\Model\ServicePort;
-use Kubernetes\Client\Model\ServiceSpecification;
 
 class PodContext implements Context
 {
@@ -52,7 +49,7 @@ class PodContext implements Context
     public function iCreateAPod()
     {
         $specification = new PodSpecification([
-            new Container('foo', 'hello-world')
+            new Container('foo', 'hello-world'),
         ]);
 
         $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
@@ -70,7 +67,7 @@ class PodContext implements Context
         }
 
         $specification = new PodSpecification([
-            new Container('env-test', 'hello-world', $variables)
+            new Container('env-test', 'hello-world', $variables),
         ]);
 
         $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);

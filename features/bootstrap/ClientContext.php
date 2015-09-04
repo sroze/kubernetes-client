@@ -32,8 +32,8 @@ class ClientContext implements Context, SnippetAcceptingContext
 
         $httpClient = new GuzzleHttpClient(new GuzzleClient([
             'defaults' => [
-                'verify' => false
-            ]
+                'verify' => false,
+            ],
         ]), $baseUrl, $version);
 
         if ($username !== null) {

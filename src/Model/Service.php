@@ -22,11 +22,13 @@ class Service implements KubernetesObject
     /**
      * @param ObjectMetadata       $metadata
      * @param ServiceSpecification $specification
+     * @param ServiceStatus        $status
      */
-    public function __construct(ObjectMetadata $metadata, ServiceSpecification $specification = null)
+    public function __construct(ObjectMetadata $metadata, ServiceSpecification $specification = null, ServiceStatus $status = null)
     {
         $this->metadata = $metadata;
         $this->specification = $specification;
+        $this->status = $status;
     }
 
     /**
