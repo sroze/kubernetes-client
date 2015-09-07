@@ -10,3 +10,5 @@ Kubernetes\Client\Model\ContainerStatus:
             serialized_name: containerID
         state:
             type: Kubernetes\Client\Model\ContainerStatusState
+        ready:
+            type: boolean
