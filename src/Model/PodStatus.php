@@ -30,6 +30,22 @@ class PodStatus
     private $containerStatuses = [];
 
     /**
+     * @param string               $phase
+     * @param string               $hostIp
+     * @param string               $podIp
+     * @param PodStatusCondition[] $conditions
+     * @param ContainerStatus[]    $containerStatuses
+     */
+    public function __construct($phase, $hostIp, $podIp, array $conditions, array $containerStatuses)
+    {
+        $this->phase = $phase;
+        $this->hostIp = $hostIp;
+        $this->podIp = $podIp;
+        $this->conditions = $conditions;
+        $this->containerStatuses = $containerStatuses;
+    }
+
+    /**
      * @return string
      */
     public function getPhase()

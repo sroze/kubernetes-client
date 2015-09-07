@@ -22,11 +22,13 @@ class Pod implements KubernetesObject
     /**
      * @param ObjectMetadata   $metadata
      * @param PodSpecification $specification
+     * @param PodStatus        $status
      */
-    public function __construct(ObjectMetadata $metadata, PodSpecification $specification = null)
+    public function __construct(ObjectMetadata $metadata, PodSpecification $specification = null, PodStatus $status = null)
     {
         $this->metadata = $metadata;
         $this->specification = $specification;
+        $this->status = $status;
     }
 
     /**

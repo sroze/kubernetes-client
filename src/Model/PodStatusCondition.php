@@ -15,6 +15,16 @@ class PodStatusCondition
     private $status;
 
     /**
+     * @param string $type
+     * @param bool   $status
+     */
+    public function __construct($type, $status)
+    {
+        $this->type = $type;
+        $this->status = $status;
+    }
+
+    /**
      * @return string
      */
     public function getType()
