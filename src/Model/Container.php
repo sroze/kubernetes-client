@@ -32,6 +32,10 @@ class Container
      * @var VolumeMount[]
      */
     private $volumeMounts;
+    /**
+     * @var array
+     */
+    private $command;
 
     /**
      * @param string                $name
@@ -40,8 +44,9 @@ class Container
      * @param ContainerPort[]       $ports
      * @param VolumeMount[]         $volumeMounts
      * @param string                $pullPolicy
+     * @param array                 $command
      */
-    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS)
+    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null)
     {
         $this->name = $name;
         $this->image = $image;
@@ -49,6 +54,7 @@ class Container
         $this->ports = $ports;
         $this->volumeMounts = $volumeMounts;
         $this->pullPolicy = $pullPolicy;
+        $this->command = $command;
     }
 
     /**
@@ -97,5 +103,13 @@ class Container
     public function getVolumeMounts()
     {
         return $this->volumeMounts;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getCommand()
+    {
+        return $this->command;
     }
 }

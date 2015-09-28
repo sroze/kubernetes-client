@@ -15,3 +15,5 @@ Kubernetes\Client\Model\Container:
         volumeMounts:
             type: array<Kubernetes\Client\Model\VolumeMount>
             serialized_name: volumeMounts
+        command:
+            type: array<string>
