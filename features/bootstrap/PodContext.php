@@ -27,6 +27,11 @@ class PodContext implements Context
     private $pod;
 
     /**
+     * @var float
+     */
+    private $creationMicroTime;
+
+    /**
      * @BeforeScenario
      */
     public function gatherContexts(BeforeScenarioScope $scope)
@@ -40,7 +45,9 @@ class PodContext implements Context
      */
     public function deletePod()
     {
-        $this->getRepository()->delete($this->pod);
+        if (null !== $this->pod) {
+            $this->getRepository()->delete($this->pod);
+        }
     }
 
     /**
@@ -72,6 +79,50 @@ class PodContext implements Context
 
         $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
         $this->getRepository()->create($this->pod);
+    }
+
+    /**
+     * @When I create a pod with command :command
+     */
+    public function iCreateAPodWithCommand($command)
+    {
+        $specification = new PodSpecification(
+            [
+                new Container('foo', 'busybox', [], [], [], Container::PULL_POLICY_IF_NOT_PRESENT, ['sh', '-c', $command]),
+            ],
+            [],
+            PodSpecification::RESTART_POLICY_NEVER
+        );
+
+        $this->creationMicroTime = microtime(true);
+        $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
+        $this->getRepository()->create($this->pod);
+    }
+
+    /**
+     * @When I attach to the created pod
+     */
+    public function iAttachToTheCreatedPod()
+    {
+        $this->getRepository()->attach($this->pod, function($output) {
+            echo $output;
+        });
+    }
+
+    /**
+     * @Then it should wait at least :seconds seconds after creation
+     */
+    public function itShouldWaitAtLeastSeconds($seconds)
+    {
+        $createdSinceSeconds = microtime(true) - $this->creationMicroTime;
+
+        if ($createdSinceSeconds < $seconds) {
+            throw new \RuntimeException(sprintf(
+                'Expected to be at least %d seconds after creation but actually %lf',
+                $seconds,
+                $createdSinceSeconds
+            ));
+        }
     }
 
     /**

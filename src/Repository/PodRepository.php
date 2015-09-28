@@ -66,4 +66,10 @@ interface PodRepository
      * @return PodList
      */
     public function findByReplicationController(ReplicationController $replicationController);
+
+    /**
+     * @param Pod      $pod
+     * @param callable $callable
+     */
+    public function attach(Pod $pod, callable $callable);
 }

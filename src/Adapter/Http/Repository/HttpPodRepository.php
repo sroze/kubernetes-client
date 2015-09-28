@@ -6,18 +6,27 @@ use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\PodNotFound;
-use Kubernetes\Client\Exception\ReplicationControllerNotFound;
+use Kubernetes\Client\Model\ContainerStatus;
 use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodList;
+use Kubernetes\Client\Model\PodStatus;
 use Kubernetes\Client\Model\ReplicationController;
 use Kubernetes\Client\Repository\PodRepository;
 
 class HttpPodRepository implements PodRepository
 {
     /**
+     * Interval of the attach loop in case of using the "legacy" implementation.
+     *
+     * @var int
+     */
+    const ATTACH_LOOP_INTERVAL = 500;
+
+    /**
      * @var HttpConnector
      */
     private $connector;
+
     /**
      * @var HttpNamespaceClient
      */
@@ -92,7 +101,7 @@ class HttpPodRepository implements PodRepository
             ]);
         } catch (ClientError $e) {
             if ($e->getStatus()->getCode() === 404) {
-                throw new ReplicationControllerNotFound();
+                throw new PodNotFound();
             }
 
             throw $e;
@@ -107,7 +116,7 @@ class HttpPodRepository implements PodRepository
         try {
             $path = $this->namespaceClient->prefixPath(sprintf('/pods/%s', $pod->getMetadata()->getName()));
 
-            return $this->connector->delete($path, [
+            return $this->connector->delete($path, null, [
                 'class' => Pod::class,
             ]);
         } catch (ClientError $e) {
@@ -147,5 +156,79 @@ class HttpPodRepository implements PodRepository
         }
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attach(Pod $pod, callable $callable)
+    {
+        while ($this->isPending($pod)) {
+            usleep(self::ATTACH_LOOP_INTERVAL * 1000);
+        }
+
+        $logCursor = 0;
+        while (!$this->isTerminated($pod)) {
+            $logs = $this->getLogs($pod);
+            $incrementalLogs = substr($logs, $logCursor);
+
+            if (!empty($incrementalLogs)) {
+                $logCursor += strlen($incrementalLogs);
+
+                $callable($incrementalLogs);
+            }
+
+            usleep(self::ATTACH_LOOP_INTERVAL * 1000);
+        }
+    }
+
+    /**
+     * Get pod's logs.
+     *
+     * @param Pod $pod
+     *
+     * @return string
+     */
+    private function getLogs(Pod $pod)
+    {
+        $name = $pod->getMetadata()->getName();
+
+        return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/pods/%s/log', $name)));
+    }
+
+    /**
+     * Returns true if a pod is terminated.
+     *
+     * @param Pod $pod
+     *
+     * @return bool
+     */
+    private function isTerminated(Pod $pod)
+    {
+        $pod = $this->findOneByName($pod->getMetadata()->getName());
+
+        $containerStatuses = $pod->getStatus()->getContainerStatuses();
+        $terminatedContainers = array_filter($containerStatuses, function (ContainerStatus $containerStatus) {
+            return null != $containerStatus->getState()->getTerminated();
+        });
+
+        return count($terminatedContainers) == count($containerStatuses);
+    }
+
+    /**
+     * @param Pod $pod
+     *
+     * @return bool
+     *
+     * @throws ClientError
+     * @throws PodNotFound
+     */
+    private function isPending(Pod $pod)
+    {
+        $pod = $this->findOneByName($pod->getMetadata()->getName());
+
+        $podStatus = $pod->getStatus();
+
+        return $podStatus->getPhase() == PodStatus::PHASE_PENDING;
     }
 }

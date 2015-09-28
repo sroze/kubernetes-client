@@ -5,6 +5,11 @@ namespace Kubernetes\Client\Model;
 class PodStatus
 {
     /**
+     * Pending phase.
+     */
+    const PHASE_PENDING = 'Pending';
+
+    /**
      * @var string
      */
     private $phase;

@@ -12,7 +12,7 @@ class ContainerStatusState
     /**
      * @var ContainerStatusStateTerminated
      */
-    private $termination;
+    private $terminated;
 
     /**
      * @var ContainerStatusStateWaiting
@@ -30,9 +30,9 @@ class ContainerStatusState
     /**
      * @return ContainerStatusStateTerminated
      */
-    public function getTermination()
+    public function getTerminated()
     {
-        return $this->termination;
+        return $this->terminated;
     }
 
     /**

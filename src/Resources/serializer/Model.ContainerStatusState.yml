@@ -2,7 +2,7 @@ Kubernetes\Client\Model\ContainerStatusState:
     properties:
         running:
             type: Kubernetes\Client\Model\ContainerStatusStateRunning
-        termination:
+        terminated:
             type: Kubernetes\Client\Model\ContainerStatusStateTerminated
         waiting:
             type: Kubernetes\Client\Model\ContainerStatusStateWaiting

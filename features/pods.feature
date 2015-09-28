@@ -11,7 +11,6 @@ Feature:
     When I create a pod
     Then the pod should exists
 
-  @cleanNamespace
   @deletePod
   Scenario: I can create a pod with environment variables
     When I create a pod with the following environment variables:
@@ -23,3 +22,10 @@ Feature:
       | name | value |
       | foo  | bar   |
       | baz  | foo   |
+
+  @cleanNamespace
+  @focus
+  Scenario: I can attach to a container
+    When I create a pod with command "echo hello; sleep 2; echo step; sleep 2"
+    And I attach to the created pod
+    Then it should wait at least 4 seconds after creation
