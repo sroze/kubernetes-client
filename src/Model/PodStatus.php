@@ -8,6 +8,8 @@ class PodStatus
      * Pending phase.
      */
     const PHASE_PENDING = 'Pending';
+    const PHASE_SUCCEEDED = 'Succeeded';
+    const PHASE_FAILED = 'Failed';
 
     /**
      * @var string

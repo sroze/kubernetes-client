@@ -70,6 +70,8 @@ interface PodRepository
     /**
      * @param Pod      $pod
      * @param callable $callable
+     *
+     * @return Pod
      */
     public function attach(Pod $pod, callable $callable);
 }

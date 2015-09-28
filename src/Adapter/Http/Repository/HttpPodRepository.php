@@ -180,6 +180,8 @@ class HttpPodRepository implements PodRepository
 
             usleep(self::ATTACH_LOOP_INTERVAL * 1000);
         }
+
+        return $pod;
     }
 
     /**
