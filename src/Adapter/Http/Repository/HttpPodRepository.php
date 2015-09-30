@@ -169,19 +169,36 @@ class HttpPodRepository implements PodRepository
 
         $logCursor = 0;
         while (!$this->isTerminated($pod)) {
-            $logs = $this->getLogs($pod);
-            $incrementalLogs = substr($logs, $logCursor);
-
-            if (!empty($incrementalLogs)) {
-                $logCursor += strlen($incrementalLogs);
-
-                $callable($incrementalLogs);
-            }
+            $logCursor = $this->streamLogs($pod, $callable, $logCursor);
 
             usleep(self::ATTACH_LOOP_INTERVAL * 1000);
         }
 
+        $this->streamLogs($pod, $callable, $logCursor);
+
+        $pod = $this->findOneByName($pod->getMetadata()->getName());
+
         return $pod;
+    }
+
+    /**
+     * @param Pod $pod
+     * @param callable $callable
+     * @param int $cursor
+     * @return int
+     */
+    private function streamLogs(Pod $pod, callable $callable, $cursor)
+    {
+        $logs = $this->getLogs($pod);
+        $incrementalLogs = substr($logs, $cursor);
+
+        if (!empty($incrementalLogs)) {
+            $cursor += strlen($incrementalLogs);
+
+            $callable($incrementalLogs);
+        }
+
+        return $cursor;
     }
 
     /**

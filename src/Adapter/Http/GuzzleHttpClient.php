@@ -46,12 +46,15 @@ class GuzzleHttpClient implements HttpClient
         $url = $this->getUrlForPath($path);
         $response = $this->guzzleClient->$method($url, $this->prepareOptions($body, $options));
 
-        $body = $response->getBody();
-        if ($body->isSeekable()) {
-            $body->seek(0);
+        if ($body = $response->getBody()) {
+            if ($body->isSeekable()) {
+                $body->seek(0);
+            }
+
+            return $body->getContents();
         }
 
-        return $body->getContents();
+        return null;
     }
 
     /**
