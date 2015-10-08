@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\SecurityContext:
+    properties:
+        privileged:
+            type: boolean

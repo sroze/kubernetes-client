@@ -38,15 +38,21 @@ class Container
     private $command;
 
     /**
-     * @param string                $name
-     * @param string                $image
-     * @param EnvironmentVariable[] $environmentVariables
-     * @param ContainerPort[]       $ports
-     * @param VolumeMount[]         $volumeMounts
-     * @param string                $pullPolicy
-     * @param array                 $command
+     * @var SecurityContext
      */
-    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null)
+    private $securityContext;
+
+    /**
+     * @param string $name
+     * @param string $image
+     * @param EnvironmentVariable[] $environmentVariables
+     * @param ContainerPort[] $ports
+     * @param VolumeMount[] $volumeMounts
+     * @param string $pullPolicy
+     * @param array $command
+     * @param SecurityContext $securityContext
+     */
+    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, SecurityContext $securityContext = null)
     {
         $this->name = $name;
         $this->image = $image;
@@ -55,6 +61,7 @@ class Container
         $this->volumeMounts = $volumeMounts;
         $this->pullPolicy = $pullPolicy;
         $this->command = $command;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -111,5 +118,13 @@ class Container
     public function getCommand()
     {
         return $this->command;
+    }
+
+    /**
+     * @return SecurityContext
+     */
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
     }
 }

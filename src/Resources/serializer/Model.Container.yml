@@ -17,3 +17,6 @@ Kubernetes\Client\Model\Container:
             serialized_name: volumeMounts
         command:
             type: array<string>
+        securityContext:
+            type: Kubernetes\Client\Model\SecurityContext
+            serialized_name: securityContext
