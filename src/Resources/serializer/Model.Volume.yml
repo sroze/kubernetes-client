@@ -7,3 +7,6 @@ Kubernetes\Client\Model\Volume:
             serialized_name: emptyDir
         nfs:
             type: Kubernetes\Client\Model\Volume\NfsVolumeSource
+        hostPath:
+            type: Kubernetes\Client\Model\Volume\HostPathVolumeSource
+            serialized_name: hostPath

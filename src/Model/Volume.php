@@ -3,6 +3,7 @@
 namespace Kubernetes\Client\Model;
 
 use Kubernetes\Client\Model\Volume\EmptyDirVolumeSource;
+use Kubernetes\Client\Model\Volume\HostPathVolumeSource;
 use Kubernetes\Client\Model\Volume\NfsVolumeSource;
 
 class Volume
@@ -22,6 +23,14 @@ class Volume
      */
     private $nfs;
 
+    /**
+     * @var HostPathVolumeSource
+     */
+    private $hostPath;
+
+    /**
+     * @param string $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
@@ -41,5 +50,13 @@ class Volume
     public function setNfs($nfs)
     {
         $this->nfs = $nfs;
+    }
+
+    /**
+     * @param HostPathVolumeSource $hostPath
+     */
+    public function setHostPath($hostPath)
+    {
+        $this->hostPath = $hostPath;
     }
 }
