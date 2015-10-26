@@ -18,7 +18,7 @@ class SecurityContext
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPrivileged()
     {

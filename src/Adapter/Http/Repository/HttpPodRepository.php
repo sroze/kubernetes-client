@@ -182,9 +182,10 @@ class HttpPodRepository implements PodRepository
     }
 
     /**
-     * @param Pod $pod
+     * @param Pod      $pod
      * @param callable $callable
-     * @param int $cursor
+     * @param int      $cursor
+     *
      * @return int
      */
     private function streamLogs(Pod $pod, callable $callable, $cursor)

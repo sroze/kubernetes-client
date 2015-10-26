@@ -1,0 +1,7 @@
+Kubernetes\Client\Model\PersistentVolumeClaimSpecification:
+    properties:
+        accessModes:
+            type: array<string>
+            serialized_name: accessModes
+        resources:
+            type: Kubernetes\Client\Model\ResourceRequirements

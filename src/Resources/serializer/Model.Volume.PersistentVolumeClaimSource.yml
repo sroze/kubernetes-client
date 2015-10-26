@@ -1,0 +1,5 @@
+Kubernetes\Client\Model\Volume\PersistentVolumeClaimSource:
+    properties:
+        claimName:
+            type: string
+            serialized_name: claimName

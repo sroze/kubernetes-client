@@ -1,0 +1,14 @@
+Kubernetes\Client\Model\PersistentVolumeClaim:
+    virtual_properties:
+        getKind:
+            serialized_name: Kind
+            type: string
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        specification:
+            type: Kubernetes\Client\Model\PersistentVolumeClaimSpecification
+            serialized_name: spec
+        status:
+            type: Kubernetes\Client\Model\PersistentVolumeClaimStatus
+            groups: [view]

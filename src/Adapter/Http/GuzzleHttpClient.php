@@ -54,7 +54,7 @@ class GuzzleHttpClient implements HttpClient
             return $body->getContents();
         }
 
-        return null;
+        return;
     }
 
     /**

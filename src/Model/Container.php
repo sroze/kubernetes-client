@@ -43,14 +43,14 @@ class Container
     private $securityContext;
 
     /**
-     * @param string $name
-     * @param string $image
+     * @param string                $name
+     * @param string                $image
      * @param EnvironmentVariable[] $environmentVariables
-     * @param ContainerPort[] $ports
-     * @param VolumeMount[] $volumeMounts
-     * @param string $pullPolicy
-     * @param array $command
-     * @param SecurityContext $securityContext
+     * @param ContainerPort[]       $ports
+     * @param VolumeMount[]         $volumeMounts
+     * @param string                $pullPolicy
+     * @param array                 $command
+     * @param SecurityContext       $securityContext
      */
     public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, SecurityContext $securityContext = null)
     {
