@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\ResourceRequirementsRequests:
+    properties:
+        storage:
+            type: string

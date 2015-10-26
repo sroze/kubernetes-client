@@ -5,6 +5,7 @@ namespace Kubernetes\Client\Model;
 use Kubernetes\Client\Model\Volume\EmptyDirVolumeSource;
 use Kubernetes\Client\Model\Volume\HostPathVolumeSource;
 use Kubernetes\Client\Model\Volume\NfsVolumeSource;
+use Kubernetes\Client\Model\Volume\PersistentVolumeClaimSource;
 
 class Volume
 {
@@ -27,6 +28,11 @@ class Volume
      * @var HostPathVolumeSource
      */
     private $hostPath;
+
+    /**
+     * @var PersistentVolumeClaimSource
+     */
+    private $persistentVolumeClaim;
 
     /**
      * @param string $name
@@ -58,5 +64,13 @@ class Volume
     public function setHostPath($hostPath)
     {
         $this->hostPath = $hostPath;
+    }
+
+    /**
+     * @param PersistentVolumeClaimSource $persistentVolumeClaim
+     */
+    public function setPersistentVolumeClaim($persistentVolumeClaim)
+    {
+        $this->persistentVolumeClaim = $persistentVolumeClaim;
     }
 }

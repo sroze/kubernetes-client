@@ -24,7 +24,6 @@ Feature:
       | baz  | foo   |
 
   @cleanNamespace
-  @focus
   Scenario: I can attach to a container
     When I create a pod with command "echo hello; sleep 2; echo step; sleep 2"
     And I attach to the created pod

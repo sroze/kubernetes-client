@@ -8,6 +8,8 @@ use Kubernetes\Client\Model\EnvironmentVariable;
 use Kubernetes\Client\Model\ObjectMetadata;
 use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodSpecification;
+use Kubernetes\Client\Model\Volume;
+use Kubernetes\Client\Model\VolumeMount;
 
 class PodContext implements Context
 {
@@ -107,6 +109,31 @@ class PodContext implements Context
         $this->getRepository()->attach($this->pod, function($output) {
             echo $output;
         });
+    }
+
+    /**
+     * @When I create a pod with the volume claim :name mounted at :mountPath
+     */
+    public function iCreateAPodWithTheVolumeClaimMountedAt($name, $mountPath)
+    {
+        $volume = new Volume($name);
+        $volume->setPersistentVolumeClaim(new Volume\PersistentVolumeClaimSource($name));
+
+        $specification = new PodSpecification(
+            [
+                new Container('foo', 'busybox', [], [], [
+                    new VolumeMount($name, $mountPath)
+                ]),
+            ],
+            [
+                $volume
+            ],
+            PodSpecification::RESTART_POLICY_NEVER
+        );
+
+        $this->creationMicroTime = microtime(true);
+        $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
+        $this->getRepository()->create($this->pod);
     }
 
     /**

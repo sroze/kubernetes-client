@@ -10,3 +10,6 @@ Kubernetes\Client\Model\Volume:
         hostPath:
             type: Kubernetes\Client\Model\Volume\HostPathVolumeSource
             serialized_name: hostPath
+        persistentVolumeClaim:
+            type: Kubernetes\Client\Model\Volume\PersistentVolumeClaimSource
+            serialized_name: persistentVolumeClaim

@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client;
 
+use Kubernetes\Client\Repository\PersistentVolumeClaimRepository;
 use Kubernetes\Client\Repository\PodRepository;
 use Kubernetes\Client\Repository\ReplicationControllerRepository;
 use Kubernetes\Client\Repository\SecretRepository;
@@ -34,4 +35,9 @@ interface NamespaceClient
      * @return ServiceAccountRepository
      */
     public function getServiceAccountRepository();
+
+    /**
+     * @return PersistentVolumeClaimRepository
+     */
+    public function getPersistentVolumeClaimRepository();
 }
