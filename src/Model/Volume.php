@@ -73,4 +73,44 @@ class Volume
     {
         $this->persistentVolumeClaim = $persistentVolumeClaim;
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return EmptyDirVolumeSource
+     */
+    public function getEmptyDir()
+    {
+        return $this->emptyDir;
+    }
+
+    /**
+     * @return NfsVolumeSource
+     */
+    public function getNfs()
+    {
+        return $this->nfs;
+    }
+
+    /**
+     * @return HostPathVolumeSource
+     */
+    public function getHostPath()
+    {
+        return $this->hostPath;
+    }
+
+    /**
+     * @return PersistentVolumeClaimSource
+     */
+    public function getPersistentVolumeClaim()
+    {
+        return $this->persistentVolumeClaim;
+    }
 }

@@ -28,6 +28,12 @@ class PodSpecification
      */
     private $dnsPolicy;
 
+    /**
+     * @param Container[] $containers
+     * @param Volume[]    $volumes
+     * @param string      $restartPolicy
+     * @param string      $dnsPolicy
+     */
     public function __construct(array $containers, array $volumes = [], $restartPolicy = self::RESTART_POLICY_ALWAYS, $dnsPolicy = self::DNS_POLICY_CLUSTER_FIRST)
     {
         $this->containers = $containers;
@@ -42,5 +48,13 @@ class PodSpecification
     public function getContainers()
     {
         return $this->containers;
+    }
+
+    /**
+     * @return Volume[]
+     */
+    public function getVolumes()
+    {
+        return $this->volumes;
     }
 }
