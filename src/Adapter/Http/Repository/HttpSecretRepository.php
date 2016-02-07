@@ -44,6 +44,18 @@ class HttpSecretRepository implements SecretRepository
     /**
      * {@inheritdoc}
      */
+    public function update(Secret $secret)
+    {
+        $path = sprintf('/secrets/%s', $secret->getMetadata()->getName());
+
+        return $this->connector->patch($this->namespaceClient->prefixPath($path), $secret, [
+            'class' => Secret::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByName($name)
     {
         try {
