@@ -35,4 +35,13 @@ interface SecretRepository
      * @return bool
      */
     public function exists($name);
+
+    /**
+     * Updates the given secret.
+     *
+     * @param Secret $secret
+     *
+     * @return Secret
+     */
+    public function update(Secret $secret);
 }
