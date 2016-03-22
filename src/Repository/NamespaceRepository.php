@@ -3,6 +3,7 @@
 namespace Kubernetes\Client\Repository;
 
 use Kubernetes\Client\Exception\NamespaceNotFound;
+use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\NamespaceList;
 
@@ -12,6 +13,13 @@ interface NamespaceRepository
      * @return NamespaceList
      */
     public function findAll();
+
+    /**
+     * @param KeyValueObjectList $labels
+     *
+     * @return KubernetesNamespace[]
+     */
+    public function findByLabels(KeyValueObjectList $labels);
 
     /**
      * @param string $name

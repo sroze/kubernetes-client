@@ -44,4 +44,25 @@ class HttpAdapter implements AdapterInterface
     {
         return new HttpNamespaceRepository($this->connector);
     }
+
+    /**
+     * @param array|string $selector
+     *
+     * @return string
+     */
+    public static function createLabelSelector($selector)
+    {
+        if (is_array($selector)) {
+            $matchingList = [];
+            foreach ($selector as $key => $value) {
+                $matchingList[] = $key.'='.$value;
+            }
+
+            $selector = implode(',', $matchingList);
+        } elseif (!is_string($selector)) {
+            throw new \RuntimeException('Selector do not have a valid type');
+        }
+
+        return $selector;
+    }
 }

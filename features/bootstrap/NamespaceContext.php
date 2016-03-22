@@ -3,7 +3,9 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Kubernetes\Client\Exception\NamespaceNotFound;
+use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\KubernetesNamespace;
+use Kubernetes\Client\Model\Label;
 use Kubernetes\Client\Model\NamespaceList;
 use Kubernetes\Client\Model\ObjectMetadata;
 
@@ -30,6 +32,22 @@ class NamespaceContext implements Context
     private static $isDeleted = false;
 
     /**
+     * @Transform :labels
+     */
+    public function castLabelsToKeyValueObjectList($string)
+    {
+        $labels = new KeyValueObjectList();
+
+        foreach (explode(',', $string) as $label) {
+            list($key, $value) = explode('=', $label);
+
+            $labels->add(new Label($key, $value));
+        }
+
+        return $labels;
+    }
+
+    /**
      * @BeforeScenario
      */
     public function gatherContexts(BeforeScenarioScope $scope)
@@ -52,12 +70,9 @@ class NamespaceContext implements Context
      */
     public function iSendARequestCreationForTheNamespace($name)
     {
-        self::$namespace = new KubernetesNamespace(new ObjectMetadata($name));
-        self::$isDeleted = false;
+        $namespace = new KubernetesNamespace(new ObjectMetadata($name));
 
-        $this->getRepository()->create(
-            self::$namespace
-        );
+        $this->createNamespace($namespace);
     }
 
     /**
@@ -74,13 +89,31 @@ class NamespaceContext implements Context
     }
 
     /**
+     * @Given I have a namespace
+     */
+    public function iHaveANamespace()
+    {
+        $this->iHaveANamedNamespace(uniqid());
+    }
+
+    /**
      * @Given I have a namespace :name
      */
-    public function iHaveANamespace($name)
+    public function iHaveANamedNamespace($name)
     {
         if (null == self::$namespace || self::$isDeleted) {
             $this->iSendARequestCreationForTheNamespace($name);
         }
+    }
+
+    /**
+     * @Given I have a namespace :name with the labels :labels
+     */
+    public function iHaveANamespaceWithTheLabels($name, KeyValueObjectList $labels)
+    {
+        $namespace = new KubernetesNamespace(new ObjectMetadata($name, $labels));
+
+        $this->createNamespace($namespace);
     }
 
     /**
@@ -89,6 +122,14 @@ class NamespaceContext implements Context
     public function iGetTheListOfNamespaces()
     {
         $this->namespaceList = $this->getRepository()->findAll();
+    }
+
+    /**
+     * @When I get the list of namespaces matching the labels :labels
+     */
+    public function iGetTheListOfNamespacesMatchingTheLabels(KeyValueObjectList $labels)
+    {
+        $this->namespaceList = $this->getRepository()->findByLabels($labels);
     }
 
     /**
@@ -103,6 +144,23 @@ class NamespaceContext implements Context
         if (0 == count($matchingNamespaces)) {
             throw new \RuntimeException(sprintf(
                 'Namespace "%s" not found in list',
+                $name
+            ));
+        }
+    }
+
+    /**
+     * @Then the namespace :name should not be in the list
+     */
+    public function theNamespaceShouldNotBeInTheList($name)
+    {
+        $matchingNamespaces = array_filter($this->namespaceList->getNamespaces(), function (KubernetesNamespace $namespace) use ($name) {
+            return $namespace->getMetadata()->getName() == $name;
+        });
+
+        if (0 != count($matchingNamespaces)) {
+            throw new \RuntimeException(sprintf(
+                'Namespace "%s" found in list',
                 $name
             ));
         }
@@ -165,5 +223,18 @@ class NamespaceContext implements Context
     public function getNamespace()
     {
         return self::$namespace;
+    }
+
+    /**
+     * @param $namespace
+     */
+    private function createNamespace($namespace)
+    {
+        self::$namespace = $namespace;
+        self::$isDeleted = false;
+
+        $this->getRepository()->create(
+            self::$namespace
+        );
     }
 }
