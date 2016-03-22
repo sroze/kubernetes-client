@@ -2,8 +2,10 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
+use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Exception\NamespaceNotFound;
+use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\NamespaceList;
 use Kubernetes\Client\Repository\NamespaceRepository;
@@ -29,6 +31,18 @@ class HttpNamespaceRepository implements NamespaceRepository
     public function findAll()
     {
         return $this->connector->get('/namespaces', [
+            'class' => NamespaceList::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByLabels(KeyValueObjectList $labels)
+    {
+        return $this->connector->get('/namespaces?'.http_build_query([
+            'labelSelector' => HttpAdapter::createLabelSelector($labels->toAssociativeArray()),
+        ]), [
             'class' => NamespaceList::class,
         ]);
     }

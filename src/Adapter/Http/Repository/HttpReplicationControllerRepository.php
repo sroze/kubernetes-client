@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
+use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
@@ -140,7 +141,7 @@ class HttpReplicationControllerRepository implements ReplicationControllerReposi
      */
     public function findByLabels(array $labels)
     {
-        $labelSelector = $this->namespaceClient->createLabelSelector($labels);
+        $labelSelector = HttpAdapter::createLabelSelector($labels);
         $path = $this->namespaceClient->prefixPath('/replicationcontrollers?labelSelector='.$labelSelector);
 
         /** @var ReplicationControllerList $found */

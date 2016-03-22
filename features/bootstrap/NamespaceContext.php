@@ -3,7 +3,9 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Kubernetes\Client\Exception\NamespaceNotFound;
+use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\KubernetesNamespace;
+use Kubernetes\Client\Model\Label;
 use Kubernetes\Client\Model\NamespaceList;
 use Kubernetes\Client\Model\ObjectMetadata;
 
@@ -30,6 +32,22 @@ class NamespaceContext implements Context
     private static $isDeleted = false;
 
     /**
+     * @Transform :labels
+     */
+    public function castLabelsToKeyValueObjectList($string)
+    {
+        $labels = new KeyValueObjectList();
+
+        foreach (explode(',', $string) as $label) {
+            list($key, $value) = explode('=', $label);
+
+            $labels->add(new Label($key, $value));
+        }
+
+        return $labels;
+    }
+
+    /**
      * @BeforeScenario
      */
     public function gatherContexts(BeforeScenarioScope $scope)
@@ -42,31 +60,30 @@ class NamespaceContext implements Context
      */
     public function cleanNamespace()
     {
-        $this->iDeleteTheNamespace();
+        if (self::$namespace !== null) {
+            $this->iDeleteTheNamespace(self::$namespace->getMetadata()->getName());
+        }
     }
 
     /**
-     * @When I send a request creation for a namespace
+     * @When I send a request creation for the namespace :name
      */
-    public function iSendARequestCreationForANamespace()
+    public function iSendARequestCreationForTheNamespace($name)
     {
-        self::$namespace = new KubernetesNamespace(new ObjectMetadata(uniqid()));
-        self::$isDeleted = false;
+        $namespace = new KubernetesNamespace(new ObjectMetadata($name));
 
-        $this->getRepository()->create(
-            self::$namespace
-        );
+        $this->createNamespace($namespace);
     }
 
     /**
-     * @Then the namespace should exists
+     * @Then the namespace :name should exists
      */
-    public function theNamespaceShouldExists()
+    public function theNamespaceShouldExists($name)
     {
-        if (!$this->getRepository()->exists($this->getNamespaceName())) {
+        if (!$this->getRepository()->exists($name)) {
             throw new \RuntimeException(sprintf(
                 'The namespace "%s" do not exists',
-                $this->getNamespaceName()
+                $name
             ));
         }
     }
@@ -76,9 +93,27 @@ class NamespaceContext implements Context
      */
     public function iHaveANamespace()
     {
+        $this->iHaveANamedNamespace(uniqid());
+    }
+
+    /**
+     * @Given I have a namespace :name
+     */
+    public function iHaveANamedNamespace($name)
+    {
         if (null == self::$namespace || self::$isDeleted) {
-            $this->iSendARequestCreationForANamespace();
+            $this->iSendARequestCreationForTheNamespace($name);
         }
+    }
+
+    /**
+     * @Given I have a namespace :name with the labels :labels
+     */
+    public function iHaveANamespaceWithTheLabels($name, KeyValueObjectList $labels)
+    {
+        $namespace = new KubernetesNamespace(new ObjectMetadata($name, $labels));
+
+        $this->createNamespace($namespace);
     }
 
     /**
@@ -90,71 +125,88 @@ class NamespaceContext implements Context
     }
 
     /**
-     * @Then the namespace should be in the list
+     * @When I get the list of namespaces matching the labels :labels
      */
-    public function theNamespaceShouldBeInTheList()
+    public function iGetTheListOfNamespacesMatchingTheLabels(KeyValueObjectList $labels)
     {
-        $matchingNamespaces = array_filter($this->namespaceList->getNamespaces(), function (KubernetesNamespace $namespace) {
-            return $namespace->getMetadata()->getName() == $this->getNamespaceName();
+        $this->namespaceList = $this->getRepository()->findByLabels($labels);
+    }
+
+    /**
+     * @Then the namespace :name should be in the list
+     */
+    public function theNamespaceShouldBeInTheList($name)
+    {
+        $matchingNamespaces = array_filter($this->namespaceList->getNamespaces(), function (KubernetesNamespace $namespace) use ($name) {
+            return $namespace->getMetadata()->getName() == $name;
         });
 
         if (0 == count($matchingNamespaces)) {
             throw new \RuntimeException(sprintf(
                 'Namespace "%s" not found in list',
-                $this->getNamespaceName()
+                $name
             ));
         }
     }
 
     /**
-     * @When I delete the namespace
+     * @Then the namespace :name should not be in the list
      */
-    public function iDeleteTheNamespace()
+    public function theNamespaceShouldNotBeInTheList($name)
     {
-        $this->getRepository()->delete($this->getNamespace());
+        $matchingNamespaces = array_filter($this->namespaceList->getNamespaces(), function (KubernetesNamespace $namespace) use ($name) {
+            return $namespace->getMetadata()->getName() == $name;
+        });
+
+        if (0 != count($matchingNamespaces)) {
+            throw new \RuntimeException(sprintf(
+                'Namespace "%s" found in list',
+                $name
+            ));
+        }
+    }
+
+    /**
+     * @When I delete the namespace :name
+     */
+    public function iDeleteTheNamespace($name)
+    {
+        $this->getRepository()->delete(new KubernetesNamespace(new ObjectMetadata($name)));
 
         self::$isDeleted = true;
     }
 
     /**
-     * @Then the namespace should not exists
+     * @Then the namespace :name should not exists
      */
-    public function theNamespaceShouldNotExists()
+    public function theNamespaceShouldNotExists($name)
     {
-        if ($this->getRepository()->exists($this->getNamespaceName())) {
+        if ($this->getRepository()->exists($name)) {
             throw new \RuntimeException(sprintf(
                 'The namespace "%s" exists',
-                $this->getNamespaceName()
+                $name
             ));
         }
     }
 
     /**
-     * @Then the namespace should not exists or be terminating
+     * @Then the namespace :name should not exists or be terminating
      */
-    public function theNamespaceShouldNotExistsOrBeTerminating()
+    public function theNamespaceShouldNotExistsOrBeTerminating($name)
     {
         try {
-            $namespace = $this->getRepository()->findOneByName($this->getNamespaceName());
+            $namespace = $this->getRepository()->findOneByName($name);
             $statusPhase = $namespace->getStatus()->getPhase();
 
             if (strtolower($statusPhase) !== 'terminating') {
                 throw new \RuntimeException(sprintf(
                     'Found namespace "%s" is status "%s" instead of terminating',
-                    $this->getNamespaceName(),
+                    $name,
                     $statusPhase
                 ));
             }
         } catch (NamespaceNotFound $e) {
         }
-    }
-
-    /**
-     * @return string
-     */
-    private function getNamespaceName()
-    {
-        return $this->getNamespace()->getMetadata()->getName();
     }
 
     /**
@@ -171,5 +223,18 @@ class NamespaceContext implements Context
     public function getNamespace()
     {
         return self::$namespace;
+    }
+
+    /**
+     * @param $namespace
+     */
+    private function createNamespace($namespace)
+    {
+        self::$namespace = $namespace;
+        self::$isDeleted = false;
+
+        $this->getRepository()->create(
+            self::$namespace
+        );
     }
 }

@@ -89,25 +89,4 @@ class HttpNamespaceClient implements NamespaceClient
     {
         return sprintf('/namespaces/%s%s', $this->namespace->getMetadata()->getName(), $path);
     }
-
-    /**
-     * @param array|string $selector
-     *
-     * @return string
-     */
-    public function createLabelSelector($selector)
-    {
-        if (is_array($selector)) {
-            $matchingList = [];
-            foreach ($selector as $key => $value) {
-                $matchingList[] = $key.'='.$value;
-            }
-
-            $selector = implode(',', $matchingList);
-        } elseif (!is_string($selector)) {
-            throw new \RuntimeException('Selector do not have a valid type');
-        }
-
-        return $selector;
-    }
 }

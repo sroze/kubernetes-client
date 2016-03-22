@@ -2,16 +2,28 @@ Feature:
   In order to create isolated environments
   I want to manage the Kubernetes namespaces
 
-  Scenario:
-    When I send a request creation for a namespace
-    Then the namespace should exists
+  Scenario: Create a namespace
+    When I send a request creation for the namespace "foo"
+    Then the namespace "foo" should exists
 
-  Scenario:
-    Given I have a namespace
+  Scenario: List a namespace
+    Given I have a namespace "foo"
     When I get the list of namespaces
-    Then the namespace should be in the list
+    Then the namespace "foo" should be in the list
 
-  Scenario:
-    Given I have a namespace
-    When I delete the namespace
-    Then the namespace should not exists or be terminating
+  Scenario: Delete a namespace
+    Given I have a namespace "foo"
+    When I delete the namespace "foo"
+    Then the namespace "foo" should not exists or be terminating
+
+  @cleanNamespace
+  Scenario: List namespace with matching label
+    Given I have a namespace "my-bar-namespace" with the labels "bar=baz"
+    When I get the list of namespaces matching the labels "bar=baz"
+    Then the namespace "my-bar-namespace" should be in the list
+
+  @cleanNamespace
+  Scenario: List namespace with non-matching label
+    Given I have a namespace "my-baz-namespace" with the labels "bar=baz"
+    When I get the list of namespaces matching the labels "bar=bar"
+    Then the namespace "my-baz-namespace" should not be in the list

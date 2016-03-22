@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
+use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
@@ -58,7 +59,7 @@ class HttpPodRepository implements PodRepository
      */
     public function findByLabels(array $labels)
     {
-        $labelSelector = $this->namespaceClient->createLabelSelector($labels);
+        $labelSelector = HttpAdapter::createLabelSelector($labels);
         $path = $this->namespaceClient->prefixPath('/pods?labelSelector='.$labelSelector);
 
         return $this->connector->get($path, [
@@ -134,7 +135,7 @@ class HttpPodRepository implements PodRepository
     public function findByReplicationController(ReplicationController $replicationController)
     {
         $selector = $replicationController->getSpecification()->getSelector();
-        $labelSelector = $this->namespaceClient->createLabelSelector($selector);
+        $labelSelector = HttpAdapter::createLabelSelector($selector);
 
         $path = '/pods?labelSelector='.urlencode($labelSelector);
 
