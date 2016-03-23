@@ -1,5 +1,7 @@
 # Kubernetes client
 
+[![Build Status](https://travis-ci.org/sroze/kubernetes-client.svg?branch=master)](https://travis-ci.org/sroze/kubernetes-client)
+
 A library that provide a client for the Kubernetes API client.
 
 ## Getting started
