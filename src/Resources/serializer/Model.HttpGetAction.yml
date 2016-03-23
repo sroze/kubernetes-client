@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\HttpGetAction:
+    properties:
+        path:
+            type: string
+        port:
+            type: int
+        host:
+            type: string
+        scheme:
+            type: string

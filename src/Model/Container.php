@@ -48,17 +48,29 @@ class Container
     private $resources;
 
     /**
-     * @param string $name
-     * @param string $image
-     * @param EnvironmentVariable[] $environmentVariables
-     * @param ContainerPort[] $ports
-     * @param VolumeMount[] $volumeMounts
-     * @param string $pullPolicy
-     * @param array $command
-     * @param SecurityContext $securityContext
-     * @param ResourceRequirements $resources
+     * @var Probe
      */
-    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, SecurityContext $securityContext = null, ResourceRequirements $resources = null)
+    private $livenessProbe;
+
+    /**
+     * @var Probe
+     */
+    private $readinessProbe;
+
+    /**
+     * @param string                $name
+     * @param string                $image
+     * @param EnvironmentVariable[] $environmentVariables
+     * @param ContainerPort[]       $ports
+     * @param VolumeMount[]         $volumeMounts
+     * @param string                $pullPolicy
+     * @param array                 $command
+     * @param SecurityContext       $securityContext
+     * @param ResourceRequirements  $resources
+     * @param Probe                 $livenessProbe
+     * @param Probe                 $readinessProbe
+     */
+    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, SecurityContext $securityContext = null, ResourceRequirements $resources = null, Probe $livenessProbe = null, Probe $readinessProbe = null)
     {
         $this->name = $name;
         $this->image = $image;
@@ -69,6 +81,8 @@ class Container
         $this->command = $command;
         $this->securityContext = $securityContext;
         $this->resources = $resources;
+        $this->livenessProbe = $livenessProbe;
+        $this->readinessProbe = $readinessProbe;
     }
 
     /**
@@ -141,5 +155,21 @@ class Container
     public function getResources()
     {
         return $this->resources;
+    }
+
+    /**
+     * @return Probe
+     */
+    public function getLivenessProbe()
+    {
+        return $this->livenessProbe;
+    }
+
+    /**
+     * @return Probe
+     */
+    public function getReadinessProbe()
+    {
+        return $this->readinessProbe;
     }
 }

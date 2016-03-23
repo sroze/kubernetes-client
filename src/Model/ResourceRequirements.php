@@ -16,7 +16,7 @@ class ResourceRequirements
 
     /**
      * @param ResourceRequirementsRequests $requests
-     * @param ResourceLimits $limits
+     * @param ResourceLimits               $limits
      */
     public function __construct(ResourceRequirementsRequests $requests = null, ResourceLimits $limits = null)
     {

@@ -1,0 +1,25 @@
+Kubernetes\Client\Model\Probe:
+    properties:
+        exec:
+            type: Kubernetes\Client\Model\ExecAction
+        httpGet:
+            type: Kubernetes\Client\Model\HttpGetAction
+            serialized_name: httpGet
+        tcpSocket:
+            type: Kubernetes\Client\Model\TcpSocketAction
+            serialized_name: tcpSocket
+        initialDelaySeconds:
+            type: integer
+            serialized_name: initialDelaySeconds
+        timeoutSeconds:
+            type: integer
+            serialized_name: timeoutSeconds
+        periodSeconds:
+            type: integer
+            serialized_name: periodSeconds
+        successThreshold:
+            type: integer
+            serialized_name: successThreshold
+        failureThreshold:
+            type: integer
+            serialized_name: failureThreshold
