@@ -64,7 +64,7 @@ class HttpNamespaceRepository implements NamespaceRepository
     public function findOneByName($name)
     {
         try {
-            return $this->connector->get('/namespaces/' . $name, [
+            return $this->connector->get('/namespaces/'.$name, [
                 'class' => KubernetesNamespace::class,
             ]);
         } catch (ClientError $e) {

@@ -32,12 +32,12 @@ class SecretContext implements Context
     }
 
     /**
-     * @When I create a secret
+     * @When I create a secret :name
      */
-    public function iCreateASecret()
+    public function iCreateASecret($name)
     {
         $this->secret = new Secret(
-            new ObjectMetadata(uniqid()),
+            new ObjectMetadata($name),
             [
                 'foo' => base64_encode('bar'),
             ]
@@ -47,16 +47,14 @@ class SecretContext implements Context
     }
 
     /**
-     * @Then the secret should exists
+     * @Then the secret :name should exists
      */
-    public function theSecretShouldExists()
+    public function theSecretShouldExists($name)
     {
-        $secretName = $this->secret->getMetadata()->getName();
-
-        if (!$this->getRepository()->exists($secretName)) {
+        if (!$this->getRepository()->exists($name)) {
             throw new \RuntimeException(sprintf(
                 'The secret "%s" do not exists',
-                $secretName
+                $name
             ));
         }
     }

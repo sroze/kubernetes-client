@@ -42,9 +42,9 @@ class ServiceContext implements Context
     }
 
     /**
-     * @When I create a service
+     * @When I create a service :name
      */
-    public function iCreateAService()
+    public function iCreateAService($name)
     {
         $specification = new ServiceSpecification([
             'select-with' => 'a-label',
@@ -52,14 +52,14 @@ class ServiceContext implements Context
             new ServicePort('web', 80, 'TCP'),
         ]);
 
-        $this->service = new Service(new ObjectMetadata('my-service'), $specification);
+        $this->service = new Service(new ObjectMetadata($name), $specification);
         $this->getRepository()->create($this->service);
     }
 
     /**
-     * @When I create a service with some non-string values in selector
+     * @When I create a service :name with some non-string values in selector
      */
-    public function iCreateAServiceWithSomeNonStringValuesInSelector()
+    public function iCreateAServiceWithSomeNonStringValuesInSelector($name)
     {
         $specification = new ServiceSpecification([
             'select-with' => 'a-label',
@@ -68,21 +68,19 @@ class ServiceContext implements Context
             new ServicePort('web', 80, 'TCP'),
         ]);
 
-        $this->service = new Service(new ObjectMetadata('my-service'), $specification);
+        $this->service = new Service(new ObjectMetadata($name), $specification);
         $this->getRepository()->create($this->service);
     }
 
     /**
-     * @Then the service should exists
+     * @Then the service :name should exists
      */
-    public function theServiceShouldExists()
+    public function theServiceShouldExists($name)
     {
-        $serviceName = $this->service->getMetadata()->getName();
-
-        if (!$this->getRepository()->exists($serviceName)) {
+        if (!$this->getRepository()->exists($name)) {
             throw new \RuntimeException(sprintf(
                 'The service "%s" do not exists',
-                $serviceName
+                $name
             ));
         }
     }
