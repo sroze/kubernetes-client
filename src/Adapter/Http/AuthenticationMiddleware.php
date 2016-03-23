@@ -12,7 +12,7 @@ class AuthenticationMiddleware implements HttpClient
     /**
      * @var string
      */
-    private $username;
+    private $usernameOrToken;
 
     /**
      * @var string
@@ -21,13 +21,13 @@ class AuthenticationMiddleware implements HttpClient
 
     /**
      * @param HttpClient $httpClient
-     * @param string     $username
+     * @param string     $usernameOrToken
      * @param string     $password
      */
-    public function __construct(HttpClient $httpClient, $username, $password)
+    public function __construct(HttpClient $httpClient, $usernameOrToken, $password = null)
     {
         $this->httpClient = $httpClient;
-        $this->username = $username;
+        $this->usernameOrToken = $usernameOrToken;
         $this->password = $password;
     }
 
@@ -36,13 +36,37 @@ class AuthenticationMiddleware implements HttpClient
      */
     public function request($method, $path, $body = null, array $options = [])
     {
-        $basicAuthorizationString = base64_encode(sprintf('%s:%s', $this->username, $this->password));
+        $authorizationHeader = $this->isTokenAuthentication() ? $this->getTokenAuthorizationString() : $this->getBasicAuthorizationString();
         $options = array_merge_recursive([
             'headers' => [
-                'Authorization' => 'Basic '.$basicAuthorizationString,
+                'Authorization' => $authorizationHeader,
             ],
         ], $options);
 
         return $this->httpClient->request($method, $path, $body, $options);
+    }
+
+    /**
+     * @return string
+     */
+    private function getBasicAuthorizationString()
+    {
+        return 'Basic '.base64_encode(sprintf('%s:%s', $this->usernameOrToken, $this->password));
+    }
+
+    /**
+     * @return string
+     */
+    private function getTokenAuthorizationString()
+    {
+        return 'Bearer '.$this->usernameOrToken;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isTokenAuthentication()
+    {
+        return null === $this->password;
     }
 }

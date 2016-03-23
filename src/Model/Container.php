@@ -93,7 +93,7 @@ class Container
      */
     public function getEnvironmentVariables()
     {
-        return $this->environmentVariables;
+        return $this->environmentVariables ?: [];
     }
 
     /**

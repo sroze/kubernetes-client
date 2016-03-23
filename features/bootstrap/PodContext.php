@@ -34,6 +34,11 @@ class PodContext implements Context
     private $creationMicroTime;
 
     /**
+     * @var string
+     */
+    private $attachResult;
+
+    /**
      * @BeforeScenario
      */
     public function gatherContexts(BeforeScenarioScope $scope)
@@ -48,27 +53,32 @@ class PodContext implements Context
     public function deletePod()
     {
         if (null !== $this->pod) {
-            $this->getRepository()->delete($this->pod);
+            $repository = $this->getRepository();
+            $repository->delete($this->pod);
+
+            do {
+                $exists = $repository->exists($this->pod->getMetadata()->getName());
+            } while ($this->clientContext->isIntegration() && $exists && sleep(1) == 0);
         }
     }
 
     /**
-     * @When I create a pod
+     * @When I create a pod :name
      */
-    public function iCreateAPod()
+    public function iCreateAPodNamed($name)
     {
         $specification = new PodSpecification([
-            new Container('foo', 'hello-world'),
+            new Container($name, 'hello-world'),
         ]);
 
-        $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
+        $this->pod = new Pod(new ObjectMetadata($name), $specification);
         $this->getRepository()->create($this->pod);
     }
 
     /**
-     * @When I create a pod with the following environment variables:
+     * @When I create a pod :name with the following environment variables:
      */
-    public function iCreateAPodWithTheFollowingEnvironmentVariables(TableNode $table)
+    public function iCreateAPodWithTheFollowingEnvironmentVariables($name, TableNode $table)
     {
         $variables = [];
         foreach ($table->getHash() as $row) {
@@ -76,53 +86,65 @@ class PodContext implements Context
         }
 
         $specification = new PodSpecification([
-            new Container('env-test', 'hello-world', $variables),
+            new Container($name, 'hello-world', $variables),
         ]);
 
-        $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
+        $this->pod = new Pod(new ObjectMetadata($name), $specification);
         $this->getRepository()->create($this->pod);
     }
 
     /**
-     * @When I create a pod with command :command
+     * @When I create a pod :name with the command :command
      */
-    public function iCreateAPodWithCommand($command)
+    public function iCreateAPodWithCommand($name, $command)
     {
         $specification = new PodSpecification(
             [
-                new Container('foo', 'busybox', [], [], [], Container::PULL_POLICY_IF_NOT_PRESENT, ['sh', '-c', $command]),
+                new Container($name, 'busybox', [], [], [], Container::PULL_POLICY_IF_NOT_PRESENT, ['sh', '-c', $command]),
             ],
             [],
             PodSpecification::RESTART_POLICY_NEVER
         );
 
         $this->creationMicroTime = microtime(true);
-        $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
+        $this->pod = new Pod(new ObjectMetadata($name), $specification);
         $this->getRepository()->create($this->pod);
     }
 
     /**
-     * @When I attach to the created pod
+     * @When I attach to the pod :name
      */
-    public function iAttachToTheCreatedPod()
+    public function iAttachToTheCreatedPod($name)
     {
-        $this->getRepository()->attach($this->pod, function($output) {
-            echo $output;
+        $this->getRepository()->attach($this->getRepository()->findOneByName($name), function($output) {
+            $this->attachResult = $output;
         });
     }
 
     /**
-     * @When I create a pod with the volume claim :name mounted at :mountPath
+     * @Then I should see :text in the output
      */
-    public function iCreateAPodWithTheVolumeClaimMountedAt($name, $mountPath)
+    public function iShouldSeeInTheOutput($text)
     {
-        $volume = new Volume($name);
-        $volume->setPersistentVolumeClaim(new Volume\PersistentVolumeClaimSource($name));
+        if (strpos($this->attachResult, $text) === false) {
+            echo $this->attachResult;
+
+            throw new \RuntimeException('Text not found');
+        }
+    }
+
+    /**
+     * @When I create a pod :name with the volume claim :claimName mounted at :mountPath
+     */
+    public function iCreateAPodWithTheVolumeClaimMountedAt($name, $claimName, $mountPath)
+    {
+        $volume = new Volume($claimName);
+        $volume->setPersistentVolumeClaim(new Volume\PersistentVolumeClaimSource($claimName));
 
         $specification = new PodSpecification(
             [
-                new Container('foo', 'busybox', [], [], [
-                    new VolumeMount($name, $mountPath)
+                new Container($name, 'busybox', [], [], [
+                    new VolumeMount($claimName, $mountPath)
                 ]),
             ],
             [
@@ -132,7 +154,7 @@ class PodContext implements Context
         );
 
         $this->creationMicroTime = microtime(true);
-        $this->pod = new Pod(new ObjectMetadata('my-pod'), $specification);
+        $this->pod = new Pod(new ObjectMetadata($name), $specification);
         $this->getRepository()->create($this->pod);
     }
 
@@ -153,26 +175,24 @@ class PodContext implements Context
     }
 
     /**
-     * @Then the pod should exists
+     * @Then the pod :name should exists
      */
-    public function thePodShouldExists()
+    public function thePodShouldExists($name)
     {
-        $podName = $this->pod->getMetadata()->getName();
-
-        if (!$this->getRepository()->exists($podName)) {
+        if (!$this->getRepository()->exists($name)) {
             throw new \RuntimeException(sprintf(
                 'The pod "%s" do not exists',
-                $podName
+                $name
             ));
         }
     }
 
     /**
-     * @Then the pod should have the following environment variables:
+     * @Then the pod :name should have the following environment variables:
      */
-    public function thePodShouldHaveTheFollowingEnvironmentVariables(TableNode $table)
+    public function thePodShouldHaveTheFollowingEnvironmentVariables($name, TableNode $table)
     {
-        $pod = $this->getRepository()->findOneByName($this->pod->getMetadata()->getName());
+        $pod = $this->getRepository()->findOneByName($name);
         $containers = $pod->getSpecification()->getContainers();
 
         foreach ($containers as $container) {

@@ -1,0 +1,1 @@
+{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"pods-heaven","selfLink":"/api/v1/namespaces/pods-heaven","uid":"7c2956fc-f0ec-11e5-9fd0-0224611c6641","resourceVersion":"5490","creationTimestamp":"2016-03-23T11:43:39Z"},"spec":{"finalizers":["kubernetes"]},"status":{"phase":"Active"}}

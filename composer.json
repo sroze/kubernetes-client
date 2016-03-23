@@ -5,6 +5,11 @@
             "Kubernetes\\Client\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Kubernetes\\Client\\": "tests/"
+        }
+    },
     "require": {
         "guzzlehttp/guzzle": "~4.1",
         "symfony/serializer": "~2.7",

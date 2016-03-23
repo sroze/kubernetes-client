@@ -7,6 +7,7 @@ use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Model\Label;
 use Kubernetes\Client\Model\NamespaceList;
+use Kubernetes\Client\Model\NamespaceStatus;
 use Kubernetes\Client\Model\ObjectMetadata;
 
 class NamespaceContext implements Context
@@ -94,6 +95,16 @@ class NamespaceContext implements Context
     public function iHaveANamespace()
     {
         $this->iHaveANamedNamespace(uniqid());
+    }
+
+    /**
+     * @Given the namespace :name is ready
+     */
+    public function theNamespaceIsReady($name)
+    {
+        do {
+            $phase = $this->getRepository()->findOneByName($name)->getStatus()->getPhase();
+        } while ($this->clientContext->isIntegration() && $phase !== NamespaceStatus::PHASE_ACTIVE && sleep(1) == 0);
     }
 
     /**

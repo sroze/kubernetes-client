@@ -3,10 +3,9 @@ Feature:
   I want to manage secrets
 
   Background:
-    Given I have a namespace
+    Given I have a namespace "foo"
 
   @cleanNamespace
   Scenario:
-    When I create a secret
-    Then the secret should exists
-
+    When I create a secret "dockercfg"
+    Then the secret "dockercfg" should exists
