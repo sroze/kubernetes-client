@@ -1,1 +1,1 @@
-{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"foo","selfLink":"/api/v1/namespaces/foo","uid":"1d1b938c-f0e4-11e5-9fd0-0224611c6641","resourceVersion":"3764","creationTimestamp":"2016-03-23T10:43:43Z"},"spec":{"finalizers":["kubernetes"]},"status":{"phase":"Active"}}
+{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"foo","selfLink":"/api/v1/namespaces/foo","uid":"791b3558-f0ec-11e5-9fd0-0224611c6641","resourceVersion":"5473","creationTimestamp":"2016-03-23T11:43:33Z"},"spec":{"finalizers":["kubernetes"]},"status":{"phase":"Active"}}

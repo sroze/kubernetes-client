@@ -4,6 +4,7 @@ namespace Kubernetes\Client\Adapter\Http\Repository;
 
 use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
+use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\NamespaceNotFound;
 use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\KubernetesNamespace;
@@ -62,21 +63,20 @@ class HttpNamespaceRepository implements NamespaceRepository
      */
     public function findOneByName($name)
     {
-        $namespaces = $this->connector->get('/namespaces', [
-            'class' => NamespaceList::class,
-        ]);
-
-        foreach ($namespaces as $namespace) {
-            /** @var KubernetesNamespace $namespace */
-            if ($namespace->getMetadata()->getName() == $name) {
-                return $namespace;
+        try {
+            return $this->connector->get('/namespaces/' . $name, [
+                'class' => KubernetesNamespace::class,
+            ]);
+        } catch (ClientError $e) {
+            if ($e->getStatus()->getCode() === 404) {
+                throw new NamespaceNotFound(sprintf(
+                    'Namespace named "%s" is not found',
+                    $name
+                ));
             }
-        }
 
-        throw new NamespaceNotFound(sprintf(
-            'Namespace with name "%s" is not found',
-            $name
-        ));
+            throw $e;
+        }
     }
 
     /**

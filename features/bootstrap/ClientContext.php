@@ -22,6 +22,11 @@ class ClientContext implements Context, SnippetAcceptingContext
     private $client;
 
     /**
+     * @var bool
+     */
+    private $integration;
+
+    /**
      * @param string $baseUrl
      * @param string $version
      * @param string $usernameOrToken
@@ -64,6 +69,7 @@ class ClientContext implements Context, SnippetAcceptingContext
                 $connector
             )
         );
+        $this->integration = $integration;
     }
 
     /**
@@ -72,5 +78,13 @@ class ClientContext implements Context, SnippetAcceptingContext
     public function getClient()
     {
         return $this->client;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIntegration()
+    {
+        return $this->integration;
     }
 }
