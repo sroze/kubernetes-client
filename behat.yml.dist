@@ -5,8 +5,10 @@ default:
                 - ClientContext:
                     - https://baseUrl # Base server URL
                     - v1              # API version
-                    - username        # Username
+                    - username        # Username or Token
                     - password        # Password
+                    - true            # Integration tests?
+                    - false           # Record the requests for HTTP fixtures?
                 - NamespaceContext
                 - SecretContext
                 - ServiceContext

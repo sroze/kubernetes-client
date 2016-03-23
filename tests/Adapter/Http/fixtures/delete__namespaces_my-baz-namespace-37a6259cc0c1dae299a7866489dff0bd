@@ -1,0 +1,1 @@
+{"kind":"Namespace","apiVersion":"v1","metadata":{"name":"my-baz-namespace","selfLink":"/api/v1/namespaces/my-baz-namespace","uid":"3bc1b82f-f0e3-11e5-9fd0-0224611c6641","resourceVersion":"3519","creationTimestamp":"2016-03-23T10:37:25Z","deletionTimestamp":"2016-03-23T10:37:25Z","labels":{"bar":"baz"}},"spec":{"finalizers":["kubernetes"]},"status":{"phase":"Terminating"}}

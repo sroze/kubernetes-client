@@ -5,10 +5,13 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use GuzzleHttp\Client as GuzzleClient;
 use JMS\Serializer\SerializerBuilder;
 use Kubernetes\Client\Adapter\Http\AuthenticationMiddleware;
+use Kubernetes\Client\Adapter\Http\FileHttpClient;
 use Kubernetes\Client\Adapter\Http\GuzzleHttpClient;
 use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Client;
+use Kubernetes\Client\Adapter\Http\FileResolver;
+use Kubernetes\Client\Adapter\Http\HttpRecorderClientDecorator;
 use Kubernetes\Client\Serializer\JmsSerializerAdapter;
 
 class ClientContext implements Context, SnippetAcceptingContext
@@ -24,17 +27,28 @@ class ClientContext implements Context, SnippetAcceptingContext
      * @param string $usernameOrToken
      * @param string $password
      */
-    public function __construct($baseUrl, $version, $usernameOrToken = null, $password = null)
+    public function __construct($baseUrl, $version, $usernameOrToken = null, $password = null, $integration = false, $record = false)
     {
         $serializer = SerializerBuilder::create()
             ->addMetadataDir(__DIR__.'/../../src/Resources/serializer', 'Kubernetes\Client')
             ->build();
 
-        $httpClient = new GuzzleHttpClient(new GuzzleClient([
-            'defaults' => [
-                'verify' => false,
-            ],
-        ]), $baseUrl, $version);
+        if ($integration) {
+            $httpClient = new GuzzleHttpClient(new GuzzleClient([
+                'defaults' => [
+                    'verify' => false,
+                ],
+            ]), $baseUrl, $version);
+        } else {
+            $httpClient = new FileHttpClient(new FileResolver());
+        }
+
+        if ($record) {
+            $httpClient = new HttpRecorderClientDecorator(
+                $httpClient,
+                new FileResolver()
+            );
+        }
 
         if ($usernameOrToken !== null) {
             $httpClient = new AuthenticationMiddleware($httpClient, $usernameOrToken, $password);
