@@ -21,10 +21,10 @@ class ClientContext implements Context, SnippetAcceptingContext
     /**
      * @param string $baseUrl
      * @param string $version
-     * @param string $username
+     * @param string $usernameOrToken
      * @param string $password
      */
-    public function __construct($baseUrl, $version, $username = null, $password = null)
+    public function __construct($baseUrl, $version, $usernameOrToken = null, $password = null)
     {
         $serializer = SerializerBuilder::create()
             ->addMetadataDir(__DIR__.'/../../src/Resources/serializer', 'Kubernetes\Client')
@@ -36,8 +36,8 @@ class ClientContext implements Context, SnippetAcceptingContext
             ],
         ]), $baseUrl, $version);
 
-        if ($username !== null) {
-            $httpClient = new AuthenticationMiddleware($httpClient, $username, $password);
+        if ($usernameOrToken !== null) {
+            $httpClient = new AuthenticationMiddleware($httpClient, $usernameOrToken, $password);
         }
 
         $connector = new HttpConnector(
