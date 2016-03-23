@@ -10,10 +10,33 @@ class ResourceRequirements
     private $requests;
 
     /**
-     * @param ResourceRequirementsRequests $requests
+     * @var ResourceLimits
      */
-    public function __construct(ResourceRequirementsRequests $requests)
+    private $limits;
+
+    /**
+     * @param ResourceRequirementsRequests $requests
+     * @param ResourceLimits $limits
+     */
+    public function __construct(ResourceRequirementsRequests $requests = null, ResourceLimits $limits = null)
     {
         $this->requests = $requests;
+        $this->limits = $limits;
+    }
+
+    /**
+     * @return ResourceRequirementsRequests
+     */
+    public function getRequests()
+    {
+        return $this->requests;
+    }
+
+    /**
+     * @return ResourceLimits
+     */
+    public function getLimits()
+    {
+        return $this->limits;
     }
 }

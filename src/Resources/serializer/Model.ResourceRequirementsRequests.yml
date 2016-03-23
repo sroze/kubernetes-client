@@ -2,3 +2,7 @@ Kubernetes\Client\Model\ResourceRequirementsRequests:
     properties:
         storage:
             type: string
+        memory:
+            type: string
+        cpu:
+            type: string

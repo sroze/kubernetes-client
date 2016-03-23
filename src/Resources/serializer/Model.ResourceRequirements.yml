@@ -2,3 +2,5 @@ Kubernetes\Client\Model\ResourceRequirements:
     properties:
         requests:
             type: Kubernetes\Client\Model\ResourceRequirementsRequests
+        limits:
+            type: Kubernetes\Client\Model\ResourceLimits
