@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\ResourceLimits:
+    properties:
+        memory:
+            type: string
+        cpu:
+            type: string

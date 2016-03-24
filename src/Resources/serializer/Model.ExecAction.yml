@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\ExecAction:
+    properties:
+        command:
+            type: array<string>

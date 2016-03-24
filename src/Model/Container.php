@@ -43,6 +43,21 @@ class Container
     private $securityContext;
 
     /**
+     * @var ResourceRequirements
+     */
+    private $resources;
+
+    /**
+     * @var Probe
+     */
+    private $livenessProbe;
+
+    /**
+     * @var Probe
+     */
+    private $readinessProbe;
+
+    /**
      * @param string                $name
      * @param string                $image
      * @param EnvironmentVariable[] $environmentVariables
@@ -51,8 +66,11 @@ class Container
      * @param string                $pullPolicy
      * @param array                 $command
      * @param SecurityContext       $securityContext
+     * @param ResourceRequirements  $resources
+     * @param Probe                 $livenessProbe
+     * @param Probe                 $readinessProbe
      */
-    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, SecurityContext $securityContext = null)
+    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, SecurityContext $securityContext = null, ResourceRequirements $resources = null, Probe $livenessProbe = null, Probe $readinessProbe = null)
     {
         $this->name = $name;
         $this->image = $image;
@@ -62,6 +80,9 @@ class Container
         $this->pullPolicy = $pullPolicy;
         $this->command = $command;
         $this->securityContext = $securityContext;
+        $this->resources = $resources;
+        $this->livenessProbe = $livenessProbe;
+        $this->readinessProbe = $readinessProbe;
     }
 
     /**
@@ -126,5 +147,29 @@ class Container
     public function getSecurityContext()
     {
         return $this->securityContext;
+    }
+
+    /**
+     * @return ResourceRequirements
+     */
+    public function getResources()
+    {
+        return $this->resources;
+    }
+
+    /**
+     * @return Probe
+     */
+    public function getLivenessProbe()
+    {
+        return $this->livenessProbe;
+    }
+
+    /**
+     * @return Probe
+     */
+    public function getReadinessProbe()
+    {
+        return $this->readinessProbe;
     }
 }

@@ -20,3 +20,11 @@ Kubernetes\Client\Model\Container:
         securityContext:
             type: Kubernetes\Client\Model\SecurityContext
             serialized_name: securityContext
+        resources:
+            type: Kubernetes\Client\Model\ResourceRequirements
+        livenessProbe:
+            type: Kubernetes\Client\Model\Probe
+            serialized_name: livenessProbe
+        readinessProbe:
+            type: Kubernetes\Client\Model\Probe
+            serialized_name: readinessProbe
