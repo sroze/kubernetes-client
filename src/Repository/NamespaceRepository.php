@@ -17,7 +17,7 @@ interface NamespaceRepository
     /**
      * @param KeyValueObjectList $labels
      *
-     * @return KubernetesNamespace[]
+     * @return NamespaceList
      */
     public function findByLabels(KeyValueObjectList $labels);
 
