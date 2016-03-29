@@ -1,4 +1,4 @@
 Kubernetes\Client\Model\TcpSocketAction:
     properties:
         port:
-            type: int
+            type: integer
