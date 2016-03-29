@@ -3,7 +3,7 @@ Kubernetes\Client\Model\HttpGetAction:
         path:
             type: string
         port:
-            type: int
+            type: integer
         host:
             type: string
         scheme:
