@@ -10,6 +10,14 @@ class IngressStatus
     private $loadBalancer;
 
     /**
+     * @param LoadBalancerStatus $loadBalancer
+     */
+    public function __construct(LoadBalancerStatus $loadBalancer)
+    {
+        $this->loadBalancer = $loadBalancer;
+    }
+
+    /**
      * @return LoadBalancerStatus
      */
     public function getLoadBalancer()
