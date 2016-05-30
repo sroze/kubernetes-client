@@ -1,0 +1,5 @@
+Kubernetes\Client\Model\IngressTls:
+    properties:
+        serviceName:
+            type: string
+            serialized_name: serviceName

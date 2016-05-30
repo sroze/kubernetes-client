@@ -45,14 +45,14 @@ class Probe
     private $failureThreshold;
 
     /**
-     * @param ExecAction $exec
-     * @param HttpGetAction $httpGet
+     * @param ExecAction      $exec
+     * @param HttpGetAction   $httpGet
      * @param TcpSocketAction $tcpSocket
-     * @param int $initialDelaySeconds
-     * @param int $timeoutSeconds
-     * @param int $periodSeconds
-     * @param int $successThreshold
-     * @param int $failureThreshold
+     * @param int             $initialDelaySeconds
+     * @param int             $timeoutSeconds
+     * @param int             $periodSeconds
+     * @param int             $successThreshold
+     * @param int             $failureThreshold
      */
     public function __construct(ExecAction $exec = null, HttpGetAction $httpGet = null, TcpSocketAction $tcpSocket = null, $initialDelaySeconds = null, $timeoutSeconds = null, $periodSeconds = null, $successThreshold = null, $failureThreshold = null)
     {
@@ -65,7 +65,6 @@ class Probe
         $this->successThreshold = $successThreshold;
         $this->failureThreshold = $failureThreshold;
     }
-
 
     /**
      * @return ExecAction

@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+use Kubernetes\Client\Adapter\Http\Repository\HttpIngressRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPersistentVolumeClaimRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPodRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpReplicationControllerRepository;
@@ -17,6 +18,7 @@ class HttpNamespaceClient implements NamespaceClient
      * @var KubernetesNamespace
      */
     private $namespace;
+
     /**
      * @var HttpConnector
      */
@@ -78,6 +80,14 @@ class HttpNamespaceClient implements NamespaceClient
     public function getPersistentVolumeClaimRepository()
     {
         return new HttpPersistentVolumeClaimRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIngressRepository()
+    {
+        return new HttpIngressRepository($this->connector, $this);
     }
 
     /**
