@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\IngressSpecification:
+    properties:
+        backend:
+            type: Kubernetes\Client\Model\IngressBackend
+        tls:
+            type: array<Kubernetes\Client\Model\IngressTls>

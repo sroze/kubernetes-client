@@ -1,0 +1,5 @@
+Kubernetes\Client\Model\IngressTls:
+    properties:
+        secretName:
+            type: string
+            serialized_name: secretName

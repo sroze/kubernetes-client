@@ -1,0 +1,8 @@
+Kubernetes\Client\Model\IngressBackend:
+    properties:
+        serviceName:
+            type: string
+            serialized_name: serviceName
+        servicePort:
+            type: integer
+            serialized_name: servicePort
