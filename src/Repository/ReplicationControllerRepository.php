@@ -48,6 +48,13 @@ interface ReplicationControllerRepository
     public function findOneByName($name);
 
     /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function exists($name);
+
+    /**
      * @param array $labels
      *
      * @throws TooManyObjects

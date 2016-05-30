@@ -151,4 +151,19 @@ class HttpReplicationControllerRepository implements ReplicationControllerReposi
 
         return $found;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exists($name)
+    {
+        try {
+            $this->findOneByName($name);
+            $exists = true;
+        } catch (ReplicationControllerNotFound $e) {
+            $exists = false;
+        }
+
+        return $exists;
+    }
 }
