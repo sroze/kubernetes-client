@@ -64,7 +64,11 @@ class GuzzleHttpClient implements HttpClient
      */
     private function getUrlForPath($path)
     {
-        return sprintf('%s/api/%s%s', $this->baseUrl, $this->version, $path);
+        if (substr($path, 0, 4) != '/api') {
+            $path = sprintf('/api/%s%s', $this->version, $path);
+        }
+
+        return sprintf('%s%s', $this->baseUrl, $path);
     }
 
     /**

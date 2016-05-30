@@ -28,6 +28,15 @@ interface IngressRepository
     public function create(Ingress $ingress);
 
     /**
+     * Update an ingress object.
+     *
+     * @param Ingress $ingress
+     *
+     * @return Ingress
+     */
+    public function update(Ingress $ingress);
+
+    /**
      * Check if the ingress with the given name exists.
      *
      * @param string $name

@@ -37,7 +37,10 @@ class HttpIngressRepository implements IngressRepository
     public function findOneByName($name)
     {
         try {
-            return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $name)), [
+            $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $name));
+            $url = '/apis/extensions/v1beta1'.$url;
+
+            return $this->connector->get($url, [
                 'class' => Ingress::class,
             ]);
         } catch (ClientError $e) {
@@ -57,7 +60,30 @@ class HttpIngressRepository implements IngressRepository
      */
     public function create(Ingress $ingress)
     {
-        return $this->connector->post($this->namespaceClient->prefixPath('/ingresses'), $ingress, [
+        $url = $this->namespaceClient->prefixPath('/ingresses');
+        $url = '/apis/extensions/v1beta1'.$url;
+
+        return $this->connector->post($url, $ingress, [
+            'class' => Ingress::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function update(Ingress $ingress)
+    {
+        $ingressName = $ingress->getMetadata()->getName();
+        $currentIngress = $this->findOneByName($ingressName);
+
+        if ($ingress->getSpecification() == $currentIngress->getSpecification()) {
+            return $currentIngress;
+        }
+
+        $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $ingressName));
+        $url = '/apis/extensions/v1beta1'.$url;
+
+        return $this->connector->patch($url, $ingress, [
             'class' => Ingress::class,
         ]);
     }
