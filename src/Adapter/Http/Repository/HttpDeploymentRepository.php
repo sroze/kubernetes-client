@@ -7,7 +7,6 @@ use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\DeploymentNotFound;
 use Kubernetes\Client\Model\Deployment;
-use Kubernetes\Client\Model\Ingress;
 use Kubernetes\Client\Repository\DeploymentRepository;
 
 class HttpDeploymentRepository implements DeploymentRepository
@@ -42,7 +41,7 @@ class HttpDeploymentRepository implements DeploymentRepository
             $url = '/apis/extensions/v1beta1'.$url;
 
             return $this->connector->get($url, [
-                'class' => Ingress::class,
+                'class' => Deployment::class,
             ]);
         } catch (ClientError $e) {
             if ($e->getStatus()->getCode() === 404) {
