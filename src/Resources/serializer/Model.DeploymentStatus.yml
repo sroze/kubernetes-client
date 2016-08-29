@@ -1,0 +1,17 @@
+Kubernetes\Client\Model\DeploymentStatus:
+    properties:
+        observedGeneration:
+            type: int
+            serialized_name: observedGeneration
+        replicas:
+            type: int
+            serialized_name: replicas
+        updatedReplicas:
+            type: int
+            serialized_name: updatedReplicas
+        availableReplicas:
+            type: int
+            serialized_name: availableReplicas
+        unavailableReplicas:
+            type: int
+            serialized_name: unavailableReplicas

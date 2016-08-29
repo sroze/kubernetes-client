@@ -1,0 +1,7 @@
+Kubernetes\Client\Model\Deployment\DeploymentStrategy:
+    properties:
+        type:
+            type: string
+        rollingUpdate:
+            type: Kubernetes\Client\Model\Deployment\RollingUpdateDeployment
+            serialized_name: rollingUpdate
