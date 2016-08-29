@@ -1,4 +1,4 @@
 Kubernetes\Client\Model\Deployment\RollbackConfiguration:
     properties:
         revision:
-            type: int
+            type: integer

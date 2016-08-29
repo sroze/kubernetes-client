@@ -1,7 +1,7 @@
 Kubernetes\Client\Model\DeploymentSpecification:
     properties:
         replicas:
-            type: int
+            type: integer
             serialized_name: replicas
         selector:
             type: array<string, string>
@@ -13,14 +13,14 @@ Kubernetes\Client\Model\DeploymentSpecification:
             type: Kubernetes\Client\Model\Deployment\DeploymentStrategy
             serialized_name: strategy
         minReadySeconds:
-            type: int
+            type: integer
             serialized_name: minReadySeconds
         revisionHistoryLimit:
-            type: int
+            type: integer
             serialized_name: revisionHistoryLimit
         paused:
-            type: bool
+            type: boolean
             serialized_name: paused
         rollbackTo:
-            type: int
+            type: integer
             serialized_name: Kubernetes\Client\Model\Deployment\RollbackConfiguration
