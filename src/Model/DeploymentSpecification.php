@@ -8,6 +8,13 @@ use Kubernetes\Client\Model\Deployment\RollbackConfiguration;
 class DeploymentSpecification
 {
     /**
+     * Template describes the pods that will be created.
+     *
+     * @var PodTemplateSpecification
+     */
+    private $template;
+
+    /**
      * Number of desired pods. This is a pointer to distinguish between explicit
      * zero and not specified. Defaults to 1.
      *
@@ -22,13 +29,6 @@ class DeploymentSpecification
      * @var array<string,string>
      */
     private $selector;
-
-    /**
-     * Template describes the pods that will be created.
-     *
-     * @var PodTemplateSpecification
-     */
-    private $template;
 
     /**
      * The deployment strategy to use to replace existing pods with new ones.
@@ -70,9 +70,9 @@ class DeploymentSpecification
     private $rollbackTo;
 
     /**
+     * @param PodTemplateSpecification $template
      * @param int                      $replicas
      * @param array                    $selector
-     * @param PodTemplateSpecification $template
      * @param DeploymentStrategy       $strategy
      * @param int                      $minReadySeconds
      * @param int                      $revisionHistoryLimit
@@ -80,18 +80,18 @@ class DeploymentSpecification
      * @param RollbackConfiguration    $rollbackTo
      */
     public function __construct(
-        $replicas,
-        array $selector,
         PodTemplateSpecification $template,
-        DeploymentStrategy $strategy,
+        $replicas = null,
+        array $selector = null,
+        DeploymentStrategy $strategy = null,
         $minReadySeconds = null,
         $revisionHistoryLimit = null,
         $paused = null,
         RollbackConfiguration $rollbackTo = null
     ) {
+        $this->template = $template;
         $this->replicas = $replicas;
         $this->selector = $selector;
-        $this->template = $template;
         $this->strategy = $strategy;
         $this->minReadySeconds = $minReadySeconds;
         $this->revisionHistoryLimit = $revisionHistoryLimit;

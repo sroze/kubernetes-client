@@ -91,6 +91,13 @@ class HttpNamespaceClient implements NamespaceClient
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDeploymentRepository()
+    {
+    }
+
+    /**
      * @param string $path
      *
      * @return string
