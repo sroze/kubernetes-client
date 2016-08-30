@@ -112,7 +112,7 @@ class DeploymentSpecification
      */
     public function getSelector()
     {
-        return $this->selector;
+        return $this->selector ?: $this->getTemplate()->getMetadata()->getLabelsAsAssociativeArray();
     }
 
     /**
