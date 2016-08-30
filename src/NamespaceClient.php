@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client;
 
+use Kubernetes\Client\Repository\DeploymentRepository;
 use Kubernetes\Client\Repository\IngressRepository;
 use Kubernetes\Client\Repository\PersistentVolumeClaimRepository;
 use Kubernetes\Client\Repository\PodRepository;
@@ -46,4 +47,9 @@ interface NamespaceClient
      * @return IngressRepository
      */
     public function getIngressRepository();
+
+    /**
+     * @return DeploymentRepository
+     */
+    public function getDeploymentRepository();
 }

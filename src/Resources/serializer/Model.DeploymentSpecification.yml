@@ -1,0 +1,26 @@
+Kubernetes\Client\Model\DeploymentSpecification:
+    properties:
+        replicas:
+            type: integer
+            serialized_name: replicas
+        selector:
+            type: array<string, string>
+            serialized_name: selector
+        template:
+            type: Kubernetes\Client\Model\PodTemplateSpecification
+            serialized_name: template
+        strategy:
+            type: Kubernetes\Client\Model\Deployment\DeploymentStrategy
+            serialized_name: strategy
+        minReadySeconds:
+            type: integer
+            serialized_name: minReadySeconds
+        revisionHistoryLimit:
+            type: integer
+            serialized_name: revisionHistoryLimit
+        paused:
+            type: boolean
+            serialized_name: paused
+        rollbackTo:
+            type: integer
+            serialized_name: Kubernetes\Client\Model\Deployment\RollbackConfiguration

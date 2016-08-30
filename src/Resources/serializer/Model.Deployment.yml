@@ -1,0 +1,13 @@
+Kubernetes\Client\Model\Deployment:
+    virtual_properties:
+        getKind:
+            serialized_name: Kind
+            type: string
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        specification:
+            type: Kubernetes\Client\Model\DeploymentSpecification
+            serialized_name: spec
+        status:
+            type: Kubernetes\Client\Model\DeploymentStatus
