@@ -44,4 +44,15 @@ interface DeploymentRepository
      * @return bool
      */
     public function exists($name);
+
+    /**
+     * Rollback the given deployment.
+     *
+     * @param Deployment\DeploymentRollback $deploymentRollback
+     *
+     * @throws DeploymentNotFound
+     *
+     * @return Deployment\DeploymentRollback
+     */
+    public function rollback(Deployment\DeploymentRollback $deploymentRollback);
 }

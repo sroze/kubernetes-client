@@ -91,6 +91,19 @@ class HttpDeploymentRepository implements DeploymentRepository
     /**
      * {@inheritdoc}
      */
+    public function rollback(Deployment\DeploymentRollback $deploymentRollback)
+    {
+        $url = $this->namespaceClient->prefixPath(sprintf('/deployments/%s/rollback', $deploymentRollback->getName()));
+        $url = '/apis/extensions/v1beta1'.$url;
+
+        return $this->connector->post($url, $deploymentRollback, [
+            'class' => Deployment\DeploymentRollback::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function exists($name)
     {
         try {
