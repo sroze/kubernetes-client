@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\DeploymentList:
+    properties:
+        items:
+            type: array<Kubernetes\Client\Model\Deployment>
