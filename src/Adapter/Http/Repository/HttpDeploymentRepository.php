@@ -7,6 +7,7 @@ use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\DeploymentNotFound;
 use Kubernetes\Client\Model\Deployment;
+use Kubernetes\Client\Model\DeploymentList;
 use Kubernetes\Client\Repository\DeploymentRepository;
 
 class HttpDeploymentRepository implements DeploymentRepository
@@ -29,6 +30,19 @@ class HttpDeploymentRepository implements DeploymentRepository
     {
         $this->connector = $connector;
         $this->namespaceClient = $namespaceClient;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAll()
+    {
+        $url = $this->namespaceClient->prefixPath('/deployments');
+        $url = '/apis/extensions/v1beta1'.$url;
+
+        return $this->connector->get($url, [
+            'class' => DeploymentList::class,
+        ]);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Kubernetes\Client\Repository;
 
 use Kubernetes\Client\Exception\DeploymentNotFound;
 use Kubernetes\Client\Model\Deployment;
+use Kubernetes\Client\Model\DeploymentList;
 
 interface DeploymentRepository
 {
@@ -17,6 +18,13 @@ interface DeploymentRepository
      * @return Deployment
      */
     public function findOneByName($name);
+
+    /**
+     * Find all the deployments.
+     *
+     * @return DeploymentList
+     */
+    public function findAll();
 
     /**
      * Create an Deployment object.
