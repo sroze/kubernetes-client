@@ -29,6 +29,12 @@ $authenticatedHttpClient = new AuthenticationMiddleware(
 );
 ```
 
+## Serializer
+
+If you use JMS serializer, the serializer adapter already exists in the `src/Serializer` directory.
+There is also an handler for the `RollingUpdateDeployment` object type used by Kubernetes that uses
+`integerOrString` types.
+
 ## Development
 
 Install application dependencies:
