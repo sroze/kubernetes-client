@@ -15,6 +15,26 @@ class ObjectMetadata
     private $uid;
 
     /**
+     * @var string
+     */
+    private $creationTimestamp;
+
+    /**
+     * @var string
+     */
+    private $deletionTimestamp;
+
+    /**
+     * @var integer
+     */
+    private $deletionGracePeriodSeconds;
+
+    /**
+     * @var string
+     */
+    private $resourceVersion;
+
+    /**
      * @var KeyValueObjectList
      */
     private $labelList;
@@ -42,6 +62,46 @@ class ObjectMetadata
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreationTimestamp()
+    {
+        return $this->creationTimestamp;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeletionTimestamp()
+    {
+        return $this->deletionTimestamp;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeletionGracePeriodSeconds()
+    {
+        return $this->deletionGracePeriodSeconds;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceVersion()
+    {
+        return $this->resourceVersion;
     }
 
     /**
