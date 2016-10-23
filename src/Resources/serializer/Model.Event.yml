@@ -1,0 +1,25 @@
+Kubernetes\Client\Model\Event:
+    virtual_properties:
+        getKind:
+            serialized_name: Kind
+            type: string
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        involvedObject:
+            type: Kubernetes\Client\Model\ObjectReference
+            serialized_name: involvedObject
+        source:
+            type: Kubernetes\Client\Model\EventSource
+        reason:
+            type: string
+        message:
+            type: string
+        firstTimestamp:
+            type: string
+            serialized_name: firstTimestamp
+        lastTimestamp:
+            type: string
+            serialized_name: lastTimestamp
+        count:
+            type: integer

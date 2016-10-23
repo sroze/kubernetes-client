@@ -39,7 +39,7 @@ class HttpEventRepository implements EventRepository
             'fieldSelector' => http_build_query([
                 'involvedObject.kind' => $object->getKind(),
                 'involvedObject.name' => $object->getMetadata()->getName(),
-            ])
+            ], null, ',')
         ]);
 
         return $this->connector->get($url, [

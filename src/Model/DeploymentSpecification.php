@@ -26,7 +26,7 @@ class DeploymentSpecification
      * Label selector for pods. Existing ReplicaSets whose pods are
      * selected by this will be the ones affected by this deployment.
      *
-     * @var array<string,string>
+     * @var PodSelector
      */
     private $selector;
 
@@ -72,7 +72,7 @@ class DeploymentSpecification
     /**
      * @param PodTemplateSpecification $template
      * @param int                      $replicas
-     * @param array                    $selector
+     * @param PodSelector              $selector
      * @param DeploymentStrategy       $strategy
      * @param int                      $minReadySeconds
      * @param int                      $revisionHistoryLimit
@@ -82,7 +82,7 @@ class DeploymentSpecification
     public function __construct(
         PodTemplateSpecification $template,
         $replicas = null,
-        array $selector = null,
+        PodSelector $selector = null,
         DeploymentStrategy $strategy = null,
         $minReadySeconds = null,
         $revisionHistoryLimit = null,
@@ -108,11 +108,11 @@ class DeploymentSpecification
     }
 
     /**
-     * @return array
+     * @return PodSelector
      */
     public function getSelector()
     {
-        return $this->selector ?: $this->getTemplate()->getMetadata()->getLabelsAsAssociativeArray();
+        return $this->selector ?: new PodSelector($this->getTemplate()->getMetadata()->getLabelsAsAssociativeArray());
     }
 
     /**

@@ -4,7 +4,7 @@ Kubernetes\Client\Model\DeploymentSpecification:
             type: integer
             serialized_name: replicas
         selector:
-            type: array<string, string>
+            type: Kubernetes\Client\Model\PodSelector
             serialized_name: selector
         template:
             type: Kubernetes\Client\Model\PodTemplateSpecification

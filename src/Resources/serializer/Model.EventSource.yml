@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\EventSource:
+    properties:
+        component:
+            type: string
+        host:
+            type: string
