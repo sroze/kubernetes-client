@@ -2,6 +2,21 @@ Kubernetes\Client\Model\ObjectMetadata:
     properties:
         name:
             type: string
+        creationTimestamp:
+            type: string
+            groups: [ read ]
+            serialized_name: creationTimestamp
+        deletionTimestamp:
+            type: string
+            groups: [ read ]
+            serialized_name: deletionTimestamp
+        deletionGracePeriodSeconds:
+            type: integer
+            serialized_name: deletionGracePeriodSeconds
+        resourceVersion:
+            type: string
+            serialized_name: resourceVersion
+            groups: [ read ]
         uid:
             type: string
             groups: [ read ]
