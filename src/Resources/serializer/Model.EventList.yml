@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\EventList:
+    properties:
+        items:
+            type: array<Kubernetes\Client\Model\Event>

@@ -3,6 +3,7 @@
 namespace Kubernetes\Client\Adapter\Http;
 
 use Kubernetes\Client\Adapter\Http\Repository\HttpDeploymentRepository;
+use Kubernetes\Client\Adapter\Http\Repository\HttpEventRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpIngressRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPersistentVolumeClaimRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPodRepository;
@@ -97,6 +98,14 @@ class HttpNamespaceClient implements NamespaceClient
     public function getDeploymentRepository()
     {
         return new HttpDeploymentRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEventRepository()
+    {
+        return new HttpEventRepository($this->connector, $this);
     }
 
     /**
