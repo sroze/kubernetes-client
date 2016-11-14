@@ -35,11 +35,11 @@ class HttpEventRepository implements EventRepository
      */
     public function findByObject(KubernetesObject $object)
     {
-        $url = $this->namespaceClient->prefixPath('/events') . '?' . http_build_query([
+        $url = $this->namespaceClient->prefixPath('/events').'?'.http_build_query([
             'fieldSelector' => http_build_query([
                 'involvedObject.kind' => $object->getKind(),
                 'involvedObject.name' => $object->getMetadata()->getName(),
-            ], null, ',')
+            ], null, ','),
         ]);
 
         return $this->connector->get($url, [

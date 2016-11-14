@@ -15,7 +15,7 @@ class PodSelector
     private $matchExpressions = [];
 
     /**
-     * @param array $matchLabels
+     * @param array                    $matchLabels
      * @param PodSelectorRequirement[] $matchExpressions
      */
     public function __construct(array $matchLabels = null, array $matchExpressions = null)

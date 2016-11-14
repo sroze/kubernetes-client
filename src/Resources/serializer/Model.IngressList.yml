@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\IngressList:
+    properties:
+        items:
+            type: array<Kubernetes\Client\Model\Ingress>

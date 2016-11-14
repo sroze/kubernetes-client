@@ -25,7 +25,7 @@ class ObjectMetadata
     private $deletionTimestamp;
 
     /**
-     * @var integer
+     * @var int
      */
     private $deletionGracePeriodSeconds;
 

@@ -40,19 +40,19 @@ class Event implements KubernetesObject
     private $lastTimestamp;
 
     /**
-     * @var integer
+     * @var int
      */
     private $count;
 
     /**
-     * @param ObjectMetadata $metadata
+     * @param ObjectMetadata  $metadata
      * @param ObjectReference $involvedObject
-     * @param string $reason
-     * @param string $message
-     * @param EventSource $source
-     * @param string $firstTimestamp
-     * @param string $lastTimestamp
-     * @param int $count
+     * @param string          $reason
+     * @param string          $message
+     * @param EventSource     $source
+     * @param string          $firstTimestamp
+     * @param string          $lastTimestamp
+     * @param int             $count
      */
     public function __construct(ObjectMetadata $metadata, ObjectReference $involvedObject, $reason = null, $message = null, EventSource $source = null, $firstTimestamp = null, $lastTimestamp = null, $count = null)
     {

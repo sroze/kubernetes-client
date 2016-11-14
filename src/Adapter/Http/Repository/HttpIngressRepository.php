@@ -2,11 +2,13 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
+use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\IngressNotFound;
 use Kubernetes\Client\Model\Ingress;
+use Kubernetes\Client\Model\IngressList;
 use Kubernetes\Client\Repository\IngressRepository;
 
 class HttpIngressRepository implements IngressRepository
@@ -53,6 +55,20 @@ class HttpIngressRepository implements IngressRepository
 
             throw $e;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByLabels(array $labels)
+    {
+        $labelSelector = HttpAdapter::createLabelSelector($labels);
+        $url = $this->namespaceClient->prefixPath('/ingresses?labelSelector='.$labelSelector);
+        $url = '/apis/extensions/v1beta1'.$url;
+
+        return $this->connector->get($url, [
+            'class' => IngressList::class,
+        ]);
     }
 
     /**

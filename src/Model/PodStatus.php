@@ -87,6 +87,6 @@ class PodStatus
      */
     public function getContainerStatuses()
     {
-        return $this->containerStatuses;
+        return $this->containerStatuses ?: [];
     }
 }

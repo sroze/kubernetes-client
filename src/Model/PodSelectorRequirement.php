@@ -20,8 +20,8 @@ class PodSelectorRequirement
     private $values;
 
     /**
-     * @param string $key
-     * @param string $operator
+     * @param string   $key
+     * @param string   $operator
      * @param string[] $values
      */
     public function __construct($key, $operator, array $values = null)
