@@ -4,7 +4,6 @@ namespace Kubernetes\Client;
 
 use Kubernetes\Client\Repository\DeploymentRepository;
 use Kubernetes\Client\Repository\EventRepository;
-use Kubernetes\Client\Repository\EventsRepository;
 use Kubernetes\Client\Repository\IngressRepository;
 use Kubernetes\Client\Repository\PersistentVolumeClaimRepository;
 use Kubernetes\Client\Repository\PodRepository;

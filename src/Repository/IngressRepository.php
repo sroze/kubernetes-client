@@ -4,6 +4,7 @@ namespace Kubernetes\Client\Repository;
 
 use Kubernetes\Client\Exception\IngressNotFound;
 use Kubernetes\Client\Model\Ingress;
+use Kubernetes\Client\Model\IngressList;
 
 interface IngressRepository
 {
@@ -17,6 +18,15 @@ interface IngressRepository
      * @return Ingress
      */
     public function findOneByName($name);
+
+    /**
+     * Find ingresses by labels.
+     *
+     * @param array $labels
+     *
+     * @return IngressList
+     */
+    public function findByLabels(array $labels);
 
     /**
      * Create an ingress object.

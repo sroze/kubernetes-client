@@ -34,9 +34,9 @@ class JmsSerializerRollingUpdateDeploymentHandler implements SubscribingHandlerI
 
     /**
      * @param JsonSerializationVisitor $visitor
-     * @param RollingUpdateDeployment $rollingUpdateDeployment
-     * @param array $type
-     * @param Context $context
+     * @param RollingUpdateDeployment  $rollingUpdateDeployment
+     * @param array                    $type
+     * @param Context                  $context
      *
      * @return array
      */
@@ -52,7 +52,7 @@ class JmsSerializerRollingUpdateDeploymentHandler implements SubscribingHandlerI
 
     /**
      * @param JsonDeserializationVisitor $visitor
-     * @param array $data
+     * @param array                      $data
      *
      * @return RollingUpdateDeployment
      */
