@@ -23,6 +23,13 @@ interface ServiceRepository
     public function findOneByName($name);
 
     /**
+     * @param array $labels
+     *
+     * @return ServiceList
+     */
+    public function findByLabels(array $labels);
+
+    /**
      * Test if a service with that name exists.
      *
      * @param string $name

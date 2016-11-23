@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
+use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
@@ -39,6 +40,19 @@ class HttpServiceRepository implements ServiceRepository
     public function findAll()
     {
         return $this->connector->get($this->namespaceClient->prefixPath('/services'), [
+            'class' => ServiceList::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByLabels(array $labels)
+    {
+        $labelSelector = HttpAdapter::createLabelSelector($labels);
+        $url = $this->namespaceClient->prefixPath('/services?labelSelector='.$labelSelector);
+
+        return $this->connector->get($url, [
             'class' => ServiceList::class,
         ]);
     }
