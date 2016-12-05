@@ -30,11 +30,15 @@ class Status
     /**
      * @param string $status
      * @param string $message
+     * @param string|null $reason
+     * @param int|null $code
      */
-    public function __construct($status, $message)
+    public function __construct($status, $message, $reason = null, $code = null)
     {
         $this->status = $status;
         $this->message = $message;
+        $this->reason = $reason;
+        $this->code = $code;
     }
 
     /**
