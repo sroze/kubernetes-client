@@ -10,7 +10,7 @@ use Kubernetes\Client\Exception\ServerError;
 use Kubernetes\Client\Model\Status;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class HttpConnector
+class HttpConnector implements HttpConnectorInterface
 {
     /**
      * @var SerializerInterface
