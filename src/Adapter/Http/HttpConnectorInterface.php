@@ -3,16 +3,9 @@
 namespace Kubernetes\Client\Adapter\Http;
 
 use Kubernetes\Client\Exception\ServerError;
-use Symfony\Component\Serializer\SerializerInterface;
 
 interface HttpConnectorInterface
 {
-    /**
-     * @param HttpClient          $httpClient
-     * @param SerializerInterface $serializer
-     */
-    public function __construct(HttpClient $httpClient, SerializerInterface $serializer);
-
     /**
      * @param string $path
      * @param array  $options
