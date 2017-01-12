@@ -3,6 +3,7 @@
 namespace Kubernetes\Client\Adapter\Http;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
 class GuzzleHttpClient implements HttpClient
 {
@@ -45,6 +46,7 @@ class GuzzleHttpClient implements HttpClient
     {
         $url = $this->getUrlForPath($path);
         $response = $this->guzzleClient->$method($url, $this->prepareOptions($body, $options));
+        /** @var ResponseInterface $response */
 
         if ($body = $response->getBody()) {
             if ($body->isSeekable()) {

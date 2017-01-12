@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Exception;
 
-use GuzzleHttp\Message\RequestInterface;
+use Psr\Http\Message\RequestInterface;
 use Kubernetes\Client\Model\Status;
 
 class ConnectorException extends Exception

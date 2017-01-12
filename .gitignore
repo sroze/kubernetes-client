@@ -1,4 +1,6 @@
 /vendor
 /composer.lock
-/bin
+/bin/behat
+/bin/phpspec
+/bin/phpunit
 /behat.yml
