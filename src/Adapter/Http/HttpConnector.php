@@ -136,7 +136,7 @@ class HttpConnector
             if ($response = $e->getResponse()) {
                 throw $this->createRequestException($e);
             }
-            $this->logger->error(get_class($e).' - '.$e->getMessage().' - '.$e->getTraceAsString());
+            $this->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
             throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
         }
 
