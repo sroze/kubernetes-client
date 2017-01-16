@@ -8,6 +8,8 @@ use GuzzleHttp\Exception\ServerException;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServerError;
 use Kubernetes\Client\Model\Status;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class HttpConnector
@@ -22,13 +24,20 @@ class HttpConnector
     private $httpClient;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param HttpClient          $httpClient
      * @param SerializerInterface $serializer
+     * @param ?LoggerInterface    $logger
      */
-    public function __construct(HttpClient $httpClient, SerializerInterface $serializer)
+    public function __construct(HttpClient $httpClient, SerializerInterface $serializer, LoggerInterface $logger = null)
     {
         $this->httpClient = $httpClient;
         $this->serializer = $serializer;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -127,7 +136,7 @@ class HttpConnector
             if ($response = $e->getResponse()) {
                 throw $this->createRequestException($e);
             }
-
+            $this->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
             throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
         }
 
