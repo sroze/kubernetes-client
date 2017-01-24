@@ -22,7 +22,7 @@ class NamespaceList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new \ArrayIterator($this->getNamespaces());
     }
 
     /**
@@ -30,6 +30,6 @@ class NamespaceList implements \IteratorAggregate
      */
     public function getNamespaces()
     {
-        return $this->items;
+        return $this->items ?: [];
     }
 }

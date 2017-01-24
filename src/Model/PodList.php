@@ -27,7 +27,7 @@ class PodList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new \ArrayIterator($this->getPods());
     }
 
     /**
@@ -35,6 +35,6 @@ class PodList implements \IteratorAggregate
      */
     public function getPods()
     {
-        return $this->items;
+        return $this->items ?: [];
     }
 }

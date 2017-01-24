@@ -27,7 +27,7 @@ class IngressList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new \ArrayIterator($this->getIngresses());
     }
 
     /**
@@ -35,6 +35,6 @@ class IngressList implements \IteratorAggregate
      */
     public function getIngresses()
     {
-        return $this->items;
+        return $this->items ?: [];
     }
 }

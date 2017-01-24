@@ -27,7 +27,7 @@ class ReplicationControllerList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new \ArrayIterator($this->getReplicationControllers());
     }
 
     /**
@@ -35,7 +35,7 @@ class ReplicationControllerList implements \IteratorAggregate
      */
     public function getReplicationControllers()
     {
-        return $this->items;
+        return $this->items ?: [];
     }
 
     /**
@@ -43,6 +43,6 @@ class ReplicationControllerList implements \IteratorAggregate
      */
     public function count()
     {
-        return count($this->items);
+        return count($this->getReplicationControllers());
     }
 }
