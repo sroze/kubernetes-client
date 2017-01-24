@@ -27,7 +27,7 @@ class EventList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new \ArrayIterator($this->getEvents());
     }
 
     /**
@@ -35,7 +35,7 @@ class EventList implements \IteratorAggregate
      */
     public function getEvents()
     {
-        return $this->items;
+        return $this->items ?: [];
     }
 
     /**
@@ -43,6 +43,6 @@ class EventList implements \IteratorAggregate
      */
     public function count()
     {
-        return count($this->items);
+        return count($this->getEvents());
     }
 }

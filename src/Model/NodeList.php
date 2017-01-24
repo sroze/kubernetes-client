@@ -22,7 +22,7 @@ class NodeList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->items);
+        return new \ArrayIterator($this->getNodes());
     }
 
     /**
@@ -30,6 +30,6 @@ class NodeList implements \IteratorAggregate
      */
     public function getNodes()
     {
-        return $this->items;
+        return $this->items ?: [];
     }
 }
