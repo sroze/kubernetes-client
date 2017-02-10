@@ -92,7 +92,7 @@ class HttpConnector
     {
         $options = array_merge_recursive([
             'headers' => [
-                'Content-Type' => 'application/strategic-merge-patch+json',
+                'Content-Type' => 'application/merge-patch+json',
             ],
         ], $options);
 
