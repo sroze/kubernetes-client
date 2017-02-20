@@ -7,6 +7,8 @@ use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServiceNotFound;
+use Kubernetes\Client\Model\KeyValueObjectList;
+use Kubernetes\Client\Model\ObjectMetadata;
 use Kubernetes\Client\Model\Service;
 use Kubernetes\Client\Model\ServiceList;
 use Kubernetes\Client\Model\Status;
@@ -117,6 +119,27 @@ class HttpServiceRepository implements ServiceRepository
         $path = sprintf('/services/%s', $serviceName);
 
         return $this->connector->patch($this->namespaceClient->prefixPath($path), $service, [
+            'class' => Service::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function annotate(string $name, KeyValueObjectList $annotations)
+    {
+        $currentService = $this->findOneByName($name);
+        foreach ($annotations as $annotation) {
+            $currentService->getMetadata()->getAnnotationList()->add($annotation);
+        }
+
+        $onlyAnnotationsServices = new Service(new ObjectMetadata(
+            $name,
+            null,
+            $currentService->getMetadata()->getAnnotationList()
+        ));
+
+        return $this->connector->patch($this->namespaceClient->prefixPath(sprintf('/services/%s', $name)), $onlyAnnotationsServices, [
             'class' => Service::class,
         ]);
     }
