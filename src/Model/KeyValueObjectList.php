@@ -114,4 +114,18 @@ class KeyValueObjectList implements \IteratorAggregate
     {
         return new \ArrayIterator($this->items);
     }
+
+    /**
+     * @param string $key
+     *
+     * @return string|null
+     */
+    public function get(string $key)
+    {
+        if (false === ($position = $this->indexByKey($key))) {
+            return null;
+        }
+
+        return $this->items[$position];
+    }
 }

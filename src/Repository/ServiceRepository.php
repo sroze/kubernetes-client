@@ -3,6 +3,7 @@
 namespace Kubernetes\Client\Repository;
 
 use Kubernetes\Client\Exception\ServiceNotFound;
+use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\Service;
 use Kubernetes\Client\Model\ServiceList;
 
@@ -58,4 +59,12 @@ interface ServiceRepository
      * @return Service
      */
     public function update(Service $service);
+
+    /**
+     * @param string $name
+     * @param KeyValueObjectList $annotations
+     *
+     * @return Service
+     */
+    public function annotate(string $name, KeyValueObjectList $annotations);
 }

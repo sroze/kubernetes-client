@@ -34,7 +34,7 @@ class Service implements KubernetesObject
     /**
      * @param string $name
      *
-     * @return Pod
+     * @return Service
      */
     public static function fromName($name)
     {
