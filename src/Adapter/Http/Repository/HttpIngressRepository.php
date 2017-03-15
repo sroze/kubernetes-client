@@ -9,6 +9,8 @@ use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\IngressNotFound;
 use Kubernetes\Client\Model\Ingress;
 use Kubernetes\Client\Model\IngressList;
+use Kubernetes\Client\Model\KeyValueObjectList;
+use Kubernetes\Client\Model\ObjectMetadata;
 use Kubernetes\Client\Repository\IngressRepository;
 
 class HttpIngressRepository implements IngressRepository
@@ -100,6 +102,30 @@ class HttpIngressRepository implements IngressRepository
         $url = '/apis/extensions/v1beta1'.$url;
 
         return $this->connector->patch($url, $ingress, [
+            'class' => Ingress::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function annotate(string $name, KeyValueObjectList $annotations)
+    {
+        $currentIngress= $this->findOneByName($name);
+        foreach ($annotations as $annotation) {
+            $currentIngress->getMetadata()->getAnnotationList()->add($annotation);
+        }
+
+        $onlyAnnotationsIngress = new Ingress(new ObjectMetadata(
+            $name,
+            null,
+            $currentIngress->getMetadata()->getAnnotationList()
+        ));
+
+        $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $name));
+        $url = '/apis/extensions/v1beta1'.$url;
+
+        return $this->connector->patch($url, $onlyAnnotationsIngress, [
             'class' => Ingress::class,
         ]);
     }
