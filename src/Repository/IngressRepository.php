@@ -5,6 +5,7 @@ namespace Kubernetes\Client\Repository;
 use Kubernetes\Client\Exception\IngressNotFound;
 use Kubernetes\Client\Model\Ingress;
 use Kubernetes\Client\Model\IngressList;
+use Kubernetes\Client\Model\KeyValueObjectList;
 
 interface IngressRepository
 {
@@ -54,4 +55,12 @@ interface IngressRepository
      * @return bool
      */
     public function exists($name);
+
+    /**
+     * @param string $name
+     * @param KeyValueObjectList $annotations
+     *
+     * @return Ingress
+     */
+    public function annotate(string $name, KeyValueObjectList $annotations);
 }

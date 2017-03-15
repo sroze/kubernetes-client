@@ -24,7 +24,7 @@ class Ingress implements KubernetesObject
      * @param IngressSpecification $specification
      * @param IngressStatus        $status
      */
-    public function __construct(ObjectMetadata $metadata, IngressSpecification $specification, IngressStatus $status = null)
+    public function __construct(ObjectMetadata $metadata, IngressSpecification $specification = null, IngressStatus $status = null)
     {
         $this->metadata = $metadata;
         $this->specification = $specification;
@@ -32,7 +32,7 @@ class Ingress implements KubernetesObject
     }
 
     /**
-     * @return IngressSpecification
+     * @return IngressSpecification|null
      */
     public function getSpecification()
     {
@@ -40,7 +40,7 @@ class Ingress implements KubernetesObject
     }
 
     /**
-     * @return IngressStatus
+     * @return IngressStatus|null
      */
     public function getStatus()
     {

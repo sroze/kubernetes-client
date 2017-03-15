@@ -118,7 +118,7 @@ class KeyValueObjectList implements \IteratorAggregate
     /**
      * @param string $key
      *
-     * @return string|null
+     * @return KeyValueObject|null
      */
     public function get(string $key)
     {
