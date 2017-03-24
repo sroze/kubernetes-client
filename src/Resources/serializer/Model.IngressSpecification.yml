@@ -4,3 +4,5 @@ Kubernetes\Client\Model\IngressSpecification:
             type: Kubernetes\Client\Model\IngressBackend
         tls:
             type: array<Kubernetes\Client\Model\IngressTls>
+        rules:
+            type: array<Kubernetes\Client\Model\IngressRule>

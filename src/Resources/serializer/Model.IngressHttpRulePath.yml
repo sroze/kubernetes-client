@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\IngressHttpRulePath:
+    properties:
+        backend:
+            type: Kubernetes\Client\Model\IngressBackend
+        path:
+            type: string

@@ -15,17 +15,24 @@ class IngressSpecification
     private $tls;
 
     /**
-     * @param IngressBackend $backend
-     * @param IngressTls[]   $tls
+     * @var IngressRule[]
      */
-    public function __construct(IngressBackend $backend, array $tls = [])
+    private $rules;
+
+    /**
+     * @param IngressBackend $backend
+     * @param IngressTls[] $tls
+     * @param IngressRule[] $rules
+     */
+    public function __construct(IngressBackend $backend = null, array $tls = [], array $rules = [])
     {
         $this->backend = $backend;
         $this->tls = $tls;
+        $this->rules = $rules;
     }
 
     /**
-     * @return IngressBackend
+     * @return IngressBackend|null
      */
     public function getBackend()
     {
@@ -38,5 +45,13 @@ class IngressSpecification
     public function getTls()
     {
         return $this->tls;
+    }
+
+    /**
+     * @return IngressRule[]
+     */
+    public function getRules(): array
+    {
+        return $this->rules ?: [];
     }
 }
