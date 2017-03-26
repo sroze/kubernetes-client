@@ -1,0 +1,4 @@
+Kubernetes\Client\Model\IngressHttpRule:
+    properties:
+        paths:
+            type: array<Kubernetes\Client\Model\IngressHttpRulePath>

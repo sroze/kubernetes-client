@@ -3,3 +3,5 @@ Kubernetes\Client\Model\IngressTls:
         secretName:
             type: string
             serialized_name: secretName
+        hosts:
+            type: array<string>

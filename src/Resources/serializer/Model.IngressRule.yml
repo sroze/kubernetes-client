@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\IngressRule:
+    properties:
+        host:
+            type: string
+        http:
+            type: Kubernetes\Client\Model\IngressHttpRule

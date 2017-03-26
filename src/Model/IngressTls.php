@@ -10,11 +10,18 @@ class IngressTls
     private $secretName;
 
     /**
-     * @param string $secretName
+     * @var string[]
      */
-    public function __construct($secretName)
+    private $hosts;
+
+    /**
+     * @param string $secretName
+     * @param string[] $hosts
+     */
+    public function __construct($secretName, array $hosts = null)
     {
         $this->secretName = $secretName;
+        $this->hosts = $hosts;
     }
 
     /**
@@ -23,5 +30,13 @@ class IngressTls
     public function getSecretName()
     {
         return $this->secretName;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    public function getHosts()
+    {
+        return $this->hosts;
     }
 }
