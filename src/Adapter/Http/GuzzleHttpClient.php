@@ -3,7 +3,6 @@
 namespace Kubernetes\Client\Adapter\Http;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Promise;
 use Psr\Http\Message\ResponseInterface;
 
 class GuzzleHttpClient implements HttpClient

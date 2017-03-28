@@ -2,11 +2,9 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
-use function foo\func;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServerError;
@@ -156,6 +154,16 @@ class HttpConnector
         return $response;
     }
 
+    /**
+     * @param $method
+     * @param $path
+     * @param $body
+     * @param array $options
+     *
+     * @return PromiseInterface
+     *
+     * @throws ServerError
+     */
     private function asyncRequest($method, $path, $body, array $options)
     {
         $self = $this;

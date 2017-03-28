@@ -46,6 +46,9 @@ class HttpReplicationControllerRepository implements ReplicationControllerReposi
         ]);
     }
 
+    /**
+     * {@inheritdoc)
+     */
     public function asyncFindAll()
     {
         return $this->connector->asyncGet($this->namespaceClient->prefixPath('/replicationcontrollers'), [
