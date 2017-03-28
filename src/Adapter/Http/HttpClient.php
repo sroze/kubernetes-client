@@ -2,6 +2,8 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+use GuzzleHttp\Promise\PromiseInterface;
+
 interface HttpClient
 {
     /**
@@ -13,4 +15,13 @@ interface HttpClient
      * @return string
      */
     public function request($method, $path, $body = null, array $options = []);
+
+    /**
+     * @param $method
+     * @param $path
+     * @param null $body
+     * @param array $options
+     * @return PromiseInterface
+     */
+    public function asyncRequest($method, $path, $body = null, array $options = []);
 }

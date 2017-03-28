@@ -47,6 +47,14 @@ class AuthenticationMiddleware implements HttpClient
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function asyncRequest($method, $path, $body = null, array $options = [])
+    {
+        return $this->httpClient->asyncRequest($method, $path, $body, $options);
+    }
+
+    /**
      * @return string
      */
     private function getBasicAuthorizationString()

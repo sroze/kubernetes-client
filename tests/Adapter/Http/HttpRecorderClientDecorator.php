@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+use GuzzleHttp\Promise\Promise;
 use Kubernetes\Client\Adapter\Http\HttpClient;
 
 class HttpRecorderClientDecorator implements HttpClient
@@ -37,5 +38,22 @@ class HttpRecorderClientDecorator implements HttpClient
         file_put_contents($filePath, $response);
 
         return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asyncRequest($method, $path, $body = null, array $options = [])
+    {
+        $decoratedClient = $this->decoratedClient;
+
+        return new Promise(
+            function () use ($decoratedClient, $method, $path, $body, $options) {
+                $filePath = $this->fileResolver->request($method, $path, $body, $options);
+                $response = $decoratedClient->request($method, $path, $body, $options);
+                file_put_contents($filePath, $response);
+                return $response;
+            }
+        );
     }
 }

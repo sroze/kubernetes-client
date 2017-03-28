@@ -2,9 +2,11 @@
 
 namespace spec\Kubernetes\Client\Adapter\Http\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Adapter\Http\Repository\HttpDeploymentRepository;
 use Kubernetes\Client\Model\Deployment;
 use Kubernetes\Client\Model\ObjectMetadata;
+use Kubernetes\Client\NamespaceClient;
 use PhpSpec\ObjectBehavior;
 
 use Kubernetes\Client\Adapter\Http\HttpConnector;
@@ -135,5 +137,16 @@ class HttpDeploymentRepositorySpec extends ObjectBehavior
 
         // ACT
         $this->update($deployment1);
+    }
+
+    function it_can_do_async_find_all_requests(HttpConnector $connector, NamespaceClient $namespaceClient, PromiseInterface $promise)
+    {
+        $connector
+            ->asyncGet('/apis/extensions/v1beta1/something', ['class' => 'Kubernetes\Client\Model\DeploymentList'])
+            ->shouldBeCalled()
+            ->willReturn($promise);
+        $namespaceClient->prefixPath('/deployments')->shouldBeCalled()->willReturn('/something');
+
+        $this->asyncFindAll()->shouldReturn($promise);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\ReplicationControllerNotFound;
 use Kubernetes\Client\Exception\TooManyObjects;
 use Kubernetes\Client\Model\ReplicationController;
@@ -13,6 +14,11 @@ interface ReplicationControllerRepository
      * @return ReplicationControllerList
      */
     public function findAll();
+
+    /**
+     * @return PromiseInterface
+     */
+    public function asyncFindAll();
 
     /**
      * @param ReplicationController $replicationController

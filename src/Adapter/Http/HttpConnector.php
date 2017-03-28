@@ -2,9 +2,12 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+use function foo\func;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Promise\Promise;
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServerError;
 use Kubernetes\Client\Model\Status;
@@ -49,6 +52,16 @@ class HttpConnector
     public function get($path, array $options = [])
     {
         return $this->request('get', $path, null, $options);
+    }
+
+    /**
+     * @param $path
+     * @param array $options
+     * @return PromiseInterface
+     */
+    public function asyncGet($path, array $options = [])
+    {
+        return $this->asyncRequest('get', $path, null, $options);
     }
 
     /**
@@ -141,6 +154,30 @@ class HttpConnector
         }
 
         return $response;
+    }
+
+    private function asyncRequest($method, $path, $body, array $options)
+    {
+        $self = $this;
+        $body = $this->serializeBody($body, $options);
+
+        return $this->httpClient->asyncRequest($method, $path, $body, $options)->then(
+            function ($responseContents) use ($self, $options) {
+                return $self->getResponse($responseContents, $options);
+            },
+            function (\Exception $e) use ($self) {
+                if ($e instanceof ServerException) {
+                    throw new ServerError(new Status(Status::FAILURE, $e->getMessage()));
+                }
+                if ($e instanceof RequestException) {
+                    if ($response = $e->getResponse()) {
+                        throw $self->createRequestException($e);
+                    }
+                    $self->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
+                    throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
+                }
+            }
+        );
     }
 
     /**

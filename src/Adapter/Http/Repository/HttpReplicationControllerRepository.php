@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
@@ -44,6 +45,15 @@ class HttpReplicationControllerRepository implements ReplicationControllerReposi
             'groups' => ['Default', 'read'],
         ]);
     }
+
+    public function asyncFindAll()
+    {
+        return $this->connector->asyncGet($this->namespaceClient->prefixPath('/replicationcontrollers'), [
+            'class' => ReplicationControllerList::class,
+            'groups' => ['Default', 'read'],
+        ]);
+    }
+
 
     /**
      * {@inheritdoc}
