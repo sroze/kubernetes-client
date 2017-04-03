@@ -17,10 +17,11 @@ interface HttpClient
     public function request($method, $path, $body = null, array $options = []);
 
     /**
-     * @param $method
-     * @param $path
-     * @param null $body
-     * @param array $options
+     * @param string $method
+     * @param string $path
+     * @param string $body
+     * @param array  $options
+     *
      * @return PromiseInterface
      */
     public function asyncRequest($method, $path, $body = null, array $options = []);
