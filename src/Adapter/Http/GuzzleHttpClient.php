@@ -2,13 +2,13 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class GuzzleHttpClient implements HttpClient
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $guzzleClient;
 
@@ -23,11 +23,11 @@ class GuzzleHttpClient implements HttpClient
     private $version;
 
     /**
-     * @param Client $guzzleClient
-     * @param string $baseUrl
-     * @param string $version
+     * @param ClientInterface $guzzleClient
+     * @param string          $baseUrl
+     * @param string          $version
      */
-    public function __construct(Client $guzzleClient, $baseUrl, $version)
+    public function __construct(ClientInterface $guzzleClient, $baseUrl, $version)
     {
         $this->guzzleClient = $guzzleClient;
         $this->baseUrl = $baseUrl;
@@ -39,19 +39,13 @@ class GuzzleHttpClient implements HttpClient
      */
     public function request($method, $path, $body = null, array $options = [])
     {
-        $url = $this->getUrlForPath($path);
-        $response = $this->guzzleClient->$method($url, $this->prepareOptions($body, $options));
-        /** @var ResponseInterface $response */
-
-        if ($body = $response->getBody()) {
-            if ($body->isSeekable()) {
-                $body->seek(0);
-            }
-
-            return $body->getContents();
-        }
-
-        return;
+        return $this->returnBodyContents(
+            $this->guzzleClient->request(
+                $method,
+                $this->getUrlForPath($path),
+                $this->prepareOptions($body, $options)
+            )
+        );
     }
 
     /**
@@ -59,7 +53,9 @@ class GuzzleHttpClient implements HttpClient
      */
     public function asyncRequest($method, $path, $body = null, array $options = [])
     {
-        return $this->guzzleClient->requestAsync($method, $path, $this->prepareOptions($body, $options));
+        return $this->guzzleClient->requestAsync($method, $this->getUrlForPath($path), $this->prepareOptions($body, $options))->then(function (ResponseInterface $response) {
+            return $this->returnBodyContents($response);
+        });
     }
 
     /**
@@ -74,6 +70,24 @@ class GuzzleHttpClient implements HttpClient
         }
 
         return sprintf('%s%s', $this->baseUrl, $path);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return string|null
+     */
+    private function returnBodyContents(ResponseInterface $response)
+    {
+        if ($body = $response->getBody()) {
+            if ($body->isSeekable()) {
+                $body->seek(0);
+            }
+
+            return $body->getContents();
+        }
+
+        return null;
     }
 
     /**
