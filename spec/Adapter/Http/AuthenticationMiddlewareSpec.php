@@ -27,4 +27,16 @@ class AuthenticationMiddlewareSpec extends ObjectBehavior
             [ 'headers' => ['Authorization' => 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=',]]
         )->shouldHaveBeenCalled();
     }
+
+    function it_do_an_authenticated_request_asynchronously(HttpClient $httpClient)
+    {
+        $this->asyncRequest('get', 'path/', '?body=something', []);
+
+        $httpClient->asyncRequest(
+            'get',
+            'path/',
+            '?body=something',
+            [ 'headers' => ['Authorization' => 'Basic dXNlcm5hbWU6cGFzc3dvcmQ=',]]
+        )->shouldHaveBeenCalled();
+    }
 }

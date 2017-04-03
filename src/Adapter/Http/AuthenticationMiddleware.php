@@ -36,14 +36,7 @@ class AuthenticationMiddleware implements HttpClient
      */
     public function request($method, $path, $body = null, array $options = [])
     {
-        $authorizationHeader = $this->isTokenAuthentication() ? $this->getTokenAuthorizationString() : $this->getBasicAuthorizationString();
-        $options = array_merge_recursive([
-            'headers' => [
-                'Authorization' => $authorizationHeader,
-            ],
-        ], $options);
-
-        return $this->httpClient->request($method, $path, $body, $options);
+        return $this->httpClient->request($method, $path, $body, $this->addAuthenticationHeader($options));
     }
 
     /**
@@ -51,7 +44,7 @@ class AuthenticationMiddleware implements HttpClient
      */
     public function asyncRequest($method, $path, $body = null, array $options = [])
     {
-        return $this->httpClient->asyncRequest($method, $path, $body, $options);
+        return $this->httpClient->asyncRequest($method, $path, $body, $this->addAuthenticationHeader($options));
     }
 
     /**
@@ -76,5 +69,16 @@ class AuthenticationMiddleware implements HttpClient
     private function isTokenAuthentication()
     {
         return null === $this->password;
+    }
+
+    private function addAuthenticationHeader(array $options): array
+    {
+        $authorizationHeader = $this->isTokenAuthentication() ? $this->getTokenAuthorizationString() : $this->getBasicAuthorizationString();
+
+        return array_merge_recursive([
+            'headers' => [
+                'Authorization' => $authorizationHeader,
+            ],
+        ], $options);
     }
 }
