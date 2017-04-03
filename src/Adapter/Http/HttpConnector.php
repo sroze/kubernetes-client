@@ -53,8 +53,9 @@ class HttpConnector
     }
 
     /**
-     * @param $path
-     * @param array $options
+     * @param string $path
+     * @param array  $options
+     *
      * @return PromiseInterface
      */
     public function asyncGet($path, array $options = [])
@@ -155,9 +156,9 @@ class HttpConnector
     }
 
     /**
-     * @param $method
-     * @param $path
-     * @param $body
+     * @param string $method
+     * @param string $path
+     * @param string $body
      * @param array $options
      *
      * @return PromiseInterface
