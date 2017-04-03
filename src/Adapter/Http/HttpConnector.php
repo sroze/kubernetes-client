@@ -167,22 +167,21 @@ class HttpConnector
      */
     private function asyncRequest($method, $path, $body, array $options)
     {
-        $self = $this;
         $body = $this->serializeBody($body, $options);
 
         return $this->httpClient->asyncRequest($method, $path, $body, $options)->then(
-            function ($responseContents) use ($self, $options) {
-                return $self->getResponse($responseContents, $options);
+            function ($responseContents) use ($options) {
+                return $this->getResponse($responseContents, $options);
             },
-            function (\Exception $e) use ($self) {
+            function (\Exception $e) {
                 if ($e instanceof ServerException) {
                     throw new ServerError(new Status(Status::FAILURE, $e->getMessage()));
                 }
                 if ($e instanceof RequestException) {
                     if ($response = $e->getResponse()) {
-                        throw $self->createRequestException($e);
+                        throw $this->createRequestException($e);
                     }
-                    $self->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
+                    $this->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
                     throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
                 }
             }
