@@ -45,12 +45,10 @@ class HttpRecorderClientDecorator implements HttpClient
      */
     public function asyncRequest($method, $path, $body = null, array $options = [])
     {
-        $decoratedClient = $this->decoratedClient;
-
         return new Promise(
-            function () use ($decoratedClient, $method, $path, $body, $options) {
+            function () use ($method, $path, $body, $options) {
                 $filePath = $this->fileResolver->request($method, $path, $body, $options);
-                $response = $decoratedClient->request($method, $path, $body, $options);
+                $response = $this->decoratedClient->request($method, $path, $body, $options);
                 file_put_contents($filePath, $response);
                 return $response;
             }
