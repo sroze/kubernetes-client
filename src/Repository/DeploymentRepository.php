@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\DeploymentNotFound;
 use Kubernetes\Client\Model\Deployment;
 use Kubernetes\Client\Model\DeploymentList;
@@ -25,6 +26,14 @@ interface DeploymentRepository
      * @return DeploymentList
      */
     public function findAll();
+
+    /**
+     * Find all the deployments
+     * Should return Kubernetes\Client\Model\DeploymentList once the promise is resolved
+     *
+     * @return PromiseInterface
+     */
+    public function asyncFindAll();
 
     /**
      * Create an Deployment object.

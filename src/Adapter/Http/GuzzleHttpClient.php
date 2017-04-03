@@ -35,12 +35,7 @@ class GuzzleHttpClient implements HttpClient
     }
 
     /**
-     * @param string $method
-     * @param string $path
-     * @param string $body
-     * @param array  $options
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function request($method, $path, $body = null, array $options = [])
     {
@@ -57,6 +52,14 @@ class GuzzleHttpClient implements HttpClient
         }
 
         return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asyncRequest($method, $path, $body = null, array $options = [])
+    {
+        return $this->guzzleClient->requestAsync($method, $path, $this->prepareOptions($body, $options));
     }
 
     /**

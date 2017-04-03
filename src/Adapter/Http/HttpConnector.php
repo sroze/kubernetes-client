@@ -5,6 +5,7 @@ namespace Kubernetes\Client\Adapter\Http;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\ServerError;
 use Kubernetes\Client\Model\Status;
@@ -49,6 +50,17 @@ class HttpConnector
     public function get($path, array $options = [])
     {
         return $this->request('get', $path, null, $options);
+    }
+
+    /**
+     * @param string $path
+     * @param array  $options
+     *
+     * @return PromiseInterface
+     */
+    public function asyncGet($path, array $options = [])
+    {
+        return $this->asyncRequest('get', $path, null, $options);
     }
 
     /**
@@ -141,6 +153,39 @@ class HttpConnector
         }
 
         return $response;
+    }
+
+    /**
+     * @param string $method
+     * @param string $path
+     * @param string $body
+     * @param array $options
+     *
+     * @return PromiseInterface
+     *
+     * @throws ServerError
+     */
+    private function asyncRequest($method, $path, $body, array $options)
+    {
+        $body = $this->serializeBody($body, $options);
+
+        return $this->httpClient->asyncRequest($method, $path, $body, $options)->then(
+            function ($responseContents) use ($options) {
+                return $this->getResponse($responseContents, $options);
+            },
+            function (\Exception $e) {
+                if ($e instanceof ServerException) {
+                    throw new ServerError(new Status(Status::FAILURE, $e->getMessage()));
+                }
+                if ($e instanceof RequestException) {
+                    if ($response = $e->getResponse()) {
+                        throw $this->createRequestException($e);
+                    }
+                    $this->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
+                    throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
+                }
+            }
+        );
     }
 
     /**

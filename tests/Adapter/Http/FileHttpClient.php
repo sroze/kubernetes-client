@@ -2,6 +2,9 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+use GuzzleHttp\Promise\Promise;
+use GuzzleHttp\Promise\PromiseInterface;
+
 class FileHttpClient implements HttpClient
 {
     /**
@@ -31,5 +34,25 @@ class FileHttpClient implements HttpClient
         }
 
         return file_get_contents($filePath);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asyncRequest($method, $path, $body = null, array $options = [])
+    {
+        $filePath = $this->fileResolver->getFilePath($method, $path, $body, $options);
+        return new Promise(
+            function () use ($filePath) {
+                if (!file_exists($filePath)) {
+                    throw new \RuntimeException(sprintf(
+                        'The HTTP fixture file "%s" do not exists',
+                        $filePath
+                    ));
+                }
+
+                return file_get_contents($filePath);
+            }
+        );
     }
 }

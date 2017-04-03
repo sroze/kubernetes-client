@@ -48,6 +48,19 @@ class HttpDeploymentRepository implements DeploymentRepository
     /**
      * {@inheritdoc}
      */
+    public function asyncFindAll()
+    {
+        $url = $this->namespaceClient->prefixPath('/deployments');
+        $url = '/apis/extensions/v1beta1'.$url;
+
+        return $this->connector->asyncGet($url, [
+            'class' => DeploymentList::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByName($name)
     {
         try {
@@ -114,7 +127,6 @@ class HttpDeploymentRepository implements DeploymentRepository
             'class' => Deployment\DeploymentRollback::class,
         ]);
     }
-
     /**
      * {@inheritdoc}
      */
