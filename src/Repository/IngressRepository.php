@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\IngressNotFound;
 use Kubernetes\Client\Model\Ingress;
 use Kubernetes\Client\Model\IngressList;
@@ -9,6 +10,13 @@ use Kubernetes\Client\Model\KeyValueObjectList;
 
 interface IngressRepository
 {
+    /**
+     * Will return an `IngressList` object.
+     *
+     * @return PromiseInterface
+     */
+    public function asyncFindAll() : PromiseInterface;
+
     /**
      * Find an ingress by its name.
      *

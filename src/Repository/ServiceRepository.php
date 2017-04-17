@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\ServiceNotFound;
 use Kubernetes\Client\Model\KeyValueObjectList;
 use Kubernetes\Client\Model\Service;
@@ -13,6 +14,13 @@ interface ServiceRepository
      * @return ServiceList
      */
     public function findAll();
+
+    /**
+     * Find all the services. The `PromiseInterface` will return a `ServiceList` object.
+     *
+     * @return PromiseInterface
+     */
+    public function asyncFindAll() : PromiseInterface;
 
     /**
      * @param string $name

@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Exception\PodNotFound;
 use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodList;
@@ -13,6 +14,13 @@ interface PodRepository
      * @return PodList
      */
     public function findAll();
+
+    /**
+     * Find all the pods. The promise will return a `PodList` object.
+     *
+     * @return PromiseInterface
+     */
+    public function asyncFindAll() : PromiseInterface;
 
     /**
      * @param array $labels
