@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http\Repository;
 
+use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
@@ -49,6 +50,17 @@ class HttpPodRepository implements PodRepository
     public function findAll()
     {
         return $this->connector->get($this->namespaceClient->prefixPath('/pods'), [
+            'class' => PodList::class,
+            'groups' => ['Default', 'show'],
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asyncFindAll() : PromiseInterface
+    {
+        return $this->connector->asyncGet($this->namespaceClient->prefixPath('/pods'), [
             'class' => PodList::class,
             'groups' => ['Default', 'show'],
         ]);
