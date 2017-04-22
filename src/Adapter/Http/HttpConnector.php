@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class HttpConnector
+class HttpConnector implements HttpConnectorInterface
 {
     /**
      * @var SerializerInterface
