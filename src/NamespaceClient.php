@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client;
 
+use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Repository\DeploymentRepository;
 use Kubernetes\Client\Repository\EventRepository;
 use Kubernetes\Client\Repository\IngressRepository;
@@ -58,4 +59,9 @@ interface NamespaceClient
      * @return EventRepository
      */
     public function getEventRepository();
+
+    /**
+     * @return KubernetesNamespace
+     */
+    public function getNamespace();
 }
