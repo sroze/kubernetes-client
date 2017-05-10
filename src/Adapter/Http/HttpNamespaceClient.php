@@ -117,4 +117,13 @@ class HttpNamespaceClient implements NamespaceClient
     {
         return sprintf('/namespaces/%s%s', $this->namespace->getMetadata()->getName(), $path);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
 }
