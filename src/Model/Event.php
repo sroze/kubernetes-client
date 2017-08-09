@@ -15,32 +15,32 @@ class Event implements KubernetesObject
     private $involvedObject;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $reason;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $message;
 
     /**
-     * @var EventSource
+     * @var EventSource|null
      */
     private $source;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $firstTimestamp;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $lastTimestamp;
 
     /**
-     * @var int
+     * @var int|null
      */
     private $count;
 
@@ -80,5 +80,61 @@ class Event implements KubernetesObject
     public function getMetadata()
     {
         return $this->metadata;
+    }
+
+    /**
+     * @return ObjectReference
+     */
+    public function getInvolvedObject(): ObjectReference
+    {
+        return $this->involvedObject;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getReason()
+    {
+        return $this->reason;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @return EventSource|null
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFirstTimestamp()
+    {
+        return $this->firstTimestamp;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLastTimestamp()
+    {
+        return $this->lastTimestamp;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCount()
+    {
+        return $this->count;
     }
 }
