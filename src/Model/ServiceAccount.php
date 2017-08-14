@@ -24,7 +24,7 @@ class ServiceAccount implements KubernetesObject
      * @param ObjectReference[]      $secrets
      * @param LocalObjectReference[] $imagePullSecrets
      */
-    public function __construct(ObjectMetadata $metadata, array $secrets, array $imagePullSecrets)
+    public function __construct(ObjectMetadata $metadata, array $secrets = [], array $imagePullSecrets = [])
     {
         $this->metadata = $metadata;
         $this->secrets = $secrets;

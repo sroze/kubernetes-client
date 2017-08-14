@@ -1,0 +1,13 @@
+Kubernetes\Client\Model\RBAC\ClusterRoleBinding:
+    virtual_properties:
+        getKind:
+            serialized_name: Kind
+            type: string
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        roleRef:
+            type: Kubernetes\Client\Model\RBAC\RoleRef
+            serialized_name: roleRef
+        subjects:
+            type: array<Kubernetes\Client\Model\RBAC\Subject>

@@ -1,0 +1,11 @@
+Kubernetes\Client\Model\RBAC\Subject:
+    properties:
+        apiVersion:
+            type: string
+            serialized_name: apiVersion
+        kind:
+            type: string
+        namespace:
+            type: string
+        name:
+            type: string

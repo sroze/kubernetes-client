@@ -1,0 +1,12 @@
+Kubernetes\Client\Model\RBAC\PolicyRule:
+    properties:
+        apiGroups:
+            type: array<string>
+            serialized_name: apiGroups
+        resources:
+            type: array<string>
+        verbs:
+            type: array<string>
+        resourceNames:
+            type: array<string>
+            serialized_name: resourceNames
