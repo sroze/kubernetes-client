@@ -24,8 +24,8 @@ To had user authentication, you can decorate the http client:
 ```php
 $authenticatedHttpClient = new AuthenticationMiddleware(
     $httpClient,
-    'username',
-    'password'
+    AuthenticationMiddleware::USERNAME_PASSWORD,
+    'username:password'
 );
 ```
 

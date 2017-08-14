@@ -53,8 +53,10 @@ class ClientContext implements Context, SnippetAcceptingContext
             );
         }
 
-        if ($usernameOrToken !== null) {
-            $httpClient = new AuthenticationMiddleware($httpClient, $usernameOrToken, $password);
+        if ($password !== null) {
+            $httpClient = new AuthenticationMiddleware($httpClient, AuthenticationMiddleware::USERNAME_PASSWORD, $usernameOrToken.':'.$password);
+        } elseif ($usernameOrToken !== null) {
+            $httpClient = new AuthenticationMiddleware($httpClient, AuthenticationMiddleware::TOKEN, $usernameOrToken);
         }
 
         $connector = new HttpConnector(
