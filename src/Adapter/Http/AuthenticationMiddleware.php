@@ -2,6 +2,8 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+require_once 'functions.php';
+
 class AuthenticationMiddleware implements HttpClient
 {
     const USERNAME_PASSWORD = 'username:password';
@@ -79,7 +81,7 @@ class AuthenticationMiddleware implements HttpClient
     {
         if (self::CERTIFICATE == $this->authenticationType) {
             $authorizationOptions = [
-                'cert' => $this->createCertificateFile($this->credentials),
+                'cert' => certificate_file_path_from_contents($this->credentials),
             ];
         } else {
             $authorizationOptions = [
@@ -90,17 +92,5 @@ class AuthenticationMiddleware implements HttpClient
         }
 
         return array_merge_recursive($authorizationOptions, $options);
-    }
-
-    private function createCertificateFile(string $certificateContents)
-    {
-        $file = tempnam(sys_get_temp_dir(), 'certificate');
-        file_put_contents($file, $certificateContents);
-
-        register_shutdown_function(function() use($file) {
-            unlink($file);
-        });
-
-        return $file;
     }
 }
