@@ -31,17 +31,25 @@ class ClientContext implements Context, SnippetAcceptingContext
      * @param string $version
      * @param string $usernameOrToken
      * @param string $password
+     * @param bool $integration
+     * @param bool $record
+     * @param string|null $caCertificate
      */
-    public function __construct($baseUrl, $version, $usernameOrToken = null, $password = null, $integration = false, $record = false)
+    public function __construct($baseUrl, $version, $usernameOrToken = null, $password = null, $integration = false, $record = false, $caCertificate = null)
     {
         $serializer = SerializerBuilder::create()
             ->addMetadataDir(__DIR__.'/../../src/Resources/serializer', 'Kubernetes\Client')
             ->build();
 
         if ($integration) {
-            $httpClient = new GuzzleHttpClient(new GuzzleClient([
-                'verify' => false,
-            ]), $baseUrl, $version);
+            $httpClient = new GuzzleHttpClient(
+                new GuzzleClient([
+                    'verify' => false,
+                ]),
+                $baseUrl,
+                $version,
+                $caCertificate
+            );
         } else {
             $httpClient = new FileHttpClient(new FileResolver());
         }
@@ -53,8 +61,14 @@ class ClientContext implements Context, SnippetAcceptingContext
             );
         }
 
-        if ($usernameOrToken !== null) {
-            $httpClient = new AuthenticationMiddleware($httpClient, $usernameOrToken, $password);
+        if ($password !== null) {
+            if ($usernameOrToken == 'cert') {
+                $httpClient = new AuthenticationMiddleware($httpClient, AuthenticationMiddleware::CERTIFICATE, $password);
+            } else {
+                $httpClient = new AuthenticationMiddleware($httpClient, AuthenticationMiddleware::USERNAME_PASSWORD, $usernameOrToken . ':' . $password);
+            }
+        } elseif ($usernameOrToken !== null) {
+            $httpClient = new AuthenticationMiddleware($httpClient, AuthenticationMiddleware::TOKEN, $usernameOrToken);
         }
 
         $connector = new HttpConnector(

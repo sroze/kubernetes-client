@@ -5,6 +5,8 @@ namespace Kubernetes\Client\Adapter\Http;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
+require_once 'functions.php';
+
 class GuzzleHttpClient implements HttpClient
 {
     /**
@@ -23,15 +25,22 @@ class GuzzleHttpClient implements HttpClient
     private $version;
 
     /**
-     * @param ClientInterface $guzzleClient
-     * @param string          $baseUrl
-     * @param string          $version
+     * @var string
      */
-    public function __construct(ClientInterface $guzzleClient, $baseUrl, $version)
+    private $caCertificate;
+
+    /**
+     * @param ClientInterface $guzzleClient
+     * @param string $baseUrl
+     * @param string $version
+     * @param string $caCertificate
+     */
+    public function __construct(ClientInterface $guzzleClient, string $baseUrl, string $version, string $caCertificate = null)
     {
         $this->guzzleClient = $guzzleClient;
         $this->baseUrl = $baseUrl;
         $this->version = $version;
+        $this->caCertificate = $caCertificate;
     }
 
     /**
@@ -105,6 +114,10 @@ class GuzzleHttpClient implements HttpClient
                 'Content-Type' => 'application/json',
             ],
         ];
+
+        if (null !== $this->caCertificate) {
+            $defaults['verify'] = certificate_file_path_from_contents($this->caCertificate);
+        }
 
         if ($body !== null) {
             $defaults['body'] = $body;

@@ -13,7 +13,7 @@ class AuthenticationMiddlewareSpec extends ObjectBehavior
 {
     function let(HttpClient $httpClient)
     {
-        $this->beConstructedWith($httpClient, 'username', 'password');
+        $this->beConstructedWith($httpClient, AuthenticationMiddleware::USERNAME_PASSWORD, 'username:password');
     }
 
     function it_can_do_an_authenticated_request(HttpClient $httpClient)

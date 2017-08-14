@@ -2,8 +2,14 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+require_once 'functions.php';
+
 class AuthenticationMiddleware implements HttpClient
 {
+    const USERNAME_PASSWORD = 'username:password';
+    const TOKEN = 'token';
+    const CERTIFICATE = 'certificate';
+
     /**
      * @var HttpClient
      */
@@ -12,23 +18,23 @@ class AuthenticationMiddleware implements HttpClient
     /**
      * @var string
      */
-    private $usernameOrToken;
+    private $authenticationType;
 
     /**
      * @var string
      */
-    private $password;
+    private $credentials;
 
     /**
      * @param HttpClient $httpClient
-     * @param string     $usernameOrToken
-     * @param string     $password
+     * @param string $authenticationType
+     * @param string $credentials
      */
-    public function __construct(HttpClient $httpClient, $usernameOrToken, $password = null)
+    public function __construct(HttpClient $httpClient, string $authenticationType, string $credentials)
     {
         $this->httpClient = $httpClient;
-        $this->usernameOrToken = $usernameOrToken;
-        $this->password = $password;
+        $this->authenticationType = $authenticationType;
+        $this->credentials = $credentials;
     }
 
     /**
@@ -36,7 +42,7 @@ class AuthenticationMiddleware implements HttpClient
      */
     public function request($method, $path, $body = null, array $options = [])
     {
-        return $this->httpClient->request($method, $path, $body, $this->addAuthenticationHeader($options));
+        return $this->httpClient->request($method, $path, $body, $this->addAuthenticationOptions($options));
     }
 
     /**
@@ -44,7 +50,7 @@ class AuthenticationMiddleware implements HttpClient
      */
     public function asyncRequest($method, $path, $body = null, array $options = [])
     {
-        return $this->httpClient->asyncRequest($method, $path, $body, $this->addAuthenticationHeader($options));
+        return $this->httpClient->asyncRequest($method, $path, $body, $this->addAuthenticationOptions($options));
     }
 
     /**
@@ -52,7 +58,7 @@ class AuthenticationMiddleware implements HttpClient
      */
     private function getBasicAuthorizationString()
     {
-        return 'Basic '.base64_encode(sprintf('%s:%s', $this->usernameOrToken, $this->password));
+        return 'Basic '.base64_encode($this->credentials);
     }
 
     /**
@@ -60,7 +66,7 @@ class AuthenticationMiddleware implements HttpClient
      */
     private function getTokenAuthorizationString()
     {
-        return 'Bearer '.$this->usernameOrToken;
+        return 'Bearer '.$this->credentials;
     }
 
     /**
@@ -68,17 +74,23 @@ class AuthenticationMiddleware implements HttpClient
      */
     private function isTokenAuthentication()
     {
-        return null === $this->password;
+        return self::TOKEN == $this->authenticationType;
     }
 
-    private function addAuthenticationHeader(array $options): array
+    private function addAuthenticationOptions(array $options): array
     {
-        $authorizationHeader = $this->isTokenAuthentication() ? $this->getTokenAuthorizationString() : $this->getBasicAuthorizationString();
+        if (self::CERTIFICATE == $this->authenticationType) {
+            $authorizationOptions = [
+                'cert' => certificate_file_path_from_contents($this->credentials),
+            ];
+        } else {
+            $authorizationOptions = [
+                'headers' => [
+                    'Authorization' => $this->isTokenAuthentication() ? $this->getTokenAuthorizationString() : $this->getBasicAuthorizationString(),
+                ],
+            ];
+        }
 
-        return array_merge_recursive([
-            'headers' => [
-                'Authorization' => $authorizationHeader,
-            ],
-        ], $options);
+        return array_merge_recursive($authorizationOptions, $options);
     }
 }
