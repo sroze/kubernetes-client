@@ -10,15 +10,15 @@ class IngressRule
     private $host;
 
     /**
-     * @var IngressHttpRule
+     * @var IngressHttpRule|null
      */
     private $http;
 
     /**
      * @param string $host
-     * @param IngressHttpRule $http
+     * @param IngressHttpRule|null $http
      */
-    public function __construct(string $host, IngressHttpRule $http)
+    public function __construct(string $host, IngressHttpRule $http = null)
     {
         $this->host = $host;
         $this->http = $http;
