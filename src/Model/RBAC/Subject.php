@@ -11,11 +11,11 @@ class Subject
     /**
      * @var string
      */
-    private $namespace;
-    /**
-     * @var string
-     */
     private $name;
+    /**
+     * @var string|null
+     */
+    private $namespace;
     /**
      * @var string|null
      */
@@ -23,11 +23,11 @@ class Subject
 
     /**
      * @param string $kind
-     * @param string $namespace
      * @param string $name
+     * @param string|null $namespace
      * @param string|null $apiVersion
      */
-    public function __construct(string $kind, string $namespace, string $name, string $apiVersion = null)
+    public function __construct(string $kind, string $name, string $namespace = null, string $apiVersion = null)
     {
         $this->kind = $kind;
         $this->namespace = $namespace;
@@ -46,17 +46,17 @@ class Subject
     /**
      * @return string
      */
-    public function getNamespace(): string
-    {
-        return $this->namespace;
-    }
-
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
     }
 
     /**
