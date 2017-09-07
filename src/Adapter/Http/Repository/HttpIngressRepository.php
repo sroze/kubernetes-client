@@ -41,7 +41,7 @@ class HttpIngressRepository implements IngressRepository
      */
     public function asyncFindAll() : PromiseInterface
     {
-        $url = '/apis/extensions/v1beta1'.$this->namespaceClient->prefixPath('/ingresses');
+        $url = $this->namespaceClient->prefixPath('/ingresses', 'extensions/v1beta1');
 
         return $this->connector->asyncGet($url, [
             'class' => IngressList::class,
@@ -54,8 +54,7 @@ class HttpIngressRepository implements IngressRepository
     public function findOneByName($name)
     {
         try {
-            $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $name));
-            $url = '/apis/extensions/v1beta1'.$url;
+            $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $name), 'extensions/v1beta1');
 
             return $this->connector->get($url, [
                 'class' => Ingress::class,
@@ -78,8 +77,7 @@ class HttpIngressRepository implements IngressRepository
     public function findByLabels(array $labels)
     {
         $labelSelector = HttpAdapter::createLabelSelector($labels);
-        $url = $this->namespaceClient->prefixPath('/ingresses?labelSelector='.$labelSelector);
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath('/ingresses?labelSelector='.$labelSelector, 'extensions/v1beta1');
 
         return $this->connector->get($url, [
             'class' => IngressList::class,
@@ -91,8 +89,7 @@ class HttpIngressRepository implements IngressRepository
      */
     public function create(Ingress $ingress)
     {
-        $url = $this->namespaceClient->prefixPath('/ingresses');
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath('/ingresses', 'extensions/v1beta1');
 
         return $this->connector->post($url, $ingress, [
             'class' => Ingress::class,
@@ -111,8 +108,7 @@ class HttpIngressRepository implements IngressRepository
             return $currentIngress;
         }
 
-        $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $ingressName));
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $ingressName), 'extensions/v1beta1');
 
         return $this->connector->patch($url, $ingress, [
             'class' => Ingress::class,
@@ -135,8 +131,7 @@ class HttpIngressRepository implements IngressRepository
             $currentIngress->getMetadata()->getAnnotationList()
         ));
 
-        $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $name));
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath(sprintf('/ingresses/%s', $name), 'extensions/v1beta1');
 
         return $this->connector->patch($url, $onlyAnnotationsIngress, [
             'class' => Ingress::class,

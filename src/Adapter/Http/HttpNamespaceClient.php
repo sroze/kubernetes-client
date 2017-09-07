@@ -110,12 +110,23 @@ class HttpNamespaceClient implements NamespaceClient
 
     /**
      * @param string $path
+     * @param string|null $api
+     *
+     * Use the second argument to talk to a specific API, for example:
+     * - rbac.authorization.k8s.io/v1beta1
+     * - extensions/v1beta1
      *
      * @return string
      */
-    public function prefixPath($path)
+    public function prefixPath(string $path, string $api = null)
     {
-        return sprintf('/namespaces/%s%s', $this->namespace->getMetadata()->getName(), $path);
+        $url = sprintf('/namespaces/%s%s', $this->namespace->getMetadata()->getName(), $path);
+
+        if ($api !== null) {
+            $url = 'apis/'.$api.$url;
+        }
+
+        return $url;
     }
 
     /**
