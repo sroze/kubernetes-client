@@ -11,6 +11,7 @@ use Kubernetes\Client\Adapter\Http\Repository\HttpReplicationControllerRepositor
 use Kubernetes\Client\Adapter\Http\Repository\HttpSecretRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpServiceAccountRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpServiceRepository;
+use Kubernetes\Client\Adapter\Http\Repository\RBAC\HttpRoleBindingRepository;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\NamespaceClient;
 
@@ -109,6 +110,14 @@ class HttpNamespaceClient implements NamespaceClient
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getRoleBindingRepository()
+    {
+        return new HttpRoleBindingRepository($this->connector, $this);
+    }
+
+    /**
      * @param string $path
      * @param string|null $api
      *
@@ -136,5 +145,4 @@ class HttpNamespaceClient implements NamespaceClient
     {
         return $this->namespace;
     }
-
 }
