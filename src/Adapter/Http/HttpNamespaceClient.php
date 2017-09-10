@@ -132,7 +132,7 @@ class HttpNamespaceClient implements NamespaceClient
         $url = sprintf('/namespaces/%s%s', $this->namespace->getMetadata()->getName(), $path);
 
         if ($api !== null) {
-            $url = 'apis/'.$api.$url;
+            $url = '/apis/'.$api.$url;
         }
 
         return $url;

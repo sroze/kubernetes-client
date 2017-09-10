@@ -34,7 +34,7 @@ class HttpDeploymentRepositorySpec extends ObjectBehavior
         HttpNamespaceClient $namespaceClient,
         ResponseInterface   $response
     ) {
-        $namespaceClient->prefixPath('/deployments')->shouldBeCalled()->willReturn('/something');
+        $namespaceClient->prefixPath('/deployments', 'extensions/v1beta1')->shouldBeCalled()->willReturn('/apis/extensions/v1beta1/something');
 
         $connector
             ->get('/apis/extensions/v1beta1/something', ['class' => 'Kubernetes\Client\Model\DeploymentList'])
@@ -49,7 +49,7 @@ class HttpDeploymentRepositorySpec extends ObjectBehavior
         HttpNamespaceClient $namespaceClient,
         ResponseInterface   $response
     ) {
-        $namespaceClient->prefixPath('/deployments/deployment-name')->shouldBeCalled()->willReturn('/something');
+        $namespaceClient->prefixPath('/deployments/deployment-name', 'extensions/v1beta1')->shouldBeCalled()->willReturn('/apis/extensions/v1beta1/something');
 
         $connector
             ->get('/apis/extensions/v1beta1/something', ['class' => 'Kubernetes\Client\Model\Deployment'])
@@ -66,7 +66,7 @@ class HttpDeploymentRepositorySpec extends ObjectBehavior
         Deployment $deployment
     ) {
 
-        $namespaceClient->prefixPath('/deployments')->shouldBeCalled()->willReturn('/something');
+        $namespaceClient->prefixPath('/deployments', 'extensions/v1beta1')->shouldBeCalled()->willReturn('/apis/extensions/v1beta1/something');
 
         $connector
             ->post('/apis/extensions/v1beta1/something', $deployment, ['class' => 'Kubernetes\Client\Model\Deployment'])
@@ -90,7 +90,7 @@ class HttpDeploymentRepositorySpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($deployment2);
 
-        $namespaceClient->prefixPath('/deployments/deployment-name')->shouldBeCalled()->willReturn('/something');
+        $namespaceClient->prefixPath('/deployments/deployment-name', 'extensions/v1beta1')->shouldBeCalled()->willReturn('/apis/extensions/v1beta1/something');
 
         $deployment1->getMetadata()->willReturn($deploymentMetadata);
         $deploymentMetadata->getName()->willReturn('deployment-name');
@@ -122,7 +122,7 @@ class HttpDeploymentRepositorySpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($deployment2);
 
-        $namespaceClient->prefixPath('/deployments/deployment-name')->shouldBeCalled()->willReturn('/something');
+        $namespaceClient->prefixPath('/deployments/deployment-name', 'extensions/v1beta1')->shouldBeCalled()->willReturn('/apis/extensions/v1beta1/something');
 
         $deployment1->getMetadata()->willReturn($deploymentMetadata);
         $deploymentMetadata->getName()->willReturn('deployment-name');
@@ -145,7 +145,8 @@ class HttpDeploymentRepositorySpec extends ObjectBehavior
             ->asyncGet('/apis/extensions/v1beta1/something', ['class' => 'Kubernetes\Client\Model\DeploymentList'])
             ->shouldBeCalled()
             ->willReturn($promise);
-        $namespaceClient->prefixPath('/deployments')->shouldBeCalled()->willReturn('/something');
+
+        $namespaceClient->prefixPath('/deployments', 'extensions/v1beta1')->shouldBeCalled()->willReturn('/apis/extensions/v1beta1/something');
 
         $this->asyncFindAll()->shouldReturn($promise);
     }
