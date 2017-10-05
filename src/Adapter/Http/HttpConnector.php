@@ -143,13 +143,15 @@ class HttpConnector
             $responseContents = $this->httpClient->request($method, $path, $body, $options);
             $response = $this->getResponse($responseContents, $options);
         } catch (ServerException $e) {
-            throw new ServerError(new Status(Status::FAILURE, $e->getMessage()));
+            throw new ServerError(new Status(Status::FAILURE, $e->getMessage()), $e->getRequest(), $e);
         } catch (RequestException $e) {
             if ($response = $e->getResponse()) {
                 throw $this->createRequestException($e);
             }
+
             $this->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
-            throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
+
+            throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'), $e->getRequest(), $e);
         }
 
         return $response;
@@ -175,14 +177,15 @@ class HttpConnector
             },
             function (\Exception $e) {
                 if ($e instanceof ServerException) {
-                    throw new ServerError(new Status(Status::FAILURE, $e->getMessage()));
+                    throw new ServerError(new Status(Status::FAILURE, $e->getMessage()), null, $e);
                 }
+
                 if ($e instanceof RequestException) {
-                    if ($response = $e->getResponse()) {
+                    if ($e->getResponse()) {
                         throw $this->createRequestException($e);
                     }
                     $this->logger->warning('Problem communicating with a Kubernetes cluster', ['exception' => $e]);
-                    throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'));
+                    throw new ServerError(new Status(Status::UNKNOWN, 'No response from server'), $e->getRequest(), $e);
                 }
             }
         );
@@ -206,7 +209,7 @@ class HttpConnector
 
         $exceptionClass = $e instanceof ClientException ? ClientError::class : ServerError::class;
 
-        return new $exceptionClass($status, $e->getRequest());
+        return new $exceptionClass($status, $e->getRequest(), $e);
     }
 
     /**

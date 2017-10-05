@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\RBAC\Role:
+    virtual_properties:
+        getKind:
+            serialized_name: Kind
+            type: string
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        rules:
+            type: array<Kubernetes\Client\Model\RBAC\PolicyRule>

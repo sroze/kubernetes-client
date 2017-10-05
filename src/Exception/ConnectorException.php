@@ -11,6 +11,7 @@ class ConnectorException extends Exception
      * @var Status
      */
     private $status;
+
     /**
      * @var RequestInterface
      */
@@ -19,9 +20,12 @@ class ConnectorException extends Exception
     /**
      * @param Status           $status
      * @param RequestInterface $request
+     * @param \Exception|null  $previous
      */
-    public function __construct(Status $status, RequestInterface $request = null)
+    public function __construct(Status $status, RequestInterface $request = null, \Exception $previous = null)
     {
+        parent::__construct($status->getMessage(), $status->getCode(), $previous);
+
         $this->status = $status;
         $this->request = $request;
 

@@ -1,0 +1,9 @@
+Kubernetes\Client\Model\RBAC\RoleRef:
+    properties:
+        apiGroup:
+            type: string
+            serialized_name: apiGroup
+        kind:
+            type: string
+        name:
+            type: string

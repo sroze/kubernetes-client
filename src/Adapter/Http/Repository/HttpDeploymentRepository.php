@@ -37,8 +37,7 @@ class HttpDeploymentRepository implements DeploymentRepository
      */
     public function findAll()
     {
-        $url = $this->namespaceClient->prefixPath('/deployments');
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath('/deployments', 'extensions/v1beta1');
 
         return $this->connector->get($url, [
             'class' => DeploymentList::class,
@@ -50,8 +49,7 @@ class HttpDeploymentRepository implements DeploymentRepository
      */
     public function asyncFindAll()
     {
-        $url = $this->namespaceClient->prefixPath('/deployments');
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath('/deployments', 'extensions/v1beta1');
 
         return $this->connector->asyncGet($url, [
             'class' => DeploymentList::class,
@@ -64,8 +62,7 @@ class HttpDeploymentRepository implements DeploymentRepository
     public function findOneByName($name)
     {
         try {
-            $url = $this->namespaceClient->prefixPath(sprintf('/deployments/%s', $name));
-            $url = '/apis/extensions/v1beta1'.$url;
+            $url = $this->namespaceClient->prefixPath(sprintf('/deployments/%s', $name), 'extensions/v1beta1');
 
             return $this->connector->get($url, [
                 'class' => Deployment::class,
@@ -87,8 +84,7 @@ class HttpDeploymentRepository implements DeploymentRepository
      */
     public function create(Deployment $deployment)
     {
-        $url = $this->namespaceClient->prefixPath('/deployments');
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath('/deployments', 'extensions/v1beta1');
 
         return $this->connector->post($url, $deployment, [
             'class' => Deployment::class,
@@ -107,8 +103,7 @@ class HttpDeploymentRepository implements DeploymentRepository
             return $current;
         }
 
-        $url = $this->namespaceClient->prefixPath(sprintf('/deployments/%s', $name));
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath(sprintf('/deployments/%s', $name), 'extensions/v1beta1');
 
         return $this->connector->patch($url, $deployment, [
             'class' => Deployment::class,
@@ -120,8 +115,7 @@ class HttpDeploymentRepository implements DeploymentRepository
      */
     public function rollback(Deployment\DeploymentRollback $deploymentRollback)
     {
-        $url = $this->namespaceClient->prefixPath(sprintf('/deployments/%s/rollback', $deploymentRollback->getName()));
-        $url = '/apis/extensions/v1beta1'.$url;
+        $url = $this->namespaceClient->prefixPath(sprintf('/deployments/%s/rollback', $deploymentRollback->getName()), 'extensions/v1beta1');
 
         return $this->connector->post($url, $deploymentRollback, [
             'class' => Deployment\DeploymentRollback::class,

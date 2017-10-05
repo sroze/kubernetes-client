@@ -8,6 +8,7 @@ use Kubernetes\Client\Repository\EventRepository;
 use Kubernetes\Client\Repository\IngressRepository;
 use Kubernetes\Client\Repository\PersistentVolumeClaimRepository;
 use Kubernetes\Client\Repository\PodRepository;
+use Kubernetes\Client\Repository\RBAC\RoleBindingRepository;
 use Kubernetes\Client\Repository\ReplicationControllerRepository;
 use Kubernetes\Client\Repository\SecretRepository;
 use Kubernetes\Client\Repository\ServiceAccountRepository;
@@ -59,6 +60,11 @@ interface NamespaceClient
      * @return EventRepository
      */
     public function getEventRepository();
+
+    /**
+     * @return RoleBindingRepository
+     */
+    public function getRoleBindingRepository();
 
     /**
      * @return KubernetesNamespace
