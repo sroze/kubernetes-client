@@ -10,6 +10,7 @@ use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodSpecification;
 use Kubernetes\Client\Model\Volume;
 use Kubernetes\Client\Model\VolumeMount;
+use React\Stream\WritableResourceStream;
 
 class PodContext implements Context
 {
@@ -233,5 +234,25 @@ class PodContext implements Context
         );
 
         return $client->getPodRepository();
+    }
+
+    /**
+     * @Given I start streaming the output of the pod :name
+     */
+    public function iStartStreamingTheOutputOfThePod($name)
+    {
+        $loop = React\EventLoop\Factory::create();
+        $sourceStream = $this->getRepository()->streamOutput($this->getRepository()->findOneByName($name), $loop);
+        $tempFile = tempnam(sys_get_temp_dir(), 'behat');
+        $targetStream = new WritableResourceStream(fopen($tempFile, 'w'), $loop);
+        $sourceStream->pipe($targetStream);
+        $loop->nextTick(function() use ($sourceStream) {
+            $sourceStream->resume();
+        });
+        $loop->run();
+        if (file_exists($tempFile)) {
+            $this->attachResult = file_get_contents($tempFile);
+            unlink($tempFile);
+        }
     }
 }

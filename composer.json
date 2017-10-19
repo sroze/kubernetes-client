@@ -14,7 +14,8 @@
     "require": {
         "guzzlehttp/guzzle": "^6.2",
         "symfony/serializer": "^2.7|^3.0",
-        "jms/serializer": "^1.0.0"
+        "jms/serializer": "^1.0.0",
+        "react/stream": "~0.7.4"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.2",

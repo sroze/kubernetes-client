@@ -6,14 +6,17 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Adapter\Http\HttpAdapter;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
+use Kubernetes\Client\Adapter\React\PodOutputStream;
 use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\PodNotFound;
-use Kubernetes\Client\Model\ContainerStatus;
+use Kubernetes\Client\Factory\PodStatusProviderFactory;
 use Kubernetes\Client\Model\Pod;
+use Kubernetes\Client\Model\PodAwareStatusProvider;
 use Kubernetes\Client\Model\PodList;
-use Kubernetes\Client\Model\PodStatus;
 use Kubernetes\Client\Model\ReplicationController;
 use Kubernetes\Client\Repository\PodRepository;
+use React\EventLoop\LoopInterface;
+use React\Stream\ReadableStreamInterface;
 
 class HttpPodRepository implements PodRepository
 {
@@ -35,13 +38,23 @@ class HttpPodRepository implements PodRepository
     private $namespaceClient;
 
     /**
-     * @param HttpConnector       $connector
-     * @param HttpNamespaceClient $namespaceClient
+     * @var PodAwareStatusProvider
      */
-    public function __construct(HttpConnector $connector, HttpNamespaceClient $namespaceClient)
-    {
+    private $statusProvider;
+
+    /**
+     * @param HttpConnector $connector
+     * @param HttpNamespaceClient $namespaceClient
+     * @param PodStatusProviderFactory $statusProviderFactory
+     */
+    public function __construct(
+        HttpConnector $connector,
+        HttpNamespaceClient $namespaceClient,
+        PodStatusProviderFactory $statusProviderFactory
+    ) {
         $this->connector = $connector;
         $this->namespaceClient = $namespaceClient;
+        $this->statusProvider = $statusProviderFactory->createFromRepository($this);
     }
 
     /**
@@ -176,12 +189,13 @@ class HttpPodRepository implements PodRepository
      */
     public function attach(Pod $pod, callable $callable)
     {
-        while ($this->isPending($pod)) {
+        $this->statusProvider->setPod($pod);
+        while ($this->statusProvider->isPending()) {
             usleep(self::ATTACH_LOOP_INTERVAL * 1000);
         }
 
         $logCursor = 0;
-        while (!$this->isTerminated($pod)) {
+        while (!$this->statusProvider->isTerminated()) {
             $logCursor = $this->streamLogs($pod, $callable, $logCursor);
 
             usleep(self::ATTACH_LOOP_INTERVAL * 1000);
@@ -192,6 +206,22 @@ class HttpPodRepository implements PodRepository
         $pod = $this->findOneByName($pod->getMetadata()->getName());
 
         return $pod;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function streamOutput(Pod $pod, LoopInterface $loop): ReadableStreamInterface
+    {
+        $pollIntervalInSeconds = self::ATTACH_LOOP_INTERVAL / 1000;
+        return new PodOutputStream(
+            $pod,
+            $loop,
+            $this->connector,
+            $this->namespaceClient,
+            $this->statusProvider,
+            $pollIntervalInSeconds
+        );
     }
 
     /**
@@ -227,41 +257,5 @@ class HttpPodRepository implements PodRepository
         $name = $pod->getMetadata()->getName();
 
         return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/pods/%s/log', $name)));
-    }
-
-    /**
-     * Returns true if a pod is terminated.
-     *
-     * @param Pod $pod
-     *
-     * @return bool
-     */
-    private function isTerminated(Pod $pod)
-    {
-        $pod = $this->findOneByName($pod->getMetadata()->getName());
-
-        $containerStatuses = $pod->getStatus()->getContainerStatuses();
-        $terminatedContainers = array_filter($containerStatuses, function (ContainerStatus $containerStatus) {
-            return null != $containerStatus->getState()->getTerminated();
-        });
-
-        return count($terminatedContainers) == count($containerStatuses);
-    }
-
-    /**
-     * @param Pod $pod
-     *
-     * @return bool
-     *
-     * @throws ClientError
-     * @throws PodNotFound
-     */
-    private function isPending(Pod $pod)
-    {
-        $pod = $this->findOneByName($pod->getMetadata()->getName());
-
-        $podStatus = $pod->getStatus();
-
-        return $podStatus->getPhase() == PodStatus::PHASE_PENDING;
     }
 }

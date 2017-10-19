@@ -7,6 +7,8 @@ use Kubernetes\Client\Exception\PodNotFound;
 use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodList;
 use Kubernetes\Client\Model\ReplicationController;
+use React\EventLoop\LoopInterface;
+use React\Stream\ReadableStreamInterface;
 
 interface PodRepository
 {
@@ -82,4 +84,16 @@ interface PodRepository
      * @return Pod
      */
     public function attach(Pod $pod, callable $callable);
+
+    /**
+     * Create an output stream for the given pod.
+     *
+     * This method is an asynchronous version of the {@see PodRepository::attach()} method.
+     *
+     * @param Pod $pod
+     * @param LoopInterface $loop
+     *
+     * @return ReadableStreamInterface
+     */
+    public function streamOutput(Pod $pod, LoopInterface $loop): ReadableStreamInterface;
 }
