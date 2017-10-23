@@ -42,8 +42,9 @@ class FileHttpClient implements HttpClient
     public function asyncRequest($method, $path, $body = null, array $options = [])
     {
         $filePath = $this->fileResolver->getFilePath($method, $path, $body, $options);
-        return new Promise(
-            function () use ($filePath) {
+        /** @var PromiseInterface $promise */
+        $promise = new Promise(
+            function () use (&$promise, $filePath) {
                 if (!file_exists($filePath)) {
                     throw new \RuntimeException(sprintf(
                         'The HTTP fixture file "%s" do not exists',
@@ -51,8 +52,9 @@ class FileHttpClient implements HttpClient
                     ));
                 }
 
-                return file_get_contents($filePath);
+                $promise->resolve(file_get_contents($filePath));
             }
         );
+        return $promise;
     }
 }
