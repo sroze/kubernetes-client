@@ -11,7 +11,7 @@ use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\PodNotFound;
 use Kubernetes\Client\Factory\PodStatusProviderFactory;
 use Kubernetes\Client\Model\Pod;
-use Kubernetes\Client\Model\PodAwareStatusProvider;
+use Kubernetes\Client\Model\PodStatusProvider;
 use Kubernetes\Client\Model\PodList;
 use Kubernetes\Client\Model\ReplicationController;
 use Kubernetes\Client\Repository\PodRepository;
@@ -38,7 +38,7 @@ class HttpPodRepository implements PodRepository
     private $namespaceClient;
 
     /**
-     * @var PodAwareStatusProvider
+     * @var PodStatusProvider
      */
     private $statusProvider;
 
@@ -189,13 +189,12 @@ class HttpPodRepository implements PodRepository
      */
     public function attach(Pod $pod, callable $callable)
     {
-        $this->statusProvider->setPod($pod);
-        while ($this->statusProvider->isPending()) {
+        while ($this->statusProvider->isPending($pod)) {
             usleep(self::ATTACH_LOOP_INTERVAL * 1000);
         }
 
         $logCursor = 0;
-        while (!$this->statusProvider->isTerminated()) {
+        while (!$this->statusProvider->isTerminated($pod)) {
             $logCursor = $this->streamLogs($pod, $callable, $logCursor);
 
             usleep(self::ATTACH_LOOP_INTERVAL * 1000);
@@ -213,14 +212,13 @@ class HttpPodRepository implements PodRepository
      */
     public function streamOutput(Pod $pod, LoopInterface $loop): ReadableStreamInterface
     {
-        $pollIntervalInSeconds = self::ATTACH_LOOP_INTERVAL / 1000;
         return new PodOutputStream(
             $pod,
             $loop,
             $this->connector,
             $this->namespaceClient,
             $this->statusProvider,
-            $pollIntervalInSeconds
+            self::ATTACH_LOOP_INTERVAL / 1000
         );
     }
 

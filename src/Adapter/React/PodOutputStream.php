@@ -7,7 +7,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use Kubernetes\Client\Adapter\Http\HttpConnector;
 use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Model\Pod;
-use Kubernetes\Client\Model\PodAwareStatusProvider;
+use Kubernetes\Client\Model\PodStatusProvider;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\Timer\TimerInterface;
 use React\Stream\ReadableStreamInterface;
@@ -60,7 +60,7 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
     private $namespaceClient;
 
     /**
-     * @var PodAwareStatusProvider
+     * @var PodStatusProvider
      */
     private $statusProvider;
 
@@ -69,7 +69,7 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
         LoopInterface $loop,
         HttpConnector $httpConnector,
         HttpNamespaceClient $namespaceClient,
-        PodAwareStatusProvider $statusProvider,
+        PodStatusProvider $statusProvider,
         $pollInterval = 0.1
     ) {
         $this->loop = $loop;
@@ -94,9 +94,6 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
     public function pause()
     {
         $this->timer->cancel();
-        if (PromiseInterface::PENDING === $this->httpPromise->getState()) {
-            $this->httpPromise->reject('stream paused');
-        }
     }
 
     /**
@@ -109,15 +106,14 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
         }
 
         $eventEmitter = $this;
-        $statusProvider = $this->statusProvider->setPod($this->pod);
-        $httpCallback = function () use ($eventEmitter, $statusProvider) {
+        $httpCallback = function () use ($eventEmitter) {
             $name = $eventEmitter->pod->getMetadata()->getName();
             $path = $eventEmitter->namespaceClient->prefixPath(sprintf('/pods/%s/log', $name));
             $eventEmitter->httpPromise = $this->httpConnector->asyncGet($path);
-            $eventEmitter->httpPromise->then(function ($response) use ($eventEmitter, $statusProvider) {
+            $eventEmitter->httpPromise->then(function ($response) use ($eventEmitter) {
                 $eventEmitter->emit('data', [$response]);
 
-                if ($statusProvider->isTerminated()) {
+                if ($eventEmitter->statusProvider->isTerminated($eventEmitter->pod)) {
                     $eventEmitter->timer->cancel();
                     $eventEmitter->emit('end');
                     $eventEmitter->close();

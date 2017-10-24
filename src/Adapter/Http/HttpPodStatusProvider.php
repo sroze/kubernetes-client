@@ -5,20 +5,15 @@ namespace Kubernetes\Client\Adapter\Http;
 use Kubernetes\Client\Exception\PodNotFound;
 use Kubernetes\Client\Model\ContainerStatus;
 use Kubernetes\Client\Model\Pod;
-use Kubernetes\Client\Model\PodAwareStatusProvider;
+use Kubernetes\Client\Model\PodStatusProvider;
 use Kubernetes\Client\Model\PodStatus;
 use Kubernetes\Client\Repository\PodRepository;
 
 /**
  * Provide pod status using a pod repository to fetch actual data.
  */
-class PodStatusProvider implements PodAwareStatusProvider
+class HttpPodStatusProvider implements PodStatusProvider
 {
-    /**
-     * @var Pod
-     */
-    private $pod;
-
     /**
      * @var PodRepository
      */
@@ -32,18 +27,9 @@ class PodStatusProvider implements PodAwareStatusProvider
     /**
      * {@inheritdoc}
      */
-    public function setPod(Pod $pod)
+    public function isTerminated(Pod $pod)
     {
-        $this->pod = $pod;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isTerminated()
-    {
-        $pod = $this->reloadPod();
+        $pod = $this->reloadPod($pod);
 
         $containerStatuses = $pod->getStatus()->getContainerStatuses();
         $terminatedContainers = array_filter($containerStatuses, function (ContainerStatus $containerStatus) {
@@ -56,9 +42,9 @@ class PodStatusProvider implements PodAwareStatusProvider
     /**
      * {@inheritdoc}
      */
-    public function isPending()
+    public function isPending(Pod $pod)
     {
-        $pod = $this->reloadPod();
+        $pod = $this->reloadPod($pod);
 
         $podStatus = $pod->getStatus();
 
@@ -66,16 +52,15 @@ class PodStatusProvider implements PodAwareStatusProvider
     }
 
     /**
+     * Return an up to date instance of the given pod.
+     *
+     * @param Pod $pod
      * @return Pod
      *
      * @throws PodNotFound
      */
-    protected function reloadPod(): Pod
+    protected function reloadPod(Pod $pod): Pod
     {
-        if (empty($this->pod)) {
-            throw new PodNotFound();
-        }
-
-        return $this->podRepository->findOneByName($this->pod->getMetadata()->getName());
+        return $this->podRepository->findOneByName($pod->getMetadata()->getName());
     }
 }

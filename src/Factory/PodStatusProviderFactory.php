@@ -2,14 +2,14 @@
 
 namespace Kubernetes\Client\Factory;
 
-use Kubernetes\Client\Adapter\Http\PodStatusProvider;
-use Kubernetes\Client\Model\PodAwareStatusProvider;
+use Kubernetes\Client\Adapter\Http\HttpPodStatusProvider;
+use Kubernetes\Client\Model\PodStatusProvider;
 use Kubernetes\Client\Repository\PodRepository;
 
 class PodStatusProviderFactory
 {
-    public function createFromRepository(PodRepository $podRepository): PodAwareStatusProvider
+    public function createFromRepository(PodRepository $podRepository): PodStatusProvider
     {
-        return new PodStatusProvider($podRepository);
+        return new HttpPodStatusProvider($podRepository);
     }
 }

@@ -9,32 +9,25 @@ use Kubernetes\Client\Exception\PodNotFound;
  *
  * @package Kubernetes\Client\Repository
  */
-interface PodAwareStatusProvider
+interface PodStatusProvider
 {
-    /**
-     * Change the current pod to the given one.
-     *
-     * @param Pod $pod
-     *
-     * @return PodAwareStatusProvider
-     */
-    public function setPod(Pod $pod);
-    
     /**
      * Tell whether the pod and it's containers has been terminated.
      *
+     * @param Pod $pod
      * @return bool
      *
      * @throws PodNotFound
      */
-    public function isTerminated();
+    public function isTerminated(Pod $pod);
 
     /**
      * Tell whether the pod is in pending status.
      *
+     * @param Pod $pod
      * @return bool
      *
      * @throws PodNotFound
      */
-    public function isPending();
+    public function isPending(Pod $pod);
 }
