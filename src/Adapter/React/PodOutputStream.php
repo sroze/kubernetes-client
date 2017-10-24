@@ -37,7 +37,7 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
     /**
      * @var float
      */
-    private $pollInterval;
+    private $pollingInterval;
 
     /**
      * @var TimerInterface
@@ -64,17 +64,27 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
      */
     private $statusProvider;
 
+    /**
+     * Constructor.
+     *
+     * @param Pod $pod
+     * @param LoopInterface $loop
+     * @param HttpConnector $httpConnector
+     * @param HttpNamespaceClient $namespaceClient
+     * @param PodStatusProvider $statusProvider
+     * @param float $pollingInterval Time between HTTP requests in seconds.
+     */
     public function __construct(
         Pod $pod,
         LoopInterface $loop,
         HttpConnector $httpConnector,
         HttpNamespaceClient $namespaceClient,
         PodStatusProvider $statusProvider,
-        $pollInterval = 0.1
+        $pollingInterval = 0.5
     ) {
         $this->loop = $loop;
         $this->httpConnector = $httpConnector;
-        $this->pollInterval = $pollInterval;
+        $this->pollingInterval = $pollingInterval;
         $this->pod = $pod;
         $this->namespaceClient = $namespaceClient;
         $this->statusProvider = $statusProvider;
@@ -125,7 +135,7 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
             $eventEmitter->httpPromise->wait();
         };
 
-        $this->timer = $this->loop->addPeriodicTimer($this->pollInterval, $httpCallback);
+        $this->timer = $this->loop->addPeriodicTimer($this->pollingInterval, $httpCallback);
         $httpCallback();
     }
 

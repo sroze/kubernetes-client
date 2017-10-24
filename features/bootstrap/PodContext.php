@@ -242,7 +242,9 @@ class PodContext implements Context
     public function iStartStreamingTheOutputOfThePod($name)
     {
         $loop = React\EventLoop\Factory::create();
-        $sourceStream = $this->getRepository()->streamOutput($this->getRepository()->findOneByName($name), $loop);
+        $sourceStream = $this
+            ->getPodStatusProvider()
+            ->streamOutput($this->getRepository()->findOneByName($name), $loop);
         $tempFile = tempnam(sys_get_temp_dir(), 'behat');
         $targetStream = new WritableResourceStream(fopen($tempFile, 'w'), $loop);
         $sourceStream->pipe($targetStream);
@@ -254,5 +256,14 @@ class PodContext implements Context
             $this->attachResult = file_get_contents($tempFile);
             unlink($tempFile);
         }
+    }
+
+    private function getPodStatusProvider()
+    {
+        $client = $this->clientContext->getClient()->getNamespaceClient(
+            $this->namespaceContext->getNamespace()
+        );
+
+        return $client->getPodStatusProvider();
     }
 }

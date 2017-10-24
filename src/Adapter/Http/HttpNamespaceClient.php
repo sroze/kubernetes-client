@@ -15,7 +15,6 @@ use Kubernetes\Client\Adapter\Http\Repository\HttpSecretRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpServiceAccountRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpServiceRepository;
 use Kubernetes\Client\Adapter\Http\Repository\RBAC\HttpRoleBindingRepository;
-use Kubernetes\Client\Factory\PodStatusProviderFactory;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\NamespaceClient;
 use Kubernetes\Client\Repository\NetworkPolicyRepository;
@@ -47,7 +46,15 @@ class HttpNamespaceClient implements NamespaceClient
      */
     public function getPodRepository()
     {
-        return new HttpPodRepository($this->connector, $this, new PodStatusProviderFactory());
+        return new HttpPodRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPodStatusProvider()
+    {
+        return new HttpPodStatusProvider($this->getPodRepository(), $this->connector, $this);
     }
 
     /**

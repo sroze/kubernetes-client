@@ -82,18 +82,8 @@ interface PodRepository
      * @param callable $callable
      *
      * @return Pod
+     *
+     * @deprecated 1.10.0 Use the {@see \Kubernetes\Client\Model\PodStatusProvider::attach()} method instead.
      */
     public function attach(Pod $pod, callable $callable);
-
-    /**
-     * Create an output stream for the given pod.
-     *
-     * This method is an asynchronous version of the {@see PodRepository::attach()} method.
-     *
-     * @param Pod $pod
-     * @param LoopInterface $loop
-     *
-     * @return ReadableStreamInterface
-     */
-    public function streamOutput(Pod $pod, LoopInterface $loop): ReadableStreamInterface;
 }
