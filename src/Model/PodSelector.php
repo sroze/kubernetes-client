@@ -18,7 +18,7 @@ class PodSelector
      * @param array                    $matchLabels
      * @param PodSelectorRequirement[] $matchExpressions
      */
-    public function __construct(array $matchLabels = null, array $matchExpressions = null)
+    public function __construct(array $matchLabels = [], array $matchExpressions = [])
     {
         $this->matchLabels = $matchLabels;
         $this->matchExpressions = $matchExpressions;
@@ -29,7 +29,7 @@ class PodSelector
      */
     public function getMatchLabels()
     {
-        return $this->matchLabels;
+        return $this->matchLabels ?: [];
     }
 
     /**
@@ -37,6 +37,6 @@ class PodSelector
      */
     public function getMatchExpressions()
     {
-        return $this->matchExpressions;
+        return $this->matchExpressions ?: [];
     }
 }

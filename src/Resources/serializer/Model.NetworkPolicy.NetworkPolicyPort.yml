@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\NetworkPolicy\NetworkPolicyPort:
+    properties:
+        port:
+            type: int
+        protocol:
+            type: string

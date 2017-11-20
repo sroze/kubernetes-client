@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\NetworkPolicy\NetworkPolicyEgressRule:
+    properties:
+        to:
+            type: array<Kubernetes\Client\Model\NetworkPolicy\NetworkPolicyPeer>
+        ports:
+            type: array<Kubernetes\Client\Model\NetworkPolicy\NetworkPolicyPort>

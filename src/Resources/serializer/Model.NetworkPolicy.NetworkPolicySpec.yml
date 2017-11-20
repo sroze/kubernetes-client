@@ -1,0 +1,12 @@
+Kubernetes\Client\Model\NetworkPolicy\NetworkPolicySpec:
+    properties:
+        egress:
+            type: array<Kubernetes\Client\Model\NetworkPolicy\NetworkPolicyEgressRule>
+        ingress:
+            type: array<Kubernetes\Client\Model\NetworkPolicy\NetworkPolicyIngressRule>
+        podSelector:
+            type: Kubernetes\Client\Model\LabelSelector
+            serialized_name: podSelector
+        policyTypes:
+            type: array<string>
+            serialized_name: policyTypes
