@@ -5,6 +5,7 @@ namespace Kubernetes\Client\Adapter\Http;
 use Kubernetes\Client\Adapter\Http\Repository\HttpDeploymentRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpEventRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpIngressRepository;
+use Kubernetes\Client\Adapter\Http\Repository\HttpNetworkPolicyRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPersistentVolumeClaimRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPodRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpReplicationControllerRepository;
@@ -14,6 +15,7 @@ use Kubernetes\Client\Adapter\Http\Repository\HttpServiceRepository;
 use Kubernetes\Client\Adapter\Http\Repository\RBAC\HttpRoleBindingRepository;
 use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\NamespaceClient;
+use Kubernetes\Client\Repository\NetworkPolicyRepository;
 
 class HttpNamespaceClient implements NamespaceClient
 {
@@ -115,6 +117,14 @@ class HttpNamespaceClient implements NamespaceClient
     public function getRoleBindingRepository()
     {
         return new HttpRoleBindingRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNetworkPolicyRepository()
+    {
+        return new HttpNetworkPolicyRepository($this->connector, $this);
     }
 
     /**

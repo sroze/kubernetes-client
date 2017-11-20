@@ -6,6 +6,7 @@ use Kubernetes\Client\Model\KubernetesNamespace;
 use Kubernetes\Client\Repository\DeploymentRepository;
 use Kubernetes\Client\Repository\EventRepository;
 use Kubernetes\Client\Repository\IngressRepository;
+use Kubernetes\Client\Repository\NetworkPolicyRepository;
 use Kubernetes\Client\Repository\PersistentVolumeClaimRepository;
 use Kubernetes\Client\Repository\PodRepository;
 use Kubernetes\Client\Repository\RBAC\RoleBindingRepository;
@@ -65,6 +66,11 @@ interface NamespaceClient
      * @return RoleBindingRepository
      */
     public function getRoleBindingRepository();
+
+    /**
+     * @return NetworkPolicyRepository
+     */
+    public function getNetworkPolicyRepository();
 
     /**
      * @return KubernetesNamespace
