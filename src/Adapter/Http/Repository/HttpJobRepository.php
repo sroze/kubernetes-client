@@ -234,7 +234,7 @@ class HttpJobRepository implements JobRepository
     {
         $name = $job->getMetadata()->getName();
 
-        return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/jobs/%s/log', $name)), self::API);
+        return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/jobs/%s/log', $name), self::API));
     }
 
     /**
