@@ -1,0 +1,22 @@
+Kubernetes\Client\Model\CronJobSpecification:
+    properties:
+        schedule:
+            type: string
+        jobTemplate:
+            type: Kubernetes\Client\Model\JobTemplateSpecification
+            serialized_name: jobTemplate
+        concurrencyPolicy:
+            type: string
+            serialized_name: concurrencyPolicy
+        failedJobsHistoryLimit:
+            type: integer
+            serialized_name: failedJobsHistoryLimit
+        startingDeadlineSeconds:
+            type: integer
+            serialized_name: startingDeadlineSeconds
+        successfulJobsHistoryLimit:
+            type: integer
+            serialized_name: successfulJobsHistoryLimit
+        suspend:
+            type: boolean
+

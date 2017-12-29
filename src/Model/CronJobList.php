@@ -3,27 +3,27 @@
 namespace Kubernetes\Client\Model;
 
 /**
- * Class JobList
+ * Class CronJobList
  *
  * @author Samuel Roze <samuel.roze@gmail.com>
  * @author Nicolas Macherey <nicolas.macherey@gmail.com>
  */
-class JobList implements \IteratorAggregate
+class CronJobList implements \IteratorAggregate
 {
     /**
-     * @var Job[]
+     * @var CronJob[]
      */
     private $items = [];
 
     /**
-     * @param Job[] $jobs
+     * @param CronJob[] $cronJobs
      *
-     * @return JobList
+     * @return CronJobList
      */
-    public static function fromJobs(array $jobs)
+    public static function fromCronJobs(array $cronJobs)
     {
         $list = new self();
-        $list->items = $jobs;
+        $list->items = $cronJobs;
 
         return $list;
     }
@@ -33,13 +33,13 @@ class JobList implements \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->getJobs());
+        return new \ArrayIterator($this->getCronJobs());
     }
 
     /**
-     * @return Job[]
+     * @return CronJob[]
      */
-    public function getJobs()
+    public function getCronJobs()
     {
         return $this->items ?: [];
     }

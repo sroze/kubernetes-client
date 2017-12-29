@@ -23,6 +23,8 @@ use Kubernetes\Client\Repository\JobRepository;
  */
 class HttpJobRepository implements JobRepository
 {
+    const API = 'batch/v1';
+    
     /**
      * Interval of the attach loop in case of using the "legacy" implementation.
      *
@@ -55,7 +57,7 @@ class HttpJobRepository implements JobRepository
      */
     public function findAll()
     {
-        return $this->connector->get($this->namespaceClient->prefixPath('/jobs'), [
+        return $this->connector->get($this->namespaceClient->prefixPath('/jobs', self::API), [
             'class' => JobList::class,
             'groups' => ['Default', 'show'],
         ]);
@@ -66,7 +68,7 @@ class HttpJobRepository implements JobRepository
      */
     public function asyncFindAll() : PromiseInterface
     {
-        return $this->connector->asyncGet($this->namespaceClient->prefixPath('/jobs'), [
+        return $this->connector->asyncGet($this->namespaceClient->prefixPath('/jobs', self::API), [
             'class' => JobList::class,
             'groups' => ['Default', 'show'],
         ]);
@@ -78,7 +80,7 @@ class HttpJobRepository implements JobRepository
     public function findByLabels(array $labels)
     {
         $labelSelector = HttpAdapter::createLabelSelector($labels);
-        $path = $this->namespaceClient->prefixPath('/jobs?labelSelector='.$labelSelector);
+        $path = $this->namespaceClient->prefixPath('/jobs?labelSelector='.$labelSelector, self::API);
 
         return $this->connector->get($path, [
             'class' => JobList::class,
@@ -91,7 +93,7 @@ class HttpJobRepository implements JobRepository
      */
     public function create(Job $job)
     {
-        return $this->connector->post($this->namespaceClient->prefixPath('/jobs'), $job, [
+        return $this->connector->post($this->namespaceClient->prefixPath('/jobs', self::API), $job, [
             'class' => Job::class,
         ]);
     }
@@ -103,7 +105,7 @@ class HttpJobRepository implements JobRepository
     {
         $path = sprintf('/jobs/%s', $job->getMetadata()->getName());
 
-        return $this->connector->patch($this->namespaceClient->prefixPath($path), $job, [
+        return $this->connector->patch($this->namespaceClient->prefixPath($path, self::API), $job, [
             'class' => Job::class,
         ]);
     }
@@ -114,7 +116,7 @@ class HttpJobRepository implements JobRepository
     public function findOneByName($name)
     {
         try {
-            return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/jobs/%s', $name)), [
+            return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/jobs/%s', $name), self::API), [
                 'class' => Job::class,
                 'groups' => ['Default', 'show'],
             ]);
@@ -133,7 +135,7 @@ class HttpJobRepository implements JobRepository
     public function delete(Job $job)
     {
         try {
-            $path = $this->namespaceClient->prefixPath(sprintf('/jobs/%s', $job->getMetadata()->getName()));
+            $path = $this->namespaceClient->prefixPath(sprintf('/jobs/%s', $job->getMetadata()->getName()), self::API);
 
             return $this->connector->delete($path, null, [
                 'class' => Job::class,
@@ -157,7 +159,7 @@ class HttpJobRepository implements JobRepository
 
         $path = '/jobs?labelSelector='.urlencode($labelSelector);
 
-        return $this->connector->get($this->namespaceClient->prefixPath($path), [
+        return $this->connector->get($this->namespaceClient->prefixPath($path, self::API), [
             'class' => JobList::class,
             'groups' => ['Default', 'show'],
         ]);
@@ -232,7 +234,7 @@ class HttpJobRepository implements JobRepository
     {
         $name = $job->getMetadata()->getName();
 
-        return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/jobs/%s/log', $name)));
+        return $this->connector->get($this->namespaceClient->prefixPath(sprintf('/jobs/%s/log', $name)), self::API);
     }
 
     /**
