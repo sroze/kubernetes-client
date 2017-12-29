@@ -1,0 +1,14 @@
+Kubernetes\Client\Model\Job:
+    virtual_properties:
+        getKind:
+            serialized_name: kind
+            type: string
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        specification:
+            type: Kubernetes\Client\Model\JobSpecification
+            serialized_name: spec
+        status:
+            type: Kubernetes\Client\Model\JobStatus
+            groups: [view]

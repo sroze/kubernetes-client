@@ -33,16 +33,16 @@ class JobSpecification
     /**
      * @var PodTemplateSpecification
      */
-    private $podTemplateSpec;
+    private $template;
 
     /**
      * JobSpecification constructor.
      *
-     * @param PodTemplateSpecification $podTemplateSpec
+     * @param PodTemplateSpecification $template
      */
-    public function __construct(PodTemplateSpecification $podTemplateSpec)
+    public function __construct(PodTemplateSpecification $template)
     {
-        $this->podTemplateSpec = $podTemplateSpec;
+        $this->template = $template;
     }
 
     /**
@@ -128,19 +128,19 @@ class JobSpecification
     /**
      * @return PodTemplateSpecification
      */
-    public function getPodTemplateSpec()
+    public function getTemplate()
     {
-        return $this->podTemplateSpec;
+        return $this->template;
     }
 
     /**
-     * @param PodTemplateSpecification $podTemplateSpec
+     * @param PodTemplateSpecification $template
      *
      * @return JobSpecification
      */
-    public function setPodTemplateSpec(PodTemplateSpecification $podTemplateSpec)
+    public function setTemplate(PodTemplateSpecification $template)
     {
-        $this->podTemplateSpec = $podTemplateSpec;
+        $this->template = $template;
 
         return $this;
     }

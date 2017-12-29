@@ -1,0 +1,1 @@
+{"kind":"Job","metadata":{"name":"my-job","labels":{},"annotations":{}},"spec":{"template":{"metadata":{"name":"my-job","labels":{},"annotations":{}},"spec":{"containers":[{"name":"my-job","image":"hello-world","imagePullPolicy":"Always","env":[],"ports":[],"volumeMounts":[]}],"volumes":[],"restartPolicy":"Always","dnsPolicy":"ClusterFirst"}}}}

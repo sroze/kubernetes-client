@@ -12,6 +12,7 @@ default:
                 - NamespaceContext
                 - SecretContext
                 - ServiceContext
+                - JobContext
                 - PodContext
                 - PersistentVolumeContext
 

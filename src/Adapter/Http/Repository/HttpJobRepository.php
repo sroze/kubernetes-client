@@ -246,12 +246,7 @@ class HttpJobRepository implements JobRepository
     {
         $job = $this->findOneByName($job->getMetadata()->getName());
 
-        $containerStatuses = $job->getStatus()->getContainerStatuses();
-        $terminatedContainers = array_filter($containerStatuses, function (ContainerStatus $containerStatus) {
-            return null != $containerStatus->getState()->getTerminated();
-        });
-
-        return count($terminatedContainers) == count($containerStatuses);
+        return $job->getStatus()->getCompletionTime() !== null;
     }
 
     /**
@@ -268,6 +263,6 @@ class HttpJobRepository implements JobRepository
 
         $jobStatus = $job->getStatus();
 
-        return $jobStatus->getPhase() == JobStatus::PHASE_PENDING;
+        return $jobStatus->getCompletionTime() === null && $jobStatus->getStartTime() === null;
     }
 }

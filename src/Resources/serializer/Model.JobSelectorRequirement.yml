@@ -1,0 +1,8 @@
+Kubernetes\Client\Model\JobSelectorRequirement:
+    properties:
+        key:
+            type: string
+        operator:
+            type: string
+        values:
+            type: array<string>
