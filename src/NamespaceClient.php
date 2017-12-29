@@ -3,6 +3,7 @@
 namespace Kubernetes\Client;
 
 use Kubernetes\Client\Model\KubernetesNamespace;
+use Kubernetes\Client\Repository\CronJobRepository;
 use Kubernetes\Client\Repository\DeploymentRepository;
 use Kubernetes\Client\Repository\EventRepository;
 use Kubernetes\Client\Repository\IngressRepository;
@@ -27,6 +28,11 @@ interface NamespaceClient
      * @return JobRepository
      */
     public function getJobRepository();
+
+    /**
+     * @return CronJobRepository
+     */
+    public function getCronJobRepository();
 
     /**
      * @return ServiceRepository

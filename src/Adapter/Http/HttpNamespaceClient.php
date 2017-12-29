@@ -2,6 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+use Kubernetes\Client\Adapter\Http\Repository\HttpCronJobRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpDeploymentRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpEventRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpIngressRepository;
@@ -54,6 +55,14 @@ class HttpNamespaceClient implements NamespaceClient
     public function getJobRepository()
     {
         return new HttpJobRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCronJobRepository()
+    {
+        return new HttpCronJobRepository($this->connector, $this);
     }
 
     /**
