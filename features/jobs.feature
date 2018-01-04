@@ -25,7 +25,31 @@ Feature:
       | baz  | foo   |
 
   @cleanNamespace
-  Scenario: I can attach to a container
-    When I create a job "commanded" with the command "echo hello; sleep 2; echo step;"
-    And I attach to the job "commanded"
-    Then I should see "step" in the job output
+  Scenario: I can create a job with a list of commands
+    When I create a job "commanded" with the command:
+      | command |
+      | foo     |
+      | --b     |
+      | bar     |
+    Then the job "commanded" should exists
+    And the job "commanded" should have the following command:
+      | command |
+      | foo     |
+      | --b     |
+      | bar     |
+
+  @cleanNamespace
+  Scenario: I can create a job with a list of arguments
+    When I create a job "args" with the arguments:
+      | arg |
+      | --f |
+      | foo |
+      | --b |
+      | bar |
+    Then the job "args" should exists
+    And the job "args" should have the following arguments:
+      | arg |
+      | --f |
+      | foo |
+      | --b |
+      | bar |

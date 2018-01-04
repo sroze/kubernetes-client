@@ -80,12 +80,4 @@ interface JobRepository
      * @return JobList
      */
     public function findByReplicationController(ReplicationController $replicationController);
-
-    /**
-     * @param Job      $job
-     * @param callable $callable
-     *
-     * @return Job
-     */
-    public function attach(Job $job, callable $callable);
 }

@@ -110,25 +110,45 @@ class JobContext implements Context
     }
 
     /**
-     * @When I attach to the job :name
+     * @When I create a job :name with the command:
      */
-    public function iAttachToTheCreatedJob($name)
+    public function iCreateAJobWithCommands($name, TableNode $table)
     {
-        $this->getRepository()->attach($this->getRepository()->findOneByName($name), function($output) {
-            $this->attachResult = $output;
-        });
+        $command = [];
+        foreach ($table->getHash() as $row) {
+            $command[] = $row['command'];
+        }
+
+        $specification = new JobSpecification(new PodTemplateSpecification(new ObjectMetadata($name), new PodSpecification([
+            new Container($name, 'busybox', [], [], [], Container::PULL_POLICY_IF_NOT_PRESENT, array_merge(['sh', '-c'], $command)),
+        ],
+            [],
+            PodSpecification::RESTART_POLICY_NEVER)));
+
+        $this->creationMicroTime = microtime(true);
+        $this->job = new Job(new ObjectMetadata($name), $specification);
+        $this->getRepository()->create($this->job);
     }
 
     /**
-     * @Then I should see :text in the job output
+     * @When I create a job :name with the arguments:
      */
-    public function iShouldSeeInTheOutput($text)
+    public function iCreateAJobWithArgs($name, TableNode $table)
     {
-        if (strpos($this->attachResult, $text) === false) {
-            echo $this->attachResult;
-
-            throw new \RuntimeException('Text not found');
+        $args = [];
+        foreach ($table->getHash() as $row) {
+            $args[] = $row['arg'];
         }
+
+        $specification = new JobSpecification(new PodTemplateSpecification(new ObjectMetadata($name), new PodSpecification([
+            new Container($name, 'busybox', [], [], [], Container::PULL_POLICY_IF_NOT_PRESENT, null, $args),
+        ],
+            [],
+            PodSpecification::RESTART_POLICY_NEVER)));
+
+        $this->creationMicroTime = microtime(true);
+        $this->job = new Job(new ObjectMetadata($name), $specification);
+        $this->getRepository()->create($this->job);
     }
 
     /**
@@ -174,6 +194,56 @@ class JobContext implements Context
                         $foundValue,
                         $variableName,
                         $expectedVariable['value']
+                    ));
+                }
+            }
+        }
+    }
+
+    /**
+     * @Then the job :name should have the following command:
+     */
+    public function theJobShouldHaveTheFollowingCommand($name, TableNode $table)
+    {
+        $job = $this->getRepository()->findOneByName($name);
+        $containers = $job->getSpecification()->getTemplate()->getPodSpecification()->getContainers();
+
+        foreach ($containers as $container) {
+            $foundCommand = [];
+            foreach ($container->getCommand() as $command) {
+                $foundCommand[] = $command;
+            }
+
+            foreach ($table->getHash() as $expectedCommand) {
+                if (!in_array($expectedCommand['command'], $foundCommand)) {
+                    throw new \RuntimeException(sprintf(
+                        'Command "%s" not found',
+                        $expectedCommand['command']
+                    ));
+                }
+            }
+        }
+    }
+
+    /**
+     * @Then the job :name should have the following arguments:
+     */
+    public function theJobShouldHaveTheFollowingArguments($name, TableNode $table)
+    {
+        $job = $this->getRepository()->findOneByName($name);
+        $containers = $job->getSpecification()->getTemplate()->getPodSpecification()->getContainers();
+
+        foreach ($containers as $container) {
+            $foundArgs = [];
+            foreach ($container->getArgs() as $arg) {
+                $foundArgs[] = $arg;
+            }
+
+            foreach ($table->getHash() as $expectedArg) {
+                if (!in_array($expectedArg['arg'], $foundArgs)) {
+                    throw new \RuntimeException(sprintf(
+                        'Argument "%s" not found',
+                        $expectedArg['arg']
                     ));
                 }
             }

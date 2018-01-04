@@ -1,0 +1,1 @@
+{"kind":"Job","metadata":{"name":"args","labels":{},"annotations":{}},"spec":{"template":{"metadata":{"name":"args","labels":{},"annotations":{}},"spec":{"containers":[{"name":"args","image":"busybox","imagePullPolicy":"IfNotPresent","env":[],"ports":[],"volumeMounts":[],"args":["--f","foo","--b","bar"]}],"volumes":[],"restartPolicy":"Never","dnsPolicy":"ClusterFirst"}}}}
