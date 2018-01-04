@@ -34,11 +34,6 @@ class JobContext implements Context
     private $creationMicroTime;
 
     /**
-     * @var string
-     */
-    private $attachResult;
-
-    /**
      * @BeforeScenario
      */
     public function gatherContexts(BeforeScenarioScope $scope)

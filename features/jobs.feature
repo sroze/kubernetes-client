@@ -7,12 +7,12 @@ Feature:
     Given I have a namespace "pods-heaven"
     And the namespace "pods-heaven" is ready
 
-  @deletePod
+  @deleteJob
   Scenario: I can create a job
     When I create a job "my-job"
     Then the job "my-job" should exists
 
-  @deletePod
+  @deleteJob
   Scenario: I can create a job with environment variables
     When I create a job "env-test" with the following environment variables:
       | name | value |

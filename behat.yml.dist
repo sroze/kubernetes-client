@@ -13,6 +13,7 @@ default:
                 - SecretContext
                 - ServiceContext
                 - JobContext
+                - CronJobContext
                 - PodContext
                 - PersistentVolumeContext
 
