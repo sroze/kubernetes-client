@@ -1,0 +1,11 @@
+Kubernetes\Client\Model\NetworkPolicy\NetworkPolicyPeer:
+    properties:
+        ipBlock:
+            type: Kubernetes\Client\Model\IPBlock
+            serialized_name: ipBlock
+        namespaceSelector:
+            type: Kubernetes\Client\Model\LabelSelector
+            serialized_name: namespaceSelector
+        podSelector:
+            type: Kubernetes\Client\Model\LabelSelector
+            serialized_name: podSelector

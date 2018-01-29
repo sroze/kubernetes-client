@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\IPBlock:
+    properties:
+        cidr:
+            type: string
+        except:
+            type: array<string>

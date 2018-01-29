@@ -1,0 +1,10 @@
+Kubernetes\Client\Model\NetworkPolicy\NetworkPolicy:
+    virtual_properties:
+        getKind:
+            serialized_name: Kind
+            type: string
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        spec:
+            type: Kubernetes\Client\Model\NetworkPolicy\NetworkPolicySpec
