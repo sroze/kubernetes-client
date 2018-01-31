@@ -5,8 +5,6 @@ namespace Kubernetes\Client\Adapter\Http;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
-require_once 'functions.php';
-
 class GuzzleHttpClient implements HttpClient
 {
     /**
@@ -116,7 +114,7 @@ class GuzzleHttpClient implements HttpClient
         ];
 
         if (null !== $this->caCertificate) {
-            $defaults['verify'] = certificate_file_path_from_contents($this->caCertificate);
+            $defaults['verify'] = file_path_from_contents($this->caCertificate);
         }
 
         if ($body !== null) {
@@ -124,7 +122,9 @@ class GuzzleHttpClient implements HttpClient
         }
 
         $options = array_intersect_key($options, [
-            'headers' => null, 'body' => null,
+            'headers' => null,
+            'body' => null,
+            'cert' => null,
         ]);
 
         return array_replace_recursive($defaults, $options);

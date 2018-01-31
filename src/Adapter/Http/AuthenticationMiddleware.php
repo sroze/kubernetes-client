@@ -2,7 +2,7 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
-require_once 'functions.php';
+use function Kubernetes\Client\file_path_from_contents;
 
 class AuthenticationMiddleware implements HttpClient
 {
@@ -21,16 +21,16 @@ class AuthenticationMiddleware implements HttpClient
     private $authenticationType;
 
     /**
-     * @var string
+     * @var string|array
      */
     private $credentials;
 
     /**
      * @param HttpClient $httpClient
      * @param string $authenticationType
-     * @param string $credentials
+     * @param string|array $credentials
      */
-    public function __construct(HttpClient $httpClient, string $authenticationType, string $credentials)
+    public function __construct(HttpClient $httpClient, string $authenticationType, $credentials)
     {
         $this->httpClient = $httpClient;
         $this->authenticationType = $authenticationType;
@@ -81,7 +81,7 @@ class AuthenticationMiddleware implements HttpClient
     {
         if (self::CERTIFICATE == $this->authenticationType) {
             $authorizationOptions = [
-                'cert' => certificate_file_path_from_contents($this->credentials),
+                'cert' => is_array($this->credentials) ? [file_path_from_contents($this->credentials[0]), $this->credentials[1]] : file_path_from_contents($this->credentials),
             ];
         } else {
             $authorizationOptions = [
