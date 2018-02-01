@@ -3,6 +3,8 @@
 namespace Kubernetes\Client\Adapter\Http;
 
 use function Kubernetes\Client\file_path_from_contents;
+use Symfony\Component\Process\Exception\RuntimeException;
+use Symfony\Component\Process\Process;
 
 class AuthenticationMiddleware implements HttpClient
 {
@@ -80,8 +82,31 @@ class AuthenticationMiddleware implements HttpClient
     private function addAuthenticationOptions(array $options): array
     {
         if (self::CERTIFICATE == $this->authenticationType) {
+            if (is_array($this->credentials)) {
+                $certificate = file_path_from_contents($this->credentials[0]);
+
+                // Somehow, having the password of the certificate in an array (path + cert) do not work on Linux.
+                // We therefore need to create a temporary, un-passwored, certificate
+                try {
+                    $certificate = file_path_from_contents(
+                        (new Process(sprintf(
+                            'openssl pkcs12 -in %s -nodes -password pass:%s',
+                            $certificate,
+                            $this->credentials[1]
+                        )))->mustRun()->getOutput()
+                    );
+                } catch (RuntimeException $e) {
+                    throw new \RuntimeException(sprintf(
+                        'Could not read the client certificate: %s',
+                        $e->getMessage()
+                    ), $e->getCode(), $e);
+                }
+            } else {
+                $certificate = file_path_from_contents($this->credentials);
+            }
+
             $authorizationOptions = [
-                'cert' => is_array($this->credentials) ? [file_path_from_contents($this->credentials[0]), $this->credentials[1]] : file_path_from_contents($this->credentials),
+                'cert' => $certificate,
             ];
         } else {
             $authorizationOptions = [
