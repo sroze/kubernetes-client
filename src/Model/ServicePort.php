@@ -25,17 +25,24 @@ class ServicePort
     private $protocol;
 
     /**
+     * @var int|null
+     */
+    private $nodePort;
+
+    /**
      * @param string   $name
      * @param int      $port
      * @param string   $protocol
      * @param int|null $targetPort
+     * @param int|null $nodePort
      */
-    public function __construct($name, $port, $protocol, $targetPort = null)
+    public function __construct($name, $port, $protocol, $targetPort = null, $nodePort = null)
     {
         $this->name = $name;
         $this->port = $port;
         $this->protocol = $protocol;
         $this->targetPort = $targetPort ?: $port;
+        $this->nodePort = $nodePort;
     }
 
     /**
@@ -68,5 +75,13 @@ class ServicePort
     public function getProtocol()
     {
         return $this->protocol;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNodePort()
+    {
+        return $this->nodePort;
     }
 }

@@ -9,3 +9,6 @@ Kubernetes\Client\Model\ServicePort:
             serialized_name: targetPort
         protocol:
             type: string
+        nodePort:
+            type: integer
+            serialized_name: nodePort
