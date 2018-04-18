@@ -1,0 +1,17 @@
+Kubernetes\Client\Model\JobStatus:
+    properties:
+        active:
+            type: integer
+        conditions:
+            type: array<Kubernetes\Client\Model\JobStatusCondition>
+            serialized_name: Condition
+        failed:
+            type: integer
+        succeeded:
+            type: integer
+        completionTime:
+            type: DateTime
+            serialized_name: completionTime
+        startTime:
+            type: DateTime
+            serialized_name: startTime

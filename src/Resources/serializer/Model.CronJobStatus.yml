@@ -1,0 +1,7 @@
+Kubernetes\Client\Model\CronJobStatus:
+    properties:
+        lastScheduleTime:
+            type: DateTime
+            serialized_name: lastScheduleTime
+        active:
+            type: array<Kubernetes\Client\Model\ObjectReference>

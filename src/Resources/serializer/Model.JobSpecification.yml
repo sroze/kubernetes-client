@@ -1,0 +1,14 @@
+Kubernetes\Client\Model\JobSpecification:
+    properties:
+        completions:
+            type: integer
+        manualSelector:
+            type: boolean
+            serialized_name: manualSelector
+        parallelism:
+            type: integer
+            serialized_name: parallelism
+        selector:
+            type: Kubernetes\Client\Model\JobSelector
+        template:
+            type: Kubernetes\Client\Model\PodTemplateSpecification

@@ -2,10 +2,12 @@
 
 namespace Kubernetes\Client\Adapter\Http;
 
+use Kubernetes\Client\Adapter\Http\Repository\HttpCronJobRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpDeploymentRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpEventRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpIngressRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpNetworkPolicyRepository;
+use Kubernetes\Client\Adapter\Http\Repository\HttpJobRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPersistentVolumeClaimRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpPodRepository;
 use Kubernetes\Client\Adapter\Http\Repository\HttpReplicationControllerRepository;
@@ -45,6 +47,22 @@ class HttpNamespaceClient implements NamespaceClient
     public function getPodRepository()
     {
         return new HttpPodRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJobRepository()
+    {
+        return new HttpJobRepository($this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCronJobRepository()
+    {
+        return new HttpCronJobRepository($this->connector, $this);
     }
 
     /**

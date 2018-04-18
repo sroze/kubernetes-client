@@ -1,0 +1,7 @@
+Kubernetes\Client\Model\JobTemplateSpecification:
+    properties:
+        metadata:
+            type: Kubernetes\Client\Model\ObjectMetadata
+        podSpecification:
+            type: Kubernetes\Client\Model\JobSpecification
+            serialized_name: spec

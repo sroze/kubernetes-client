@@ -32,10 +32,16 @@ class Container
      * @var VolumeMount[]
      */
     private $volumeMounts;
+
     /**
      * @var array
      */
     private $command;
+
+    /**
+     * @var array
+     */
+    private $args;
 
     /**
      * @var SecurityContext
@@ -65,12 +71,13 @@ class Container
      * @param VolumeMount[]         $volumeMounts
      * @param string                $pullPolicy
      * @param array                 $command
+     * @param array                 $args
      * @param SecurityContext       $securityContext
      * @param ResourceRequirements  $resources
      * @param Probe                 $livenessProbe
      * @param Probe                 $readinessProbe
      */
-    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, SecurityContext $securityContext = null, ResourceRequirements $resources = null, Probe $livenessProbe = null, Probe $readinessProbe = null)
+    public function __construct($name, $image, array $environmentVariables = [], array $ports = [], array $volumeMounts = [], $pullPolicy = self::PULL_POLICY_ALWAYS, array $command = null, array $args = null, SecurityContext $securityContext = null, ResourceRequirements $resources = null, Probe $livenessProbe = null, Probe $readinessProbe = null)
     {
         $this->name = $name;
         $this->image = $image;
@@ -79,6 +86,7 @@ class Container
         $this->volumeMounts = $volumeMounts;
         $this->pullPolicy = $pullPolicy;
         $this->command = $command;
+        $this->args = $args;
         $this->securityContext = $securityContext;
         $this->resources = $resources;
         $this->livenessProbe = $livenessProbe;
@@ -139,6 +147,14 @@ class Container
     public function getCommand()
     {
         return $this->command;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArgs()
+    {
+        return $this->args;
     }
 
     /**

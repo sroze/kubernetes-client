@@ -1,0 +1,6 @@
+Kubernetes\Client\Model\JobStatusCondition:
+    properties:
+        type:
+            type: string
+        status:
+            type: boolean
