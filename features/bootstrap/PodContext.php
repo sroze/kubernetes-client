@@ -248,7 +248,7 @@ class PodContext implements Context
         $tempFile = tempnam(sys_get_temp_dir(), 'behat');
         $targetStream = new WritableResourceStream(fopen($tempFile, 'w'), $loop);
         $sourceStream->pipe($targetStream);
-        $loop->nextTick(function() use ($sourceStream) {
+        $loop->futureTick(function() use ($sourceStream) {
             $sourceStream->resume();
         });
         $loop->run();

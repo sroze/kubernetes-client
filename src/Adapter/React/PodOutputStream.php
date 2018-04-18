@@ -9,7 +9,7 @@ use Kubernetes\Client\Adapter\Http\HttpNamespaceClient;
 use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodStatusProvider;
 use React\EventLoop\LoopInterface;
-use React\EventLoop\Timer\TimerInterface;
+use React\EventLoop\TimerInterface;
 use React\Stream\ReadableStreamInterface;
 use React\Stream\Util;
 use React\Stream\WritableStreamInterface;
@@ -103,7 +103,9 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
      */
     public function pause()
     {
-        $this->timer->cancel();
+        if ($this->timer) {
+            $this->loop->cancelTimer($this->timer);
+        }
     }
 
     /**
@@ -124,13 +126,13 @@ class PodOutputStream extends EventEmitter implements ReadableStreamInterface
                 $eventEmitter->emit('data', [$response]);
 
                 if ($eventEmitter->statusProvider->isTerminated($eventEmitter->pod)) {
-                    $eventEmitter->timer->cancel();
+                    $eventEmitter->loop->cancelTimer($eventEmitter->timer);
                     $eventEmitter->emit('end');
                     $eventEmitter->close();
                 }
             }, function ($reason) use ($eventEmitter) {
-                $this->emit('error', [new \RuntimeException('Unable to read pod output: ' . $reason)]);
-                $this->close();
+                $eventEmitter->emit('error', [new \RuntimeException('Unable to read pod output: ' . $reason)]);
+                $eventEmitter->close();
             });
             $eventEmitter->httpPromise->wait();
         };
