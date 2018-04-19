@@ -7,6 +7,8 @@ use Kubernetes\Client\Exception\PodNotFound;
 use Kubernetes\Client\Model\Pod;
 use Kubernetes\Client\Model\PodList;
 use Kubernetes\Client\Model\ReplicationController;
+use React\EventLoop\LoopInterface;
+use React\Stream\ReadableStreamInterface;
 
 interface PodRepository
 {
@@ -80,6 +82,8 @@ interface PodRepository
      * @param callable $callable
      *
      * @return Pod
+     *
+     * @deprecated 1.10.0 Use the {@see \Kubernetes\Client\Model\PodStatusProvider::attach()} method instead.
      */
     public function attach(Pod $pod, callable $callable);
 }

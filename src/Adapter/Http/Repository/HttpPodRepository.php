@@ -10,8 +10,8 @@ use Kubernetes\Client\Exception\ClientError;
 use Kubernetes\Client\Exception\PodNotFound;
 use Kubernetes\Client\Model\ContainerStatus;
 use Kubernetes\Client\Model\Pod;
-use Kubernetes\Client\Model\PodList;
 use Kubernetes\Client\Model\PodStatus;
+use Kubernetes\Client\Model\PodList;
 use Kubernetes\Client\Model\ReplicationController;
 use Kubernetes\Client\Repository\PodRepository;
 
@@ -35,11 +35,13 @@ class HttpPodRepository implements PodRepository
     private $namespaceClient;
 
     /**
-     * @param HttpConnector       $connector
+     * @param HttpConnector $connector
      * @param HttpNamespaceClient $namespaceClient
      */
-    public function __construct(HttpConnector $connector, HttpNamespaceClient $namespaceClient)
-    {
+    public function __construct(
+        HttpConnector $connector,
+        HttpNamespaceClient $namespaceClient
+    ) {
         $this->connector = $connector;
         $this->namespaceClient = $namespaceClient;
     }

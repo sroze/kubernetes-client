@@ -52,6 +52,14 @@ class HttpNamespaceClient implements NamespaceClient
     /**
      * {@inheritdoc}
      */
+    public function getPodStatusProvider()
+    {
+        return new HttpPodStatusProvider($this->getPodRepository(), $this->connector, $this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getJobRepository()
     {
         return new HttpJobRepository($this->connector, $this);

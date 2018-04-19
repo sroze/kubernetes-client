@@ -49,7 +49,7 @@ class GuzzleHttpClientSpec extends ObjectBehavior
         $this->asyncRequest('get', '/api/v1/namespaces')->shouldReturnInTheFuture('foo');
     }
 
-    public function getMatchers()
+    public function getMatchers(): array
     {
         return [
             'returnInTheFuture' => function(PromiseInterface $promise, $value) {

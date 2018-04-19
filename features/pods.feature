@@ -29,3 +29,9 @@ Feature:
     When I create a pod "commanded" with the command "echo hello; sleep 2; echo step;"
     And I attach to the pod "commanded"
     Then I should see "step" in the output
+
+  @cleanNamespace
+  Scenario: I can stream the output of a container
+    When I create a pod "commanded" with the command "echo hello; sleep 2; echo step;"
+    And I start streaming the output of the pod "commanded"
+    Then I should see "step" in the output
